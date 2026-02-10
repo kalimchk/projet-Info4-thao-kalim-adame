@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/profil.css" rel="stylesheet">
+    <title>Profil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <input type="checkbox" id="active">
+    <label for="active" class="menu-btn"><span></span></label>
+    <label for="active" class="close"></label>
+    <nav class="nav">
+<ul>
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="connexion.html">Déconnexion</a></li>
+</ul>
+  </nav>
+
+
+<main class="page">
+  <section class="card">
+    <h1>Mon profil</h1>
+
+    <div class="grid-2">
+      <div class="field">
+        <div class="label-row">
+          <label>Nom</label>
+          <button class="icon-btn" type="button" aria-label="Modifier le nom">✏️</button>
+        </div>
+        <p class="value"></p>
+      </div>
+
+      <div class="field">
+        <div class="label-row">
+          <label>Prénom</label>
+          <button class="icon-btn" type="button" aria-label="Modifier le prénom">✏️</button>
+        </div>
+        <p class="value"></p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Mes anciennes commandes</h2>
+    <div class="orders">
+      <article class="order">
+        <div>
+          <p class="order-title"><b>Commande #...</b></p>
+          <p class="order-meta"></p>
+        </div>
+        <span class="badge badge-done">
+            <b>Statut :</b>
+        </span>
+      </article>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Fidélité</h2>
+    <div class="fidelite">
+      <p><b>Points :</b> </p>
+      <p><b>Statut :</b> </p>
+      <p><b>Avantage :</b> </p>
+    </div>
+  </section>
+</main>
+    
+
+</body>
+</html>
