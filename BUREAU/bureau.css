@@ -79,6 +79,7 @@ main,
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--ink);
+    text-decoration: none;
 }
 
 .navbar {
