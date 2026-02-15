@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #F3EDE4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.livraison-card {
+    background-color: #FFFFFF;
+    width: 90%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+
+.livraison-card h2 {
+    font-family: serif;
+    color: #5C4033;
+    margin-bottom: 20px;
+}
+
+.livraison-card p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 18px;
+    border-radius: 35px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-principal {
+    background-color: #A8C3A0;
+    color: white;
+}
+
+.btn-principal:hover {
+    background-color: #8FAF88;
+}
+
+.btn-secondaire {
+    background-color: #5C4033;
+    color: white;
+}
+
+.btn-secondaire:hover {
+    opacity: 0.85;
+}

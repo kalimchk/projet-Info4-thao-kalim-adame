@@ -1,0 +1,129 @@
+/* =========================
+   PAGE COMMANDES - VERSION CHIC
+========================= */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #F3EDE4; /* beige sable */
+    color: #3A3A3A;
+}
+
+/* TITRE PRINCIPAL */
+
+h1 {
+    text-align: center;
+    padding: 40px 0 20px;
+    font-family: serif;
+    color: #5C4033;
+}
+
+/* SECTIONS */
+
+.titre-section {
+    margin: 50px 60px 30px;
+    font-family: serif;
+    color: #5C4033;
+    font-size: 1.6rem;
+}
+
+/* CONTENEUR */
+
+.commandes-container {
+    padding: 0 60px 60px;
+}
+
+/* CARTE COMMANDE */
+
+.commande-card {
+    background-color: #FFFFFF; /* BLANC CASSE */
+    padding: 35px;
+    border-radius: 20px;
+    margin-bottom: 45px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+
+.commande-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+}
+
+/* HEADER */
+
+.commande-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.commande-numero {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #5C4033;
+}
+
+/* BADGES */
+
+.badge {
+    padding: 7px 15px;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    color: white;
+}
+
+.badge-prepare {
+    background-color: #A8C3A0;
+}
+
+.badge-livraison {
+    background-color: #5C4033;
+}
+
+/* PRODUITS */
+
+.liste-produits {
+    margin: 15px 0;
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+.total {
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    color: #5C4033;
+    font-size: 1.1rem;
+}
+
+/* BOUTONS */
+
+button {
+    padding: 13px 24px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.btn-principal {
+    background-color: #A8C3A0;
+    color: white;
+}
+
+.btn-principal:hover {
+    background-color: #8FAF88;
+}
+
+.btn-secondaire {
+    background-color: #5C4033;
+    color: white;
+}
+
+.btn-secondaire:hover {
+    opacity: 0.85;
+}
+
