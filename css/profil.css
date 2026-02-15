@@ -7,8 +7,8 @@ box-sizing: border-box;
 }
 body{
   background-color: #f5efe6;
-  color: #2e2e2e;
-  font-family: 'Lora', serif; 
+  color: #6B4F3F;
+  font-family: 'Georgia', serif;
 }
 .page{
   max-width: 750px;
@@ -55,10 +55,16 @@ h1, h2{
 }
 
 .value{
-  padding: 10px;
-  background: #f5efe6;
-  border-radius: 8px;
+  padding: 12px 14px;
+  background: #ffffff;              
+  border: 1px solid #d7cfc8;        
+  border-radius: 6px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: #2e2e2e;
 }
+
 @media (max-width: 700px){
   .grid-2{
     grid-template-columns: 1fr;
