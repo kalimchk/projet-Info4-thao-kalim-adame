@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="BUREAU/bureau.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/notes.css" />
+  <title>Noter ma commande</title>
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="logo" href="BUREAU/bureau.html">Pasta La Vista</a>
+    <nav class="navbar">
+      <a href="profil.html">Mon profil</a>
+      <a href="connexion.html">Déconnexion</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="card">
+      <div class="head">
+        <div>
+          <h1>Noter ma commande</h1>
+          <p class="subtitle">Commande <b>#1024</b> • Livrée le <b>13/02</b></p>
+        </div>
+        <span class="chip">Après livraison</span>
+      </div>
+
+      <div class="order-summary">
+        <div class="summary-item">
+          <p class="k">Adresse</p>
+          <p class="v"></p>
+        </div>
+        <div class="summary-item">
+          <p class="k">Livreur</p>
+          <p class="v"></p>
+        </div>
+        <div class="summary-item">
+          <p class="k">Total</p>
+          <p class="v"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Note la livraison</h2>
+
+      <div class="rating-block">
+        <div class="rating-row">
+          <p class="label">Ponctualité</p>
+          <div class="stars" aria-label="Ponctualité">
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star star-off" type="button">★</button>
+          </div>
+        </div>
+
+        <div class="rating-row">
+          <p class="label">État de la commande</p>
+          <div class="stars" aria-label="État de la commande">
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star star-off" type="button">★</button>
+            <button class="star star-off" type="button">★</button>
+          </div>
+        </div>
+
+        <div class="rating-row">
+          <p class="label">Amabilité</p>
+          <div class="stars" aria-label="Amabilité">
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+          </div>
+        </div>
+
+        <div class="rating-row">
+          <p class="label">Note globale livraison</p>
+          <div class="stars" aria-label="Note globale livraison">
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star" type="button">★</button>
+            <button class="star star-off" type="button">★</button>
+            <button class="star star-off" type="button">★</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Note la qualité des produits</h2>
+
+      <div class="products">
+        <article class="product">
+          <div class="prod-left">
+            <div>
+              <p class="prod-name">Pâtes Carbonara</p>
+              <p class="prod-meta">Quantité : 1</p>
+            </div>
+          </div>
+          <div class="prod-right">
+            <div class="stars">
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+              <button class="star star-off" type="button">★</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-left">
+            <div>
+              <p class="prod-name">Salade César</p>
+              <p class="prod-meta">Quantité : 1</p>
+            </div>
+          </div>
+          <div class="prod-right">
+            <div class="stars">
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+              <button class="star star-off" type="button">★</button>
+              <button class="star star-off" type="button">★</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="product">
+          <div class="prod-left">
+            <div>
+              <p class="prod-name">Tiramisu</p>
+              <p class="prod-meta">Quantité : 1</p>
+            </div>
+          </div>
+          <div class="prod-right">
+            <div class="stars">
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+              <button class="star" type="button">★</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="field">
+        <label>Commentaire (optionnel)</label>
+        <textarea placeholder="Dis-nous ce que tu as aimé / ce qu'on peut améliorer…"></textarea>
+      </div>
+
+      <div class="cta">
+        <button class="btn btn-ghost" type="button">Annuler</button>
+        <button class="btn" type="button">Envoyer ma note</button>
+      </div>
+
+      
+    </section>
+  </main>
+</body>
+</html>
