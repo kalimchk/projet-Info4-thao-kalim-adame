@@ -359,6 +359,27 @@ h3 {
     grid-column: 2;
 }
 
+.add-cart {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 6px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 11px;
+    color: #ffffff;
+    background: var(--accent);
+    box-shadow: 0 10px 20px rgba(168, 195, 161, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-cart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 24px rgba(168, 195, 161, 0.48);
+}
+
 .site-footer {
     text-align: center;
     padding: 24px;
@@ -414,7 +435,8 @@ h3 {
     .type,
     .desc,
     .flavors,
-    .allergens {
+    .allergens,
+    .add-cart {
         grid-column: 1;
     }
 
