@@ -10,6 +10,42 @@ body{
   font-family: 'Georgia', serif;
 }
 
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 8vw;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.navbar{
+  display: flex;
+  gap: 12px;
+}
+
+.navbar a{
+  text-decoration: none;
+  color: #2e2e2e;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+.navbar a:hover{
+  background: rgba(168, 195, 161, 0.25);
+}
+
+.navbar a.active{
+  border: 1px solid #a8c3a1;
+}
+
 
 .logo{
   text-decoration: none;
@@ -272,5 +308,16 @@ h1, h2{
     grid-column: 1 / -1;
     flex-direction: row;
     justify-content: flex-start;
+  }
+}
+
+@media (max-width: 720px){
+  .site-header{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .navbar{
+    flex-wrap: wrap;
   }
 }

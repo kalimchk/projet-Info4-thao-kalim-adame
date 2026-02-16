@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;600&display=swap');
+
 /*
    Vert pastel  : #A8C3A1
    Beige sable  : #F5EFE6
@@ -14,9 +16,56 @@
 
 body {
     background-color: #F5EFE6;
-    font-family: 'Georgia', serif;
+    font-family: "Manrope", Arial, sans-serif;
+    font-weight: 400;
     color: #2E2E2E;
     line-height: 1.6;
+}
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 8vw;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(46, 46, 46, 0.1);
+}
+
+.logo {
+    color: #2E2E2E;
+    text-decoration: none;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.navbar {
+    display: flex;
+    gap: 12px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #2E2E2E;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 14px;
+    border-radius: 999px;
+}
+
+.navbar a:hover {
+    background: rgba(168, 195, 161, 0.25);
+    text-decoration: none;
+}
+
+.navbar a.active {
+    border: 1px solid #A8C3A1;
 }
 
 main {
@@ -32,6 +81,8 @@ h1 {
     text-align: center;
     margin-bottom: 25px;
     color: #6B4F3F;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 400;
     font-size: 28px;
     letter-spacing: 1px;
 }
@@ -78,7 +129,7 @@ button {
     border: none;
     border-radius: 6px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -96,7 +147,7 @@ p {
 a {
     color: #6B4F3F;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 400;
 }
 
 a:hover {
@@ -111,5 +162,17 @@ a:hover {
 
     h1 {
         font-size: 24px;
+    }
+}
+
+@media (max-width: 720px) {
+    .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .navbar {
+        flex-wrap: wrap;
     }
 }
