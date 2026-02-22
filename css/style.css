@@ -41,8 +41,7 @@ body.page-accueil *{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}body.page-accueil,
-body.page-accueil{
+}body.page-accueil{
     overflow-x: hidden;
 }body.page-accueil{
     font-family: "Manrope", Arial, sans-serif;
@@ -65,18 +64,7 @@ body.page-accueil .site-footer{
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
-}body.page-accueil html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-accueil .logo{
     font-family: "Cormorant Garamond", serif;
     font-size: 22px;
     letter-spacing: 2px;
@@ -373,37 +361,14 @@ body.page-accueil .split > .split-image:last-child img{
     }body.page-accueil .hero-content{
         max-width: 100%;
     }
-}body.page-accueil html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-accueil .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-accueil .logo-text{
-    line-height: 1;
-}
-/* fin (accueil)*/
+}/* fin (accueil)*/
 
 /* debut (carte)*/
 body.page-carte *{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}body.page-carte,
-body.page-carte{
+}body.page-carte{
     overflow-x: hidden;
 }body.page-carte{
     font-family: "Manrope", Arial, sans-serif;
@@ -426,18 +391,7 @@ body.page-carte .site-footer{
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
-}body.page-carte html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-carte .logo{
     font-family: "Cormorant Garamond", serif;
     font-size: 22px;
     letter-spacing: 2px;
@@ -709,29 +663,7 @@ body.page-carte .add-cart{
     }body.page-carte .filters-actions{
         justify-content: flex-start;
     }
-}body.page-carte html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-carte .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-carte .logo-text{
-    line-height: 1;
-}
-/* fin (carte)*/
+}/* fin (carte)*/
 
 /* debut (administateur)*/
 body.page-administateur *{
@@ -768,18 +700,7 @@ body.page-administateur *{
   background: rgba(168, 195, 161, 0.25);
 }body.page-administateur .navbar a.active{
   border: 1px solid var(--accent);
-}body.page-administateur html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-administateur .logo{
   text-decoration: none;
   color: var(--ink);
   font-family: "Cormorant Garamond", serif;
@@ -981,29 +902,7 @@ body.page-administateur h2{
   }body.page-administateur .navbar{
     flex-wrap: wrap;
   }
-}body.page-administateur html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-administateur .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-administateur .logo-text{
-    line-height: 1;
-}
-/* fin (administateur)*/
+}/* fin (administateur)*/
 
 /* debut (commande)*/
 body.page-commande{
@@ -1022,18 +921,7 @@ body.page-commande{
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
-}body.page-commande html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-commande .logo{
     text-decoration: none;
     color: var(--ink);
     font-family: "Cormorant Garamond", serif;
@@ -1138,29 +1026,7 @@ body {
     }body.page-commande .navbar{
         flex-wrap: wrap;
     }
-}body.page-commande html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-commande .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-commande .logo-text{
-    line-height: 1;
-}
-/* fin (commande)*/
+}/* fin (commande)*/
 
 /* debut (connexion)*/
 body.page-connexion *{
@@ -1184,18 +1050,7 @@ body.page-connexion *{
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
-}body.page-connexion html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-connexion .logo{
     color: var(--ink);
     text-decoration: none;
     font-family: "Cormorant Garamond", serif;
@@ -1303,29 +1158,7 @@ body.page-connexion textarea:focus{
     }body.page-connexion .navbar{
         flex-wrap: wrap;
     }
-}body.page-connexion html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-connexion .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-connexion .logo-text{
-    line-height: 1;
-}
-/* fin (connexion)*/
+}/* fin (connexion)*/
 
 /* debut (inscription)*/
 body.page-inscription *{
@@ -1349,18 +1182,7 @@ body.page-inscription *{
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
-}body.page-inscription html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-inscription .logo{
     color: var(--ink);
     text-decoration: none;
     font-family: "Cormorant Garamond", serif;
@@ -1468,29 +1290,7 @@ body.page-inscription textarea:focus{
     }body.page-inscription .navbar{
         flex-wrap: wrap;
     }
-}body.page-inscription html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-inscription .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-inscription .logo-text{
-    line-height: 1;
-}
-/* fin (inscription)*/
+}/* fin (inscription)*/
 
 /* debut (livraison)*/
 body.page-livraison{
@@ -1509,18 +1309,7 @@ body.page-livraison{
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
-}body.page-livraison html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-livraison .logo{
     text-decoration: none;
     color: var(--ink);
     font-family: "Cormorant Garamond", serif;
@@ -1591,29 +1380,7 @@ body {
     }body.page-livraison .navbar{
         flex-wrap: wrap;
     }
-}body.page-livraison html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-livraison .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-livraison .logo-text{
-    line-height: 1;
-}
-/* fin (livraison)*/
+}/* fin (livraison)*/
 
 /* debut (notes)*/
 body.page-notes *{ margin:0; padding:0; box-sizing:border-box; }body.page-notes{
@@ -1631,18 +1398,7 @@ body.page-notes *{ margin:0; padding:0; box-sizing:border-box; }body.page-notes{
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
-}body.page-notes html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-notes .logo{
   text-decoration: none;
   color: var(--ink);
   font-family: "Cormorant Garamond", serif;
@@ -1833,29 +1589,7 @@ body.page-notes h2{
   }body.page-notes .navbar{
     flex-wrap: wrap;
   }
-}body.page-notes html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-notes .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-notes .logo-text{
-    line-height: 1;
-}
-/* fin (notes)*/
+}/* fin (notes)*/
 
 /* debut (profil)*/
 body.page-profil *{
@@ -1878,18 +1612,7 @@ box-sizing: border-box;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
-}body.page-profil html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
+}body.page-profil .logo{
   text-decoration: none;
   color: var(--ink);
   font-family: "Cormorant Garamond", serif;
@@ -1995,29 +1718,9 @@ body.page-profil h2{
   }body.page-profil .navbar{
     flex-wrap: wrap;
   }
-}body.page-profil html,
-body {
-    margin: 0;
-    padding: 0;
-}
+}/* fin (profil)*/
 
-.site-header {
-    margin: 0;
-    left: 0;
-    right: 0;
-}
-.logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}body.page-profil .logo-img{
-    height: 46px;
-    width: auto;
-    display: block;
-}body.page-profil .logo-text{
-    line-height: 1;
-}
-/* fin (profil)*/
+
 
 
 
