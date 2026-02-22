@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    PAGE COMMANDES - VERSION CHIC
 ========================= */
 
@@ -201,5 +201,12 @@ button {
     .navbar {
         flex-wrap: wrap;
     }
+}
+
+
+.logo-img {
+    height: 56px;
+    width: auto;
+    display: block;
 }
 

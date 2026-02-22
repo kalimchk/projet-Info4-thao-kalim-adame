@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;600&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;600&display=swap');
 
 :root {
     --bg: #ffffff;
@@ -24,8 +24,7 @@ body {
 body {
     font-family: "Manrope", Arial, sans-serif;
     color: var(--ink);
-    background: radial-gradient(900px 500px at 15% -10%, rgba(168, 195, 161, 0.25), transparent 60%),
-        var(--bg);
+    background: var(--surface);
     line-height: 1.7;
 }
 
@@ -457,3 +456,10 @@ h2::after {
         max-width: 100%;
     }
 }
+
+.logo-img {
+    height: 56px;
+    width: auto;
+    display: block;
+}
+

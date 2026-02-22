@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;600&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Manrope:wght@300;400;600&display=swap');
 
 :root {
     --bg: #ffffff;
@@ -13,8 +13,8 @@
    Vert pastel  : #A8C3A1
    Beige sable  : #F5EFE6
    Marron bois  : #6B4F3F
-   Texte foncé  : #2E2E2E
-   Blanc cassé  : #FFFFFF
+   Texte foncÃ©  : #2E2E2E
+   Blanc cassÃ©  : #FFFFFF
 */
 
 * {
@@ -192,5 +192,12 @@ a:hover {
     .navbar {
         flex-wrap: wrap;
     }
+}
+
+
+.logo-img {
+    height: 56px;
+    width: auto;
+    display: block;
 }
 
