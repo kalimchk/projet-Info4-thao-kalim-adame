@@ -29,30 +29,6 @@ body {
     line-height: 1.7;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-        repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 120px,
-            rgba(46, 46, 46, 0.04) 121px,
-            transparent 122px
-        ),
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 140px,
-            rgba(46, 46, 46, 0.035) 141px,
-            transparent 142px
-        );
-    opacity: 0.6;
-    z-index: 0;
-}
-
 .site-header,
 main,
 .site-footer {
