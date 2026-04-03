@@ -1,123 +1,49 @@
 ﻿<?php
-require 'config/database.php';
+require_once 'data/functions.php';
 
 $message = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $nom = $_POST["nom"];
+    $prenom = $_POST["prenom"];
+    $email = $_POST["email"];
+    $telephone = $_POST["telephone"];
+    $password = $_POST["password"];
 
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $email = $_POST['email'];
-    $telephone = $_POST['telephone'];
-    $adresse = $_POST['adresse'];
-    $password = $_POST['password'];
-    $confirm = $_POST['confirm'];
+    ajouterUtilisateur($nom, $prenom, $email, $telephone, $password);
 
-    if ($password !== $confirm) {
-        $message = "Les mots de passe ne correspondent pas";
-    } else {
-
-        // Vérifier si email existe déjà
-        $check = $pdo->prepare("SELECT id FROM utilisateurs WHERE email = ?");
-        $check->execute([$email]);
-
-        if ($check->fetch()) {
-            $message = "Cet email est déjà utilisé";
-        } else {
-
-            $hash = password_hash($password, PASSWORD_DEFAULT);
-
-            $sql = "INSERT INTO utilisateurs (nom, prenom, email, telephone, adresse, password)
-                    VALUES (?, ?, ?, ?, ?, ?)";
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$nom, $prenom, $email, $telephone, $adresse, $hash]);
-
-            $message = "Compte créé avec succès !";
-        }
-    }
+    $message = "Compte créé avec succès !";
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="logo/logo-pasta-la-vista.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inscription - Pasta La Vista</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/style.css">
+<title>Inscription</title>
 </head>
 
-<body class="page-inscription">
+<body>
 
-<header class="site-header">
-    <a class="logo" href="accueil.html">
-        <img class="logo-img" src="logo/logo-pasta-la-vista.png">
-        <span class="logo-text">Pasta La Vista</span>
-    </a>
-    <nav class="navbar">
-        <a href="accueil.html">Accueil</a>
-        <a href="carte.html">Carte</a>
-        <a href="connexion.php">Connexion</a>
-    </nav>
-</header>
+<h1>Inscription</h1>
 
-<main>
-    <h1>Inscription</h1>
-    <?php if ($message != ""): ?>
-        <p style="text-align:center; margin-bottom:15px;">
-            <?php echo $message; ?>
-        </p>
-    <?php endif; ?>
+<?php if ($message): ?>
+<p><?php echo $message; ?></p>
+<?php endif; ?>
 
-    <form method="POST">
+<form method="POST">
+    <input type="text" name="nom" placeholder="Nom" required>
+    <input type="text" name="prenom" placeholder="Prénom" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="telephone" placeholder="Téléphone" required>
+    <input type="password" name="password" placeholder="Mot de passe" required>
 
-        <label>Nom</label>
-        <input type="text" name="nom" required>
-
-        <label>Prénom</label>
-        <input type="text" name="prenom" required>
-
-        <label>Adresse e-mail</label>
-        <input type="email" name="email" required>
-
-        <label>Numéro de téléphone</label>
-        <input type="tel" name="telephone">
-
-        <label>Adresse</label>
-        <input type="text" name="adresse">
-
-        <label>Mot de passe</label>
-        <input type="password" name="password" required>
-
-        <label>Confirmer le mot de passe</label>
-        <input type="password" name="confirm" required>
-
-        <button type="submit">Créer mon compte</button>
-    </form>
-</main>
-
-<footer class="site-footer">
-    <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
-</footer>
+    <button type="submit">S'inscrire</button>
+</form>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
