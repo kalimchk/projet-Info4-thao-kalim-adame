@@ -88,24 +88,13 @@ function echapperTexteLivraison(?string $texte): string
         <section class="livraison-actions">
             <article class="livraison-card">
                 <h2>Changer l etat de la livraison</h2>
-                <p>Affichage uniquement : les actions sont visibles, mais elles ne modifient encore rien.</p>
+                <p><strong>Statut possible :</strong> Livree ou abandonnee.</p>
+                <p><strong>Motif d abandon :</strong> adresse introuvable, client absent, acces impossible.</p>
 
-                <form class="formulaire-livraison" method="GET" action="">
-                    <label for="etat_livraison">Nouvel etat</label>
-                    <select id="etat_livraison" name="etat_livraison_affichage">
-                        <option value="livree">Commande livree</option>
-                        <option value="abandonnee">Commande abandonnee</option>
-                        <option value="adresse_introuvable">Adresse introuvable</option>
-                    </select>
-
-                    <label for="raison_abandon">Raison ou commentaire</label>
-                    <textarea id="raison_abandon" name="raison_abandon_affichage" placeholder="Exemple : adresse introuvable, client absent, acces impossible."></textarea>
-
-                    <div class="actions-livraison">
-                        <button type="button" class="btn-secondaire bouton-inactif">Marquer comme livree</button>
-                        <button type="button" class="btn-abandon bouton-inactif">Marquer comme abandonnee</button>
-                    </div>
-                </form>
+                <div class="actions-livraison">
+                    <button type="button" class="btn-secondaire bouton-inactif">Marquer comme livree</button>
+                    <button type="button" class="btn-abandon bouton-inactif">Marquer comme abandonnee</button>
+                </div>
             </article>
         </section>
     <?php endif; ?>

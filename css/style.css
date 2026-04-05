@@ -1539,30 +1539,11 @@ body.page-livraison .livraison-actions{
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-}body.page-livraison .formulaire-livraison{
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
-}body.page-livraison .formulaire-livraison label{
-    color: var(--muted);
-    font-weight: 600;
-}body.page-livraison .formulaire-livraison select,
-body.page-livraison .formulaire-livraison textarea{
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid var(--line-strong);
-    background: var(--bg);
-    color: var(--ink);
-    font-family: inherit;
-    font-size: 0.95rem;
-}body.page-livraison .formulaire-livraison textarea{
-    min-height: 110px;
-    resize: vertical;
 }body.page-livraison .actions-livraison{
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    margin-top: 18px;
 }body.page-livraison .actions-livraison button{
     width: auto;
     flex: 1 1 220px;
