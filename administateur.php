@@ -1,51 +1,70 @@
-﻿<<?php
+<?php
 session_start();
-require_once 'data/functions.php';
-if (!isset($_SESSION["user"])) {
-    header("Location: connexion.php");
+require_once __DIR__ . '/config/function.php';
+
+if (!isset($_SESSION['user'])) {
+    header('Location: connexion.php');
     exit();
 }
 
-$users = lireUtilisateurs();
+$utilisateurConnecte = $_SESSION['user'];
 
-$totalUsers = count($users);
-$vipCount = 0;
-$withOrders = 0;
+if (($utilisateurConnecte['statut'] ?? '') !== 'admin') {
+    header('Location: accueil.html');
+    exit();
+}
+
+$listeDesUtilisateurs = lireUtilisateurs();
+$nombreTotalUtilisateurs = count($listeDesUtilisateurs);
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="css/style.css">
-<title>Admin</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Administration</title>
 </head>
+<body class="page-administateur">
+    <header class="site-header">
+        <a class="logo" href="accueil.html">Pasta La Vista</a>
+        <nav class="navbar">
+            <a href="accueil.html">Accueil</a>
+            <a href="carte.html">Carte</a>
+            <a class="active" href="administateur.php">Administration</a>
+        </nav>
+    </header>
 
-<body>
+    <main class="page">
+        <section class="card">
+            <div class="head">
+                <div>
+                    <h1>Administration</h1>
+                    <p class="subtitle">Total utilisateurs : <?php echo $nombreTotalUtilisateurs; ?></p>
+                </div>
+            </div>
 
-<h1>Administration</h1>
+            <div class="users">
+                <?php foreach ($listeDesUtilisateurs as $utilisateur): ?>
+                    <article class="user">
+                        <div class="user-top">
+                            <p class="user-name">
+                                <?php echo htmlspecialchars(($utilisateur['prenom'] ?? '') . ' ' . ($utilisateur['nom'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                            </p>
+                        </div>
+                        <p class="user-meta"><?php echo htmlspecialchars($utilisateur['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p class="user-meta"><?php echo htmlspecialchars($utilisateur['telephone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
+                        <div class="badges">
+                            <span class="badge"><?php echo htmlspecialchars($utilisateur['statut'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    </main>
 
-<p>Total utilisateurs : <?php echo $totalUsers; ?></p>
-
-<div class="users">
-
-<?php foreach ($users as $user): ?>
-
-<div class="user">
-    <p><b><?php echo $user["prenom"] . " " . $user["nom"]; ?></b></p>
-    <p><?php echo $user["email"]; ?></p>
-    <p><?php echo $user["telephone"]; ?></p>
-    <button>Voir profil</button>
-    <button>Bloquer</button>
-    <button>VIP</button>
-    <button>Remise</button>
-</div>
-
-<hr>
-
-<?php endforeach; ?>
-
-</div>
-
+    <footer class="site-footer">
+        <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
+    </footer>
 </body>
 </html>

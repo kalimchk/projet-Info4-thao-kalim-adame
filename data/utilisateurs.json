@@ -1,1 +1,35 @@
-[]
+[
+    {
+        "id": 1,
+        "nom": "Bianchi",
+        "prenom": "Marco",
+        "email": "restaurateur@pasta.fr",
+        "telephone": "01 45 00 10 10",
+        "password": "resto123",
+        "statut": "restaurateur",
+        "restaurant_id": 1,
+        "restaurant_nom": "Pasta La Vista"
+    },
+    {
+        "id": 2,
+        "nom": "Martin",
+        "prenom": "Claire",
+        "email": "admin@pasta.fr",
+        "telephone": "01 45 00 10 20",
+        "password": "admin123",
+        "statut": "admin",
+        "restaurant_id": null,
+        "restaurant_nom": null
+    },
+    {
+        "id": 3,
+        "nom": "Dubois",
+        "prenom": "Emma",
+        "email": "client@pasta.fr",
+        "telephone": "06 12 34 56 78",
+        "password": "client123",
+        "statut": "client",
+        "restaurant_id": null,
+        "restaurant_nom": null
+    }
+]

@@ -961,11 +961,55 @@ body.page-commande{
     padding: 40px 0 20px;
     font-family: "Cormorant Garamond", serif;
     color: var(--muted);
+    margin: 0;
+}body.page-commande .commande-intro{
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--muted);
+}body.page-commande .message-confirmation{
+    max-width: 720px;
+    margin: 0 auto 26px;
+    padding: 14px 18px;
+    background: var(--accent-wash);
+    border: 1px solid var(--accent);
+    border-radius: 14px;
+    text-align: center;
+}body.page-commande .resume-commandes{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+}body.page-commande .resume-card{
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+}body.page-commande .resume-valeur{
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 6px;
+}body.page-commande .resume-libelle{
+    font-size: 0.95rem;
 }body.page-commande .titre-section{
     margin: 50px 60px 30px;
     font-family: "Cormorant Garamond", serif;
     color: var(--muted);
     font-size: 1.6rem;
+}body.page-commande .bloc-statut{
+    margin-bottom: 42px;
+}body.page-commande .description-section{
+    margin: -16px 60px 24px;
+    color: var(--muted);
+}body.page-commande .etat-vide{
+    margin: 0 60px 24px;
+    padding: 18px 22px;
+    border-radius: 16px;
+    background: var(--bg);
+    border: 1px dashed var(--line-strong);
+    color: var(--muted);
 }body.page-commande .commandes-container{
     padding: 0 60px 60px;
 }body.page-commande .commande-card{
@@ -995,8 +1039,25 @@ body.page-commande{
     color: var(--bg);
 }body.page-commande .badge-prepare{
     background-color: var(--accent);
+}body.page-commande .badge-en-cours{
+    background-color: #d48a42;
+}body.page-commande .badge-attente{
+    background-color: #9c7a2d;
 }body.page-commande .badge-livraison{
     background-color: var(--muted);
+}body.page-commande .badge-livree{
+    background-color: var(--accent-deep);
+}body.page-commande .commande-infos{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px 18px;
+    margin-bottom: 18px;
+}body.page-commande .commentaire-client{
+    margin-bottom: 14px;
+    padding: 14px 16px;
+    background: var(--surface-alt);
+    border-radius: 12px;
+    border: 1px solid var(--line-soft);
 }body.page-commande .liste-produits{
     margin: 15px 0;
     padding-left: 20px;
@@ -1007,6 +1068,12 @@ body.page-commande{
     margin-bottom: 20px;
     color: var(--muted);
     font-size: 1.1rem;
+}body.page-commande .actions-commande{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}body.page-commande .actions-commande form{
+    margin: 0;
 }body.page-commande button{
     padding: 13px 24px;
     border-radius: 30px;
@@ -1038,6 +1105,13 @@ body.page-commande{
         gap: 10px;
     }body.page-commande .navbar{
         flex-wrap: wrap;
+    }body.page-commande .commandes-container{
+        padding: 0 20px 40px;
+    }body.page-commande .titre-section,
+body.page-commande .description-section,
+body.page-commande .etat-vide{
+        margin-left: 0;
+        margin-right: 0;
     }
 }/* fin (commande)*/
 

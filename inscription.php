@@ -1,49 +1,76 @@
-﻿<?php
-require_once 'data/functions.php';
+<?php
+require_once __DIR__ . '/config/function.php';
 
-$message = "";
+$messageConfirmationInscription = '';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nom = $_POST["nom"];
-    $prenom = $_POST["prenom"];
-    $email = $_POST["email"];
-    $telephone = $_POST["telephone"];
-    $password = $_POST["password"];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nomUtilisateur = trim($_POST['nom'] ?? '');
+    $prenomUtilisateur = trim($_POST['prenom'] ?? '');
+    $emailUtilisateur = trim($_POST['email'] ?? '');
+    $telephoneUtilisateur = trim($_POST['telephone'] ?? '');
+    $motDePasseUtilisateur = trim($_POST['password'] ?? '');
 
-    ajouterUtilisateur($nom, $prenom, $email, $telephone, $password);
+    if ($nomUtilisateur !== '' && $prenomUtilisateur !== '' && $emailUtilisateur !== '' && $telephoneUtilisateur !== '' && $motDePasseUtilisateur !== '') {
+        ajouterUtilisateur(
+            $nomUtilisateur,
+            $prenomUtilisateur,
+            $emailUtilisateur,
+            $telephoneUtilisateur,
+            $motDePasseUtilisateur
+        );
 
-    $message = "Compte créé avec succès !";
+        $messageConfirmationInscription = 'Compte créé avec succès.';
+    }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="css/style.css">
-<title>Inscription</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Inscription</title>
 </head>
+<body class="page-inscription">
+    <header class="site-header">
+        <a class="logo" href="accueil.html">Pasta La Vista</a>
+        <nav class="navbar">
+            <a href="accueil.html">Accueil</a>
+            <a href="carte.html">Carte</a>
+            <a href="connexion.php">Connexion</a>
+            <a class="active" href="inscription.php">Inscription</a>
+        </nav>
+    </header>
 
-<body>
+    <main>
+        <h1>Inscription</h1>
 
-<h1>Inscription</h1>
+        <?php if ($messageConfirmationInscription !== ''): ?>
+            <p><?php echo htmlspecialchars($messageConfirmationInscription, ENT_QUOTES, 'UTF-8'); ?></p>
+        <?php endif; ?>
 
-<?php if ($message): ?>
-<p><?php echo $message; ?></p>
-<?php endif; ?>
+        <form method="POST" action="">
+            <label for="nom">Nom</label>
+            <input id="nom" type="text" name="nom" placeholder="Nom" required>
 
-<form method="POST">
-    <input type="text" name="nom" placeholder="Nom" required>
-    <input type="text" name="prenom" placeholder="Prénom" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="text" name="telephone" placeholder="Téléphone" required>
-    <input type="password" name="password" placeholder="Mot de passe" required>
+            <label for="prenom">Prénom</label>
+            <input id="prenom" type="text" name="prenom" placeholder="Prénom" required>
 
-    <button type="submit">S'inscrire</button>
-</form>
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" placeholder="Email" required>
 
+            <label for="telephone">Téléphone</label>
+            <input id="telephone" type="text" name="telephone" placeholder="Téléphone" required>
+
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" name="password" placeholder="Mot de passe" required>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
+    </footer>
 </body>
 </html>
-
-
-

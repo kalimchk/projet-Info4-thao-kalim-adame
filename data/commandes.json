@@ -1,0 +1,122 @@
+[
+    {
+        "id": 101,
+        "restaurant_id": 1,
+        "restaurant_nom": "Pasta La Vista",
+        "numero_commande": "PLV-101",
+        "statut_commande": "a_preparer",
+        "heure_commande": "2026-04-05 18:10:00",
+        "client_nom": "Emma Dubois",
+        "client_telephone": "06 12 34 56 78",
+        "adresse_livraison": "12 rue des Lilas, Cergy",
+        "commentaire_client": "Sans parmesan sur les pâtes.",
+        "temps_estime": "25 min",
+        "articles": [
+            {
+                "nom_produit": "Lasagnes maison",
+                "quantite": 1,
+                "prix_unitaire": 14.5
+            },
+            {
+                "nom_produit": "Tiramisu",
+                "quantite": 2,
+                "prix_unitaire": 6
+            }
+        ]
+    },
+    {
+        "id": 102,
+        "restaurant_id": 1,
+        "restaurant_nom": "Pasta La Vista",
+        "numero_commande": "PLV-102",
+        "statut_commande": "en_cours",
+        "heure_commande": "2026-04-05 18:22:00",
+        "client_nom": "Nora Petit",
+        "client_telephone": "06 23 45 67 89",
+        "adresse_livraison": "4 allée des Vignes, Pontoise",
+        "commentaire_client": "Ajouter des couverts.",
+        "temps_estime": "18 min",
+        "articles": [
+            {
+                "nom_produit": "Pizza quattro formaggi",
+                "quantite": 2,
+                "prix_unitaire": 13
+            },
+            {
+                "nom_produit": "Salade roquette",
+                "quantite": 1,
+                "prix_unitaire": 5.5
+            }
+        ]
+    },
+    {
+        "id": 103,
+        "restaurant_id": 1,
+        "restaurant_nom": "Pasta La Vista",
+        "numero_commande": "PLV-103",
+        "statut_commande": "en_attente",
+        "heure_commande": "2026-04-05 18:35:00",
+        "client_nom": "Lucas Bernard",
+        "client_telephone": "07 55 66 77 88",
+        "adresse_livraison": "88 boulevard du Port, Cergy",
+        "commentaire_client": "Attendre l'arrivée du livreur.",
+        "temps_estime": "Prête",
+        "articles": [
+            {
+                "nom_produit": "Tagliatelles crème parmesan",
+                "quantite": 1,
+                "prix_unitaire": 12.5
+            },
+            {
+                "nom_produit": "Bruschetta",
+                "quantite": 1,
+                "prix_unitaire": 6.5
+            }
+        ]
+    },
+    {
+        "id": 104,
+        "restaurant_id": 1,
+        "restaurant_nom": "Pasta La Vista",
+        "numero_commande": "PLV-104",
+        "statut_commande": "en_livraison",
+        "heure_commande": "2026-04-05 18:42:00",
+        "client_nom": "Sarah Leroy",
+        "client_telephone": "06 98 45 78 12",
+        "adresse_livraison": "10 rue de la Gare, Saint-Ouen-l'Aumône",
+        "commentaire_client": "Appeler en arrivant.",
+        "temps_estime": "Livraison en cours",
+        "articles": [
+            {
+                "nom_produit": "Pizza margherita",
+                "quantite": 1,
+                "prix_unitaire": 11
+            },
+            {
+                "nom_produit": "Panna cotta",
+                "quantite": 1,
+                "prix_unitaire": 5.5
+            }
+        ]
+    },
+    {
+        "id": 105,
+        "restaurant_id": 1,
+        "restaurant_nom": "Pasta La Vista",
+        "numero_commande": "PLV-105",
+        "statut_commande": "livree",
+        "heure_commande": "2026-04-05 17:55:00",
+        "client_nom": "Yanis Morel",
+        "client_telephone": "06 45 12 78 90",
+        "adresse_livraison": "3 rue Pasteur, Eragny",
+        "commentaire_client": "",
+        "temps_estime": "Terminée",
+        "articles": [
+            {
+                "nom_produit": "Risotto aux champignons",
+                "quantite": 2,
+                "prix_unitaire": 13.5
+            }
+        ]
+    }
+]
