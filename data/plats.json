@@ -1,0 +1,289 @@
+[
+{
+  "id": "ent-01",
+  "nom": "Antipasto Gastronomico",
+  "description": "Sélection de charcuteries italiennes, burrata, légumes grilles et focaccia maison.",
+  "prix": 21.00,
+  "type": "Entree",
+  "informations": {
+    "saveurs": [
+      "Varie", 
+      "salin", 
+      "gourmand"
+    ],
+    "allergenes": [
+      "Gluten", 
+      "lait"
+    ]
+  } 
+},
+{
+  "id": "ent-02",
+  "nom": "Carpaccio di Manzo al Tartufo",
+  "description": "Carpaccio de boeuf, huile de truffe, roquette, parmesan et pignons toastes.",
+  "prix": 24.00,
+  "type": "Entree",
+  "informations": {
+    "saveurs": [
+      "frais", 
+      "délicat", 
+      "umami"
+    ],
+    "allergenes": [
+      "lait", 
+      "fruit à coque"
+    ]
+  }
+},
+{
+  "id": "plt-01",
+  "nom": "Tartufo Nero Royale",
+  "description": "Tagliolini frais maison nappes d'une emulsion au beurre de truffe noire d'Alba, copeaux de parmesan 36 mois et eclats de noisettes torrefiees.",
+  "prix": 32.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "boise", 
+      "umami", 
+      "cremeux",
+      "legerement toaste"
+    ],
+    "allergenes": [
+      "gluten",
+      "oeuf",
+      "lait", 
+      "fruit à coque"
+    ]
+  }
+},
+{
+  "id": "plt-02",
+  "nom": "Linguine allo Scoglio Imperiale",
+  "description": "Linguine artisanales aux palourdes, moules, crevettes et calamars, jus de crustaces au vin blanc, persil frais et zeste de citron.",
+  "prix": 29.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "marin", 
+      "iode", 
+      "frais",
+      "legerement acidule"
+    ],
+    "allergenes": [
+      "gluten",
+      "crustaces",
+      "mollusques", 
+      "sulfites"
+    ]
+  }
+},
+{
+  "id": "plt-03",
+  "nom": "Risotto al Tartufo Bianco",
+  "description": "Risotto Carnaroli cremeux au parmesan affine, beurre noisette et fines lamelles de truffe blanche.",
+  "prix": 36.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "intense", 
+      "beurre", 
+      "umami"
+    ],
+    "allergenes": [
+      "lait"
+    ]
+  }
+},
+{
+  "id": "plt-04",
+  "nom": "Ravioli Ricotta & Spinaci",
+  "description": "Ravioli maison garnis de ricotta et epinards, sauce sauge et beurre noisette.",
+  "prix": 24.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "doux", 
+      "herbace", 
+      "fondant"
+    ],
+    "allergenes": [
+        "gluten",
+        "oeuf", 
+        "lait"
+    ]
+  }
+},
+{
+  "id": "plt-05",
+  "nom": "Osso Buco alla Milanese",
+  "description": "Jarret de veau braise lentement, gremolata fraîche et risotto safrane.",
+  "prix": 34.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "Riche", 
+      "Parfume", 
+      "legerement citrone"
+    ],
+    "allergenes": [
+        "lait",
+        "celeri"
+    ]
+  }
+},
+{
+  "id": "plt-06",
+  "nom": "Branzino Mediterraneo",
+  "description": "Jarret de veau braise lentement, gremolata fraîche et risotto safrane.",
+  "prix": 31.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "frais", 
+      "acidule", 
+      "mediteraneen"
+    ],
+    "allergenes": [
+        "poisson"
+        
+    ]
+  }
+},
+{
+  "id": "plt-07",
+  "nom": "Pollo alla Parmigiana",
+  "description": "Escalope de poulet panee, mozzarella fondante, sauce tomate San Marzano et basilic frais.",
+  "prix": 26.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "tomate", 
+      "fromager", 
+      "croustillant"
+    ],
+    "allergenes": [
+        "gluten",
+        "oeuf",
+        "lait"
+        
+    ]
+  }
+},
+{
+  "id": "plt-08",
+  "nom": "Pizza Burrata & Prosciutto di Parma",
+  "description": "Base tomate, mozzarella fior di latte, burrata cremeuse, prosciutto 24 mois et roquette sauvage.",
+  "prix": 23.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "salin", 
+      "cremeux", 
+      "frais"
+    ],
+    "allergenes": [
+        "gluten",
+        "lait"
+        
+    ]
+  }
+},
+{
+  "id": "plt-09",
+  "nom": "Pizza Tartufata",
+  "description": "Creme de truffe noire, mozzarella, champignons sauvages et copeaux de parmesan.",
+  "prix": 27.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "boise", 
+      "cremeux", 
+      "intense"
+    ],
+    "allergenes": [
+        "gluten",
+        "lait"
+        
+    ]
+  }
+},
+{
+  "id": "plt-10",
+  "nom": "Gnocchi al Gorgonzola e Noci",
+  "description": "Gnocchi maison nappes d'une sauce au gorgonzola AOP et eclats de noix.",
+  "prix": 22.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "fromager", 
+      "puissant", 
+      "legerement amer"
+    ],
+    "allergenes": [
+        "gluten",
+        "lait",
+        "fruit à coque"
+        
+    ]
+  }
+},
+{
+  "id": "plt-11",
+  "nom": "Filetto di Manzo al Barolo",
+  "description": "Filet de boeuf grille, reduction de Barolo, puree de pommes de terre à l'huile d'olive et légumes rotis.",
+  "prix": 38.00,
+  "type": "Plat",
+  "informations": {
+    "saveurs": [
+      "puissant", 
+      "puissant", 
+      "vineux"
+    ],
+    "allergenes": [
+        "sulfites",
+        "lait"
+        
+        
+    ]
+  }
+},
+{
+  "id": "des-01",
+  "nom": "Tiramisu Classico",
+  "description": "Biscuit imbibe d'espresso, creme mascarpone onctueuse et cacao amer.",
+  "prix": 12.00,
+  "type": "Dessert",
+  "informations": {
+    "saveurs": [
+      "cafe", 
+      "cremeux", 
+      "legerement amer"
+    ],
+    "allergenes": [
+        "gluten",
+        "lait",
+        "oeuf"
+        
+    ]
+  }
+},
+{
+  "id": "des-02",
+  "nom": "Panna Cotta aux Fruits Rouges",
+  "description": "Panna cotta vanille Bourbon, coulis de fruits rouges maison.",
+  "prix": 11.00,
+  "type": "Dessert",
+  "informations": {
+    "saveurs": [
+      "doux", 
+      "vanille", 
+      "acidule"
+    ],
+    "allergenes": [
+      "lait"
+      
+        
+    ]
+  }
+}
+]

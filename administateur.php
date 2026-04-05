@@ -30,7 +30,7 @@ $nombreTotalUtilisateurs = count($listeDesUtilisateurs);
         <a class="logo" href="accueil.html">Pasta La Vista</a>
         <nav class="navbar">
             <a href="accueil.html">Accueil</a>
-            <a href="carte.html">Carte</a>
+            <a href="carte.php">Carte</a>
             <a class="active" href="administateur.php">Administration</a>
         </nav>
     </header>

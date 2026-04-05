@@ -37,7 +37,7 @@ function echapperTexteLivraison(?string $texte): string
     <a class="logo" href="accueil.html"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
     <nav class="navbar">
         <a href="accueil.html">Accueil</a>
-        <a href="carte.html">Carte</a>
+        <a href="carte.php">Carte</a>
         <a class="active" href="livraison.php">Livraison</a>
         <a href="connexion.php">Connexion</a>
     </nav>

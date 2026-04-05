@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a class="logo" href="accueil.html">Pasta La Vista</a>
         <nav class="navbar">
             <a href="accueil.html">Accueil</a>
-            <a href="carte.html">Carte</a>
+            <a href="carte.php">Carte</a>
             <a href="connexion.php">Connexion</a>
             <a class="active" href="inscription.php">Inscription</a>
         </nav>

@@ -1,0 +1,41 @@
+[
+  {
+    "idm": "menu-01",
+    "nom": "Menu Classico Italiano",
+    "description": "Les grands classiques réconfortants de l'Italie.",
+    "prix_total": 49.00,
+    "plats_inclus": {
+      "entrees": ["ent-01"],
+      "plats": ["plt-04", "plt-08", "plt-09"],
+      "desserts": ["des-01"]
+    },
+    "nb_personnes_min": 1,
+    "creneaux_limites": ["midi", "soir"]
+  },
+    {
+    "idm": "menu-02",
+    "nom": "Menu L'Authentique Italo",
+    "description": "Un voyage sensoriel au cœur des classiques italiens, mêlant finesse marine et générosité du terroir.",
+    "prix_total": 54.00,
+    "plats_inclus": {
+      "entrees": ["ent-01","ent-02"],
+      "plats": ["plt-05", "plt-06", "plt-7"],
+      "desserts": ["des-01", "des-02"]
+    },
+    "nb_personnes_min": 1,
+    "creneaux_limites": ["midi","soir"]
+  },
+  {
+    "idm": "menu-03",
+    "nom": "Menu Prestige Tartufo",
+    "description": "L'excellence de la truffe déclinée de l'entrée au plat.",
+    "prix_total": 62.00,
+    "plats_inclus": {
+      "entrees": ["ent-02"],
+      "plats": ["plt-01", "plt-03", "plt-10"],
+      "desserts": ["des-01", "des-02"]
+    },
+    "nb_personnes_min": 1,
+    "creneaux_limites": ["soir"]
+  }
+]
