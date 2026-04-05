@@ -993,6 +993,78 @@ body.page-commande{
     margin-bottom: 6px;
 }body.page-commande .resume-libelle{
     font-size: 0.95rem;
+}body.page-commande .detail-commande{
+    margin-bottom: 42px;
+    padding: 32px;
+    border-radius: 24px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-panel);
+}body.page-commande .detail-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 24px;
+}body.page-commande .detail-header h2{
+    margin: 0 0 10px;
+    font-family: "Cormorant Garamond", serif;
+    color: var(--muted);
+    font-size: 2rem;
+}body.page-commande .btn-retour-detail{
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: var(--surface-alt);
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+    text-decoration: none;
+}body.page-commande .detail-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    margin-bottom: 18px;
+}body.page-commande .detail-card{
+    padding: 22px;
+    border-radius: 18px;
+    background: var(--surface-alt);
+    border: 1px solid var(--line-soft);
+}body.page-commande .detail-card h3{
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-family: "Cormorant Garamond", serif;
+    color: var(--muted);
+    font-size: 1.5rem;
+}body.page-commande .formulaire-detail{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}body.page-commande .formulaire-detail label{
+    font-weight: 600;
+    color: var(--muted);
+}body.page-commande .formulaire-detail select{
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.95rem;
+}body.page-commande .bouton-inactif{
+    opacity: 0.65;
+}body.page-commande .liste-livreurs{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+}body.page-commande .livreur-card{
+    padding: 16px;
+    border-radius: 14px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+}body.page-commande .lien-action{
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
 }body.page-commande .titre-section{
     margin: 50px 60px 30px;
     font-family: "Cormorant Garamond", serif;
@@ -1107,6 +1179,10 @@ body.page-commande{
         flex-wrap: wrap;
     }body.page-commande .commandes-container{
         padding: 0 20px 40px;
+    }body.page-commande .detail-commande{
+        padding: 20px;
+    }body.page-commande .detail-header{
+        flex-direction: column;
     }body.page-commande .titre-section,
 body.page-commande .description-section,
 body.page-commande .etat-vide{
