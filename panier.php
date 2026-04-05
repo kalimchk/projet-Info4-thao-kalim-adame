@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/config/function.php';
 
-
+// Action pour vider le panier
 if (isset($_GET['action']) && $_GET['action'] === 'vider') {
     unset($_SESSION['panier']);
     header('Location: panier.php');
@@ -18,7 +18,7 @@ foreach ($panier as $article) {
     $nombre_articles_panier += $article['quantite'];
 }
 
-
+// Vérification si l'utilisateur est connecté pour la validation (Phase 2)
 $utilisateurConnecte = $_SESSION['user'] ?? null;
 ?>
 
@@ -49,16 +49,20 @@ $utilisateurConnecte = $_SESSION['user'] ?? null;
         <nav class="navbar">
             <a href="accueil.php">Accueil</a>
             <a href="carte.php">Carte</a>
-            <a class="active" href="panier.php">
+            
+            <a href="panier.php" class="lien-panier">
                 🛒 Mon Panier 
-                <?php if ($nombre_articles_panier > 0): ?>
+                <?php if (isset($nombre_articles_panier) && $nombre_articles_panier > 0): ?>
                     <span class="badge-panier">(<?= $nombre_articles_panier ?>)</span>
                 <?php endif; ?>
             </a>
-            <?php if ($utilisateurConnecte): ?>
+            
+            <?php if (isset($_SESSION['user'])): ?>
                 <a href="profil.php">Mon Profil</a>
+                <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
             <?php else: ?>
                 <a href="connexion.php">Connexion</a>
+                <a href="inscription.php">Inscription</a>
             <?php endif; ?>
         </nav>
     </header>

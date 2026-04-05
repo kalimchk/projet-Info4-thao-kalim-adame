@@ -36,14 +36,22 @@ function echapperTexteLivraison(?string $texte): string
 <header class="site-header">
     <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
         <nav class="navbar">
-            
-            <a class="active" href="accueil.php">Accueil</a>
+            <a href="accueil.php">Accueil</a>
             <a href="carte.php">Carte</a>
+            
+            <a href="panier.php" class="lien-panier">
+                🛒 Mon Panier 
+                <?php if (isset($nombre_articles_panier) && $nombre_articles_panier > 0): ?>
+                    <span class="badge-panier">(<?= $nombre_articles_panier ?>)</span>
+                <?php endif; ?>
+            </a>
+            
             <?php if (isset($_SESSION['user'])): ?>
                 <a href="profil.php">Mon Profil</a>
-                <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Déconnexion</a>
+                <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
             <?php else: ?>
                 <a href="connexion.php">Connexion</a>
+                <a href="inscription.php">Inscription</a>
             <?php endif; ?>
         </nav>
 </header>

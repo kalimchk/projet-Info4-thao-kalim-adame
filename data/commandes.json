@@ -4,7 +4,7 @@
         "restaurant_id": 1,
         "restaurant_nom": "Pasta La Vista",
         "numero_commande": "PLV-101",
-        "statut_commande": "a_preparer",
+        "statut_commande": "livree",
         "heure_commande": "2026-04-05 18:10:00",
         "client_nom": "Emma Dubois",
         "client_telephone": "06 12 34 56 78",
@@ -22,7 +22,9 @@
                 "quantite": 2,
                 "prix_unitaire": 6
             }
-        ]
+        ],
+        "note": 5,
+        "commentaire_note": "dqdqdqd"
     },
     {
         "id": 102,

@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <header class="site-header">
     <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
     <nav class="navbar">
-      <a href="accueil.html">Accueil</a>
+      <a href="accueil.php">Accueil</a>
       <a href="carte.php">Carte</a>
       <a href="panier.php">🛒 Mon Panier</a>
       <a href="profil.php">Mon Profil</a>

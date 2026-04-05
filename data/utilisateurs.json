@@ -42,5 +42,16 @@
         "statut": "livreur",
         "restaurant_id": 1,
         "restaurant_nom": "Pasta La Vista"
+    },
+    {
+        "id": 5,
+        "nom": "Seghiri",
+        "prenom": "Adame",
+        "email": "adameseg1909@gmail.com",
+        "telephone": "0752399438",
+        "password": "123456",
+        "statut": "client",
+        "restaurant_id": null,
+        "restaurant_nom": null
     }
 ]

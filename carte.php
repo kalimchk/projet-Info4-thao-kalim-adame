@@ -48,7 +48,7 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
         }
     }
     
-  
+    // REDIRECTION : empêche l'ajout multiple si on rafraîchit la page
     header('Location: carte.php');
     exit();
 }
@@ -74,7 +74,9 @@ if (isset($_SESSION['panier'])) {
     <header class="site-header">
         <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
         <nav class="navbar">
-            <a href="accueil.php">Accueil</a> <a href="carte.php">Carte</a>
+            <a href="accueil.php">Accueil</a>
+            <a href="carte.php">Carte</a>
+            
             <a href="panier.php" class="lien-panier">
                 🛒 Mon Panier 
                 <?php if (isset($nombre_articles_panier) && $nombre_articles_panier > 0): ?>
@@ -87,6 +89,7 @@ if (isset($_SESSION['panier'])) {
                 <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
             <?php else: ?>
                 <a href="connexion.php">Connexion</a>
+                <a href="inscription.php">Inscription</a>
             <?php endif; ?>
         </nav>
     </header>
