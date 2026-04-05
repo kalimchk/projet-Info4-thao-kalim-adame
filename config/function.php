@@ -100,6 +100,19 @@ function lireCommandesDuRestaurant(int $identifiantRestaurant): array
     return $commandesDuRestaurant;
 }
 
+function lireCommandeAttribueeAuLivreur(int $identifiantLivreur): ?array
+{
+    $listeDesCommandes = lireCommandes();
+
+    foreach ($listeDesCommandes as $commande) {
+        if (($commande['livreur_id'] ?? 0) === $identifiantLivreur) {
+            return $commande;
+        }
+    }
+
+    return null;
+}
+
 function obtenirDefinitionDesStatutsCommande(): array
 {
     return [

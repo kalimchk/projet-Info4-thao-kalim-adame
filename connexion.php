@@ -23,6 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
+        if (($utilisateurConnecte['statut'] ?? '') === 'livreur') {
+            header('Location: livraison.php');
+            exit();
+        }
+
         header('Location: accueil.html');
         exit();
     }
@@ -68,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <p>Compte restaurateur : restaurateur@pasta.fr / resto123</p>
         <p>Compte admin : admin@pasta.fr / admin123</p>
+        <p>Compte livreur : livreur@pasta.fr / livreur123</p>
     </main>
 
     <footer class="site-footer">

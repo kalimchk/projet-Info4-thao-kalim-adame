@@ -31,5 +31,16 @@
         "statut": "client",
         "restaurant_id": null,
         "restaurant_nom": null
+    },
+    {
+        "id": 4,
+        "nom": "Perrin",
+        "prenom": "Nicolas",
+        "email": "livreur@pasta.fr",
+        "telephone": "06 10 20 30 40",
+        "password": "livreur123",
+        "statut": "livreur",
+        "restaurant_id": 1,
+        "restaurant_nom": "Pasta La Vista"
     }
 ]

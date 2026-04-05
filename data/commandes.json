@@ -9,7 +9,7 @@
         "client_nom": "Emma Dubois",
         "client_telephone": "06 12 34 56 78",
         "adresse_livraison": "12 rue des Lilas, Cergy",
-        "commentaire_client": "Sans parmesan sur les pâtes.",
+        "commentaire_client": "Sans parmesan sur les pates.",
         "temps_estime": "25 min",
         "articles": [
             {
@@ -33,7 +33,7 @@
         "heure_commande": "2026-04-05 18:22:00",
         "client_nom": "Nora Petit",
         "client_telephone": "06 23 45 67 89",
-        "adresse_livraison": "4 allée des Vignes, Pontoise",
+        "adresse_livraison": "4 allee des Vignes, Pontoise",
         "commentaire_client": "Ajouter des couverts.",
         "temps_estime": "18 min",
         "articles": [
@@ -59,11 +59,11 @@
         "client_nom": "Lucas Bernard",
         "client_telephone": "07 55 66 77 88",
         "adresse_livraison": "88 boulevard du Port, Cergy",
-        "commentaire_client": "Attendre l'arrivée du livreur.",
-        "temps_estime": "Prête",
+        "commentaire_client": "Attendre l arrivee du livreur.",
+        "temps_estime": "Prete",
         "articles": [
             {
-                "nom_produit": "Tagliatelles crème parmesan",
+                "nom_produit": "Tagliatelles creme parmesan",
                 "quantite": 1,
                 "prix_unitaire": 12.5
             },
@@ -83,9 +83,12 @@
         "heure_commande": "2026-04-05 18:42:00",
         "client_nom": "Sarah Leroy",
         "client_telephone": "06 98 45 78 12",
-        "adresse_livraison": "10 rue de la Gare, Saint-Ouen-l'Aumône",
+        "adresse_livraison": "10 rue de la Gare, Saint-Ouen-l'Aumone",
         "commentaire_client": "Appeler en arrivant.",
         "temps_estime": "Livraison en cours",
+        "code_interphone": "B45A",
+        "livreur_id": 4,
+        "livreur_nom": "Nicolas Perrin",
         "articles": [
             {
                 "nom_produit": "Pizza margherita",
@@ -110,7 +113,7 @@
         "client_telephone": "06 45 12 78 90",
         "adresse_livraison": "3 rue Pasteur, Eragny",
         "commentaire_client": "",
-        "temps_estime": "Terminée",
+        "temps_estime": "Terminee",
         "articles": [
             {
                 "nom_produit": "Risotto aux champignons",
