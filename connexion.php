@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        header('Location: accueil.html');
+        header('Location: accueil.php');
         exit();
     }
 
@@ -45,12 +45,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="page-connexion">
     <header class="site-header">
-        <a class="logo" href="accueil.html">Pasta La Vista</a>
+        <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
         <nav class="navbar">
-            <a href="accueil.html">Accueil</a>
+            
+            <a class="active" href="accueil.php">Accueil</a>
             <a href="carte.php">Carte</a>
-            <a class="active" href="connexion.php">Connexion</a>
-            <a href="inscription.php">Inscription</a>
+            <?php if (isset($_SESSION['user'])): ?>
+                <a href="profil.php">Mon Profil</a>
+                <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Déconnexion</a>
+            <?php else: ?>
+                <a href="connexion.php">Connexion</a>
+            <?php endif; ?>
         </nav>
     </header>
 

@@ -45,9 +45,9 @@ $utilisateurConnecte = $_SESSION['user'] ?? null;
 </head>
 <body class="page-carte">
     <header class="site-header">
-        <a class="logo" href="accueil.html"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
+        <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
         <nav class="navbar">
-            <a href="accueil.html">Accueil</a>
+            <a href="accueil.php">Accueil</a>
             <a href="carte.php">Carte</a>
             <a class="active" href="panier.php">
                 🛒 Mon Panier 

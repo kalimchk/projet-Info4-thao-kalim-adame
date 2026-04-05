@@ -37,14 +37,18 @@ $statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
 </head>
 <body class="page-profil">
 <header class="site-header">
-   <a class="logo" href="accueil.html"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
-    <nav class="navbar">
-        <a href="accueil.html">Accueil</a>
-        <a href="carte.php">Carte</a>
-        <a href="panier.php">🛒 Mon Panier</a>
-        <a class="active" href="profil.php">Mon Profil</a>
-        <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Déconnexion</a>
-    </nav>
+   <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
+        <nav class="navbar">
+            
+            <a class="active" href="accueil.php">Accueil</a>
+            <a href="carte.php">Carte</a>
+            <?php if (isset($_SESSION['user'])): ?>
+                <a href="profil.php">Mon Profil</a>
+                <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Déconnexion</a>
+            <?php else: ?>
+                <a href="connexion.php">Connexion</a>
+            <?php endif; ?>
+        </nav>
 </header>
 
 <main class="page">

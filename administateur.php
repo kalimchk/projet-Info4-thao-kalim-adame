@@ -27,11 +27,17 @@ $nombreTotalUtilisateurs = count($listeDesUtilisateurs);
 </head>
 <body class="page-administateur">
     <header class="site-header">
-        <a class="logo" href="accueil.html">Pasta La Vista</a>
+        <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
         <nav class="navbar">
-            <a href="accueil.html">Accueil</a>
+            
+            <a class="active" href="accueil.html">Accueil</a>
             <a href="carte.php">Carte</a>
-            <a class="active" href="administateur.php">Administration</a>
+            <?php if (isset($_SESSION['user'])): ?>
+                <a href="profil.php">Mon Profil</a>
+                <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Déconnexion</a>
+            <?php else: ?>
+                <a href="connexion.php">Connexion</a>
+            <?php endif; ?>
         </nav>
     </header>
 
