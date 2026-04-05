@@ -109,9 +109,20 @@ $statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
                       Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> €
                   </p>
                 </div>
-                <span class="badge badge-done" style="background: var(--accent-wash-strong); border: 1px solid var(--accent); color: var(--ink);">
-                    <b>Statut : <?= htmlspecialchars(obtenirLibelleCourtStatut($commande['statut_commande'])) ?></b>
-                </span>
+                
+                <div style="text-align: right;">
+                    <span class="badge badge-done" style="background: var(--accent-wash-strong); border: 1px solid var(--accent); color: var(--ink); margin-bottom: 10px; display: inline-block;">
+                        <b>Statut : <?= htmlspecialchars(obtenirLibelleCourtStatut($commande['statut_commande'])) ?></b>
+                    </span>
+                    
+                    <br>
+                    
+                    <?php if (($commande['statut_commande'] === 'livree') && !isset($commande['note'])): ?>
+                        <a href="notes.php?id=<?= $commande['id'] ?>" class="btn" style="padding: 6px 12px; font-size: 0.85rem; background: var(--muted); text-decoration: none;">⭐ Noter</a>
+                    <?php elseif (isset($commande['note'])): ?>
+                        <span style="color: var(--accent-deep); font-weight: bold;">Note : <?= $commande['note'] ?>/5 ⭐</span>
+                    <?php endif; ?>
+                </div>
               </article>
             <?php endforeach; ?>
         <?php endif; ?>
