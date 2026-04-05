@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/config/function.php';
 
-// Action pour vider le panier
+
 if (isset($_GET['action']) && $_GET['action'] === 'vider') {
     unset($_SESSION['panier']);
     header('Location: panier.php');
@@ -18,7 +18,7 @@ foreach ($panier as $article) {
     $nombre_articles_panier += $article['quantite'];
 }
 
-// Vérification si l'utilisateur est connecté pour la validation (Phase 2)
+
 $utilisateurConnecte = $_SESSION['user'] ?? null;
 ?>
 
