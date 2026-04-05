@@ -48,7 +48,7 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
         }
     }
     
-    // REDIRECTION : empêche l'ajout multiple si on rafraîchit la page
+  
     header('Location: carte.php');
     exit();
 }
