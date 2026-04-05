@@ -72,19 +72,6 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
 
     return $classesParStatut[$statutCommande] ?? 'badge-prepare';
 }
-
-function obtenirLibelleCourtStatut(string $statutCommande): string
-{
-    $libellesCourts = [
-        'a_preparer' => 'A preparer',
-        'en_cours' => 'En cours',
-        'en_attente' => 'En attente',
-        'en_livraison' => 'En livraison',
-        'livree' => 'Livree',
-    ];
-
-    return $libellesCourts[$statutCommande] ?? 'Inconnu';
-}
 ?>
 <!DOCTYPE html>
 <html lang="fr">

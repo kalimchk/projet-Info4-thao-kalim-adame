@@ -139,6 +139,21 @@ function obtenirDefinitionDesStatutsCommande(): array
     ];
 }
 
+function obtenirLibelleCourtStatut(string $statutCommande): string
+{
+    $libellesCourts = [
+        'a_preparer' => 'A preparer',
+        'en_cours' => 'En cours',
+        'en_attente' => 'En attente',
+        'en_livraison' => 'En livraison',
+        'livree' => 'Livree',
+        'abandonnee' => 'Abandonnee',
+        'adresse_introuvable' => 'Adresse introuvable',
+    ];
+
+    return $libellesCourts[$statutCommande] ?? 'Inconnu';
+}
+
 function regrouperCommandesParStatut(array $listeDesCommandes): array
 {
     $definitionsDesStatuts = obtenirDefinitionDesStatutsCommande();
