@@ -14,18 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user'] = $utilisateurConnecte;
 
         if (($utilisateurConnecte['statut'] ?? '') === 'restaurateur') {
-            header('Location: commande.php');
-            exit();
+            header('Location: commande.php'); exit();
         }
-
         if (($utilisateurConnecte['statut'] ?? '') === 'admin') {
-            header('Location: administateur.php');
-            exit();
+            header('Location: administateur.php'); exit();
         }
-
         if (($utilisateurConnecte['statut'] ?? '') === 'livreur') {
-            header('Location: livraison.php');
-            exit();
+            header('Location: livraison.php'); exit();
         }
 
         header('Location: accueil.php');
@@ -45,21 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="page-connexion">
     <header class="site-header">
-        <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
+        <a class="logo" href="accueil.php">
+            <img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista">
+            <span class="logo-text">Pasta La Vista</span>
+        </a>
         <nav class="navbar">
             <a href="accueil.php">Accueil</a>
             <a href="carte.php">Carte</a>
-            
-            <a href="panier.php" class="lien-panier">
-                🛒 Mon Panier 
-                <?php if (isset($nombre_articles_panier) && $nombre_articles_panier > 0): ?>
-                    <span class="badge-panier">(<?= $nombre_articles_panier ?>)</span>
-                <?php endif; ?>
-            </a>
-            
             <?php if (isset($_SESSION['user'])): ?>
                 <a href="profil.php">Mon Profil</a>
-                <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
+                <a href="deconnexion.php" style="color:#a45742; font-weight:600;">Déconnexion</a>
             <?php else: ?>
                 <a href="connexion.php">Connexion</a>
                 <a href="inscription.php">Inscription</a>
@@ -71,15 +61,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>Connexion</h1>
 
         <?php if ($messageErreurConnexion !== ''): ?>
-            <p class="message-erreur"><?php echo htmlspecialchars($messageErreurConnexion, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p class="message-erreur"><?= htmlspecialchars($messageErreurConnexion, ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
 
-        <form method="POST" action="">
+        <form method="POST" action="" id="form-connexion" novalidate>
             <label for="email">Email</label>
-            <input id="email" type="email" name="email" placeholder="Email" required>
+            <input id="email" type="email" name="email" placeholder="Email" required autocomplete="email">
+            <p class="erreur-champ" id="erreur-email" style="display:none;"></p>
 
             <label for="password">Mot de passe</label>
-            <input id="password" type="password" name="password" placeholder="Mot de passe" required>
+            <div class="mdp-wrapper">
+                <input id="password" type="password" name="password" placeholder="Mot de passe" required maxlength="64">
+                <button type="button" class="btn-oeil" id="toggle-mdp-connexion" title="Afficher/Cacher">👁️</button>
+            </div>
+            <p class="erreur-champ" id="erreur-password" style="display:none;"></p>
+            <p class="compteur-chars" id="compteur-mdp-connexion">0 / 64 caractères</p>
 
             <button type="submit">Se connecter</button>
         </form>
@@ -92,5 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <footer class="site-footer">
         <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
     </footer>
+
+    <script src="js/connexion.js"></script>
 </body>
 </html>
