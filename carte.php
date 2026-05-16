@@ -38,7 +38,6 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
             $_SESSION['panier'][$id_choisi]['quantite']++;
         } else {
             $prix_a_enregistrer = isset($produit_ajouter['prix']) ? $produit_ajouter['prix'] : (isset($produit_ajouter['prix_total']) ? $produit_ajouter['prix_total'] : 0);
-
             $_SESSION['panier'][$id_choisi] = [
                 'nom' => isset($produit_ajouter['nom']) ? $produit_ajouter['nom'] : 'Produit inconnu',
                 'prix' => $prix_a_enregistrer,
@@ -47,8 +46,7 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
             ];
         }
     }
-    
-    // REDIRECTION : empêche l'ajout multiple si on rafraîchit la page
+
     header('Location: carte.php');
     exit();
 }
@@ -72,18 +70,19 @@ if (isset($_SESSION['panier'])) {
 </head>
 <body class="page-carte">
     <header class="site-header">
-        <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
+        <a class="logo" href="accueil.php">
+            <img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista">
+            <span class="logo-text">Pasta La Vista</span>
+        </a>
         <nav class="navbar">
             <a href="accueil.php">Accueil</a>
             <a href="carte.php">Carte</a>
-            
             <a href="panier.php" class="lien-panier">
-                🛒 Mon Panier 
+                🛒 Mon Panier
                 <?php if (isset($nombre_articles_panier) && $nombre_articles_panier > 0): ?>
                     <span class="badge-panier">(<?= $nombre_articles_panier ?>)</span>
                 <?php endif; ?>
             </a>
-            
             <?php if (isset($_SESSION['user'])): ?>
                 <a href="profil.php">Mon Profil</a>
                 <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
@@ -106,46 +105,46 @@ if (isset($_SESSION['panier'])) {
                         <label><input type="checkbox" name="saveurs" value="salin">Salin</label>
                         <label><input type="checkbox" name="saveurs" value="gourmand">Gourmand</label>
                         <label><input type="checkbox" name="saveurs" value="frais">Frais</label>
-                        <label><input type="checkbox" name="saveurs" value="delicat">Delicat</label>
+                        <label><input type="checkbox" name="saveurs" value="delicat">Délicat</label>
                         <label><input type="checkbox" name="saveurs" value="umami">Umami</label>
-                        <label><input type="checkbox" name="saveurs" value="boise">Boise</label>
-                        <label><input type="checkbox" name="saveurs" value="cremeux">Cremeux</label>
-                        <label><input type="checkbox" name="saveurs" value="legerement-toaste">Legerement toaste</label>
+                        <label><input type="checkbox" name="saveurs" value="boise">Boisé</label>
+                        <label><input type="checkbox" name="saveurs" value="cremeux">Crémeux</label>
+                        <label><input type="checkbox" name="saveurs" value="legementtoaste">Légèrement toasté</label>
                         <label><input type="checkbox" name="saveurs" value="marin">Marin</label>
-                        <label><input type="checkbox" name="saveurs" value="iode">Iode</label>
-                        <label><input type="checkbox" name="saveurs" value="legerement-acidule">Legerement acidule</label>
+                        <label><input type="checkbox" name="saveurs" value="iode">Iodé</label>
+                        <label><input type="checkbox" name="saveurs" value="legementacidule">Légèrement acidulé</label>
                         <label><input type="checkbox" name="saveurs" value="intense">Intense</label>
                         <label><input type="checkbox" name="saveurs" value="beurre">Beurre</label>
                         <label><input type="checkbox" name="saveurs" value="doux">Doux</label>
-                        <label><input type="checkbox" name="saveurs" value="herbace">Herbace</label>
+                        <label><input type="checkbox" name="saveurs" value="herbace">Herbacé</label>
                         <label><input type="checkbox" name="saveurs" value="fondant">Fondant</label>
                         <label><input type="checkbox" name="saveurs" value="riche">Riche</label>
-                        <label><input type="checkbox" name="saveurs" value="parfume">Parfume</label>
-                        <label><input type="checkbox" name="saveurs" value="legerement-citronne">Legerement citronne</label>
+                        <label><input type="checkbox" name="saveurs" value="parfume">Parfumé</label>
+                        <label><input type="checkbox" name="saveurs" value="legementcitronne">Légèrement citronné</label>
                         <label><input type="checkbox" name="saveurs" value="puissant">Puissant</label>
                         <label><input type="checkbox" name="saveurs" value="vineux">Vineux</label>
-                        <label><input type="checkbox" name="saveurs" value="acidule">Acidule</label>
-                        <label><input type="checkbox" name="saveurs" value="mediterraneen">Mediterraneen</label>
+                        <label><input type="checkbox" name="saveurs" value="acidule">Acidulé</label>
+                        <label><input type="checkbox" name="saveurs" value="mediteraneen">Méditerranéen</label>
                         <label><input type="checkbox" name="saveurs" value="tomate">Tomate</label>
                         <label><input type="checkbox" name="saveurs" value="fromager">Fromager</label>
                         <label><input type="checkbox" name="saveurs" value="croustillant">Croustillant</label>
-                        <label><input type="checkbox" name="saveurs" value="legerement-amer">Legerement amer</label>
-                        <label><input type="checkbox" name="saveurs" value="cafe">Cafe</label>
+                        <label><input type="checkbox" name="saveurs" value="legementamer">Légèrement amer</label>
+                        <label><input type="checkbox" name="saveurs" value="cafe">Café</label>
                         <label><input type="checkbox" name="saveurs" value="vanille">Vanille</label>
                     </div>
                 </fieldset>
-                
+
                 <fieldset class="filter-group">
-                    <legend>Allergènes</legend>
+                    <legend>Allergènes (à exclure)</legend>
                     <div class="filter-options">
                         <label><input type="checkbox" name="allergenes" value="gluten">Gluten</label>
                         <label><input type="checkbox" name="allergenes" value="lait">Lait</label>
-                        <label><input type="checkbox" name="allergenes" value="fruits-a-coque">Fruits à coque</label>
-                        <label><input type="checkbox" name="allergenes" value="oeufs">Oeufs</label>
-                        <label><input type="checkbox" name="allergenes" value="crustaces">Crustaces</label>
+                        <label><input type="checkbox" name="allergenes" value="fruitacoque">Fruits à coque</label>
+                        <label><input type="checkbox" name="allergenes" value="oeuf">Œufs</label>
+                        <label><input type="checkbox" name="allergenes" value="crustaces">Crustacés</label>
                         <label><input type="checkbox" name="allergenes" value="mollusques">Mollusques</label>
                         <label><input type="checkbox" name="allergenes" value="sulfites">Sulfites</label>
-                        <label><input type="checkbox" name="allergenes" value="celeri">Celeri</label>
+                        <label><input type="checkbox" name="allergenes" value="celeri">Céleri</label>
                         <label><input type="checkbox" name="allergenes" value="poisson">Poisson</label>
                     </div>
                 </fieldset>
@@ -169,13 +168,25 @@ if (isset($_SESSION['panier'])) {
                 <a href="#plats">Plats</a>
                 <a href="#desserts">Desserts</a>
             </div>
+
+            <!-- Barre de tri Phase 3 -->
+            <div style="display:flex; align-items:center; gap:16px; margin-top:16px; flex-wrap:wrap;">
+                <label for="select-tri" style="font-weight:600; color:var(--ink);">Trier par :</label>
+                <select id="select-tri" style="padding:8px 12px; border-radius:8px; border:1px solid var(--line-strong); background:var(--bg); font-size:0.95rem; color:var(--ink);">
+                    <option value="defaut">Ordre par défaut</option>
+                    <option value="prix-asc">Prix croissant</option>
+                    <option value="prix-desc">Prix décroissant</option>
+                </select>
+                <span id="compteur-resultats" style="color:var(--muted); font-size:0.9rem;"></span>
+                <span id="indicateur-chargement" style="display:none; color:var(--muted); font-size:0.9rem;">⏳ Chargement…</span>
+            </div>
         </section>
 
         <section id="menus" class="menu-section">
             <h2>Menus & Formules</h2>
-            <div class="menu-grid">
+            <div class="menu-grid" id="grille-menus">
                 <?php foreach ($menu as $m): ?>
-                    <article class="dish-card">
+                    <article class="dish-card" data-prix="<?= (float)($m['prix_total'] ?? 0) ?>" data-type="menu">
                         <div class="dish-head">
                             <h3><?= htmlspecialchars($m['nom']) ?></h3>
                             <span class="price"><?= number_format($m['prix_total'], 2, ',', ' ') ?> EUR</span>
@@ -183,7 +194,7 @@ if (isset($_SESSION['panier'])) {
                         <p class="type">Type : Menu</p>
                         <p class="desc"><?= htmlspecialchars($m['description']) ?></p>
                         <p class="flavors">
-                            <strong>Créneaux :</strong> <?= htmlspecialchars(implode(', ', $m['creneaux_limites'] ?? [])) ?> 
+                            <strong>Créneaux :</strong> <?= htmlspecialchars(implode(', ', $m['creneaux_limites'] ?? [])) ?>
                             <br>
                             <strong>Personnes min :</strong> <?= htmlspecialchars($m['nb_personnes_min'] ?? 1) ?>
                         </p>
@@ -195,164 +206,35 @@ if (isset($_SESSION['panier'])) {
 
         <section id="entrees" class="menu-section">
             <h2>Entrées</h2>
-            <div class="menu-grid">
-                <article class="dish-card">
-                    <div class="dish-head">
-                        <h3>Antipasto Gastronomico</h3>
-                        <span class="price">21EUR</span>
-                    </div>
-                    <p class="type">Type : Entree</p>
-                    <p class="desc">Sélection de charcuteries italiennes, burrata, légumes grilles et focaccia maison.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Varie, salin, gourmand</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Entree&id=ent-01">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head">
-                        <h3>Carpaccio di Manzo al Tartufo</h3>
-                        <span class="price">24EUR</span>
-                    </div>
-                    <p class="type">Type : Entree</p>
-                    <p class="desc">Carpaccio de boeuf, huile de truffe, roquette, parmesan et pignons toastes.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Frais, delicat, umami</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Lait, fruits à coque</p>                    
-                    <a class="add-cart" href="carte.php?type=Entree&id=ent-02">Ajouter au panier</a>
-                </article>
+            <div class="menu-grid" id="grille-plats">
+                <?php foreach ($plats as $p): ?>
+                    <article class="dish-card"
+                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                        <div class="dish-head">
+                            <h3><?= htmlspecialchars($p['nom']) ?></h3>
+                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> EUR</span>
+                        </div>
+                        <p class="type">Type : <?= htmlspecialchars($p['type']) ?></p>
+                        <p class="desc"><?= htmlspecialchars($p['description']) ?></p>
+                        <?php if (!empty($p['informations']['saveurs'])): ?>
+                            <p class="flavors"><strong>Saveurs :</strong> <?= htmlspecialchars(implode(', ', $p['informations']['saveurs'])) ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($p['informations']['allergenes'])): ?>
+                            <p class="allergens"><strong>Allergènes :</strong> <?= htmlspecialchars(implode(', ', $p['informations']['allergenes'])) ?></p>
+                        <?php endif; ?>
+                        <a class="add-cart" href="carte.php?type=<?= urlencode($p['type']) ?>&id=<?= urlencode($p['id']) ?>">Ajouter au panier</a>
+                    </article>
+                <?php endforeach; ?>
             </div>
         </section>
 
-        <section id="plats" class="menu-section">
-            <h2>Plats</h2>
-            <div class="menu-grid">
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Tartufo Nero Royale</h3><span class="price">32EUR</span></div>
-                    <p class="type">Type : Pâtes fraîches</p>
-                    <p class="desc">Tagliolini frais maison nappes d'une emulsion au beurre de truffe noire d'Alba, copeaux de parmesan 36 mois et eclats de noisettes torrefiees.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Boise, umami, cremeux, legerement toaste</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, oeufs, lait, fruits à coque</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-01">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Linguine allo Scoglio Imperiale</h3><span class="price">29EUR</span></div>
-                    <p class="type">Type : Pâtes aux fruits de mer</p>
-                    <p class="desc">Linguine artisanales aux palourdes, moules, crevettes et calamars, jus de crustaces au vin blanc, persil frais et zeste de citron.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Marin, iode, frais, legerement acidule</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, crustaces, mollusques, sulfites</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-02">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Risotto al Tartufo Bianco</h3><span class="price">36EUR</span></div>
-                    <p class="type">Type : Risotto</p>
-                    <p class="desc">Risotto Carnaroli cremeux au parmesan affine, beurre noisette et fines lamelles de truffe blanche.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Intense, beurre, umami</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-03">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Ravioli Ricotta & Spinaci</h3><span class="price">24EUR</span></div>
-                    <p class="type">Type : Pâtes farcies</p>
-                    <p class="desc">Ravioli maison garnis de ricotta et epinards, sauce sauge et beurre noisette.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Doux, herbace, fondant</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, oeufs, lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-04">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Osso Buco alla Milanese</h3><span class="price">34EUR</span></div>
-                    <p class="type">Type : Viande</p>
-                    <p class="desc">Jarret de veau braise lentement, gremolata fraîche et risotto safrane.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Riche, parfume, legerement citronne</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Lait, celeri</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-05">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Filetto di Manzo al Barolo</h3><span class="price">38EUR</span></div>
-                    <p class="type">Type : Viande</p>
-                    <p class="desc">Filet de boeuf grille, reduction de Barolo, puree de pommes de terre à l'huile d'olive et légumes rotis.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Puissant, vineux, fondant</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Sulfites, lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-11">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Branzino Mediterraneo</h3><span class="price">31EUR</span></div>
-                    <p class="type">Type : Poisson</p>
-                    <p class="desc">Filet de bar roti, caponata sicilienne et emulsion au citron confit.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Frais, acidule, mediterraneen</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Poisson</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-06">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Pollo alla Parmigiana</h3><span class="price">26EUR</span></div>
-                    <p class="type">Type : Volaille</p>
-                    <p class="desc">Escalope de poulet panee, mozzarella fondante, sauce tomate San Marzano et basilic frais.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Tomate, fromager, croustillant</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, oeufs, lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-07">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Pizza Burrata & Prosciutto di Parma</h3><span class="price">23EUR</span></div>
-                    <p class="type">Type : Pizza</p>
-                    <p class="desc">Base tomate, mozzarella fior di latte, burrata cremeuse, prosciutto 24 mois et roquette sauvage.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Salin, cremeux, frais</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-08">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Pizza Tartufata</h3><span class="price">27EUR</span></div>
-                    <p class="type">Type : Pizza</p>
-                    <p class="desc">Creme de truffe noire, mozzarella, champignons sauvages et copeaux de parmesan.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Boise, cremeux, intense</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-09">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Gnocchi al Gorgonzola e Noci</h3><span class="price">22EUR</span></div>
-                    <p class="type">Type : Pâtes / Gnocchi</p>
-                    <p class="desc">Gnocchi maison nappes d'une sauce au gorgonzola AOP et eclats de noix.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Fromager, puissant, legerement amer</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, lait, fruits à coque</p>                    
-                    <a class="add-cart" href="carte.php?type=Plat&id=plt-10">Ajouter au panier</a>
-                </article>
-            </div>
-        </section>
-
-        <section id="desserts" class="menu-section">
-            <h2>Desserts</h2>
-            <div class="menu-grid">
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Tiramisu Classico</h3><span class="price">12EUR</span></div>
-                    <p class="type">Type : Dessert</p>
-                    <p class="desc">Biscuit imbibe d'espresso, creme mascarpone onctueuse et cacao amer.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Cafe, cremeux, legerement amer</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Gluten, oeufs, lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Dessert&id=des-01">Ajouter au panier</a>
-                </article>
-
-                <article class="dish-card">
-                    <div class="dish-head"><h3>Panna Cotta aux Fruits Rouges</h3><span class="price">11EUR</span></div>
-                    <p class="type">Type : Dessert</p>
-                    <p class="desc">Panna cotta vanille Bourbon, coulis de fruits rouges maison.</p>
-                    <p class="flavors"><strong>Saveurs :</strong> Doux, vanille, acidule</p>
-                    <p class="allergens"><strong>Allergènes :</strong> Lait</p>                    
-                    <a class="add-cart" href="carte.php?type=Dessert&id=des-02">Ajouter au panier</a>
-                </article>
-            </div>
-        </section>
     </main>
 
     <footer class="site-footer">
         <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
     </footer>
 
+    <script src="js/carte.js"></script>
 </body>
 </html>
