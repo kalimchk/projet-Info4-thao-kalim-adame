@@ -1,20 +1,38 @@
 <?php
 session_start();
 require_once __DIR__ . '/config/function.php';
+
 $utilisateurConnecte = obtenirUtilisateurConnecteOuRediriger();
 $nomCompletUtilisateur = trim($utilisateurConnecte['prenom'] . ' ' . $utilisateurConnecte['nom']);
+$statutUtilisateur = (string) ($utilisateurConnecte['statut'] ?? '');
+$identifiantUtilisateur = (int) ($utilisateurConnecte['id'] ?? 0);
 
 $toutesLesCommandes = lireCommandes();
 $mesCommandes = [];
 
 foreach ($toutesLesCommandes as $commande) {
-    if (($commande['client_nom'] ?? '') === $nomCompletUtilisateur) {
+    if (
+        $statutUtilisateur === 'client'
+        && ($commande['client_nom'] ?? '') === $nomCompletUtilisateur
+    ) {
+        $mesCommandes[] = $commande;
+    }
+
+    if (
+        $statutUtilisateur === 'livreur'
+        && (int) ($commande['livreur_id'] ?? 0) === $identifiantUtilisateur
+        && in_array(($commande['statut_commande'] ?? ''), ['livree', 'abandonnee'], true)
+    ) {
         $mesCommandes[] = $commande;
     }
 }
 
-$pointsFidelite = count($mesCommandes) * 10;
-$statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
+$pointsFidelite = $statutUtilisateur === 'client' ? count($mesCommandes) * 10 : 0;
+$statutFidelite = $pointsFidelite >= 50 ? 'Premium ðŸŒŸ' : 'Classique';
+$titreHistorique = $statutUtilisateur === 'livreur' ? 'Mes anciennes livraisons' : 'Mes anciennes commandes';
+$messageHistoriqueVide = $statutUtilisateur === 'livreur'
+    ? 'Vous n avez effectue aucune livraison pour le moment.'
+    : 'Vous n avez passe aucune commande pour le moment.';
 ?>
 
 <?php
@@ -44,8 +62,11 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
                 <a href="administateur.php">Administration</a>
             <?php endif; ?>
+            <?php if (($_SESSION['user']['statut'] ?? '') === 'livreur'): ?>
+                <a href="livraison.php">Ma livraison</a>
+            <?php endif; ?>
             <a href="profil.php">Mon Profil</a>
-            <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Déconnexion</a>
+            <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">DÃ©connexion</a>
         <?php else: ?>
             <a href="connexion.php">Connexion</a>
         <?php endif; ?>
@@ -72,7 +93,6 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 
 <main class="page">
 
-    <!-- ── Section profil éditable ── -->
     <section class="card">
         <h1>Mon profil</h1>
         <p id="message-retour-profil" class="message-retour" style="display:none;"></p>
@@ -87,7 +107,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             </div>
 
             <div class="field">
-                <div class="label-row"><label>Prénom</label></div>
+                <div class="label-row"><label>PrÃ©nom</label></div>
                 <p id="valeur-prenom" class="value profil-valeur"><?= htmlspecialchars($utilisateurConnecte['prenom'] ?? '') ?></p>
                 <input id="input-prenom" type="text" name="prenom"
                        value="<?= htmlspecialchars($utilisateurConnecte['prenom'] ?? '') ?>"
@@ -103,83 +123,85 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             </div>
 
             <div class="field">
-                <div class="label-row"><label>Téléphone</label></div>
+                <div class="label-row"><label>TÃ©lÃ©phone</label></div>
                 <p id="valeur-telephone" class="value profil-valeur"><?= htmlspecialchars($utilisateurConnecte['telephone'] ?? '') ?></p>
                 <input id="input-telephone" type="tel" name="telephone"
                        value="<?= htmlspecialchars($utilisateurConnecte['telephone'] ?? '') ?>"
                        maxlength="20" class="champ-profil" style="display:none;">
             </div>
 
-            <!-- Mot de passe : afficher/cacher uniquement, pas modifiable ici -->
             <div class="field">
                 <div class="label-row"><label>Mot de passe</label></div>
                 <div class="mdp-wrapper value" style="display:flex; align-items:center; gap:10px;">
                     <input id="affichage-mdp" type="password"
                            value="<?= htmlspecialchars($utilisateurConnecte['password'] ?? '') ?>"
                            readonly style="border:none; background:transparent; flex:1; font-size:1rem; color:var(--ink);">
-                    <button type="button" id="toggle-mdp-profil" class="btn-oeil" title="Afficher/Cacher le mot de passe">👁️</button>
+                    <button type="button" id="toggle-mdp-profil" class="btn-oeil" title="Afficher/Cacher le mot de passe">ðŸ‘ï¸</button>
                 </div>
             </div>
         </div>
 
         <div class="profil-actions" style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
-            <button id="btn-modifier-profil" type="button" class="btn">✏️ Modifier mes informations</button>
-            <button id="btn-valider-profil"  type="button" class="btn" style="display:none;">✅ Valider</button>
+            <button id="btn-modifier-profil" type="button" class="btn">âœï¸ Modifier mes informations</button>
+            <button id="btn-valider-profil"  type="button" class="btn" style="display:none;">âœ… Valider</button>
             <button id="btn-annuler-profil"  type="button" class="btn btn-ghost" style="display:none;">Annuler</button>
         </div>
     </section>
-    <!-- ── Section commandes ── -->
+
     <section class="card">
-        <h2>Mes anciennes commandes</h2>
+        <h2><?= htmlspecialchars($titreHistorique) ?></h2>
         <div class="orders">
             <?php if (empty($mesCommandes)): ?>
-                <p style="text-align:center; color:var(--muted);">Vous n'avez passé aucune commande pour le moment.</p>
+                <p style="text-align:center; color:var(--muted);"><?= htmlspecialchars($messageHistoriqueVide) ?></p>
             <?php else: ?>
                 <?php foreach ($mesCommandes as $commande): ?>
-
                     <article class="order">
                         <div>
                             <p class="order-title"><b>Commande <?= htmlspecialchars($commande['numero_commande']) ?></b></p>
                             <p class="order-meta">
-                                Passée le : <?= htmlspecialchars($commande['heure_commande']) ?><br>
-                                Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> €
+                                PassÃ©e le : <?= htmlspecialchars($commande['heure_commande']) ?><br>
+                                Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> â‚¬
                             </p>
+                            <?php if ($statutUtilisateur === 'livreur'): ?>
+                                <p class="order-meta">
+                                    Client : <?= htmlspecialchars($commande['client_nom'] ?? '') ?><br>
+                                    Fin de livraison : <?= htmlspecialchars($commande['heure_fin_livraison'] ?? 'Non renseignee') ?>
+                                </p>
+                            <?php endif; ?>
                         </div>
                         <div style="text-align:right;">
                             <span class="badge badge-done" style="background:var(--accent-wash-strong); border:1px solid var(--accent); color:var(--ink); margin-bottom:10px; display:inline-block;">
                                 <b>Statut : <?= htmlspecialchars(obtenirLibelleCourtStatut($commande['statut_commande'])) ?></b>
                             </span>
                             <br>
-                            <?php
-                                $estLivraison = stripos($commande['commentaire_client'] ?? '', 'Mode : Livraison') !== false;
-                            ?>
-                            <?php if (($commande['statut_commande'] === 'livree') && $estLivraison && !isset($commande['note'])): ?>
-                                <a href="notes.php?id=<?= $commande['id'] ?>" class="btn" style="padding:6px 12px; font-size:0.85rem; background:var(--muted); text-decoration:none;">⭐ Noter</a>
-                            <?php elseif (($commande['statut_commande'] === 'livree') && $estLivraison && isset($commande['note'])): ?>
-                                <span style="color:var(--accent-deep); font-weight:bold;">Note : <?= $commande['note'] ?>/5 ⭐</span>
+                            <?php $estLivraison = stripos($commande['commentaire_client'] ?? '', 'Mode : Livraison') !== false; ?>
+                            <?php if (($statutUtilisateur === 'client') && ($commande['statut_commande'] === 'livree') && $estLivraison && !isset($commande['note'])): ?>
+                                <a href="notes.php?id=<?= $commande['id'] ?>" class="btn" style="padding:6px 12px; font-size:0.85rem; background:var(--muted); text-decoration:none;">â­ Noter</a>
+                            <?php elseif (($statutUtilisateur === 'client') && ($commande['statut_commande'] === 'livree') && $estLivraison && isset($commande['note'])): ?>
+                                <span style="color:var(--accent-deep); font-weight:bold;">Note : <?= $commande['note'] ?>/5 â­</span>
                             <?php endif; ?>
                         </div>
                     </article>
 
-                    <?php if (($commande['statut_commande'] ?? '') === 'a_preparer'): ?>
+                    <?php if (($statutUtilisateur === 'client') && (($commande['statut_commande'] ?? '') === 'a_preparer')): ?>
                     <div class="commande-modifiable" data-id-commande="<?= (int)$commande['id'] ?>">
-                        <h4>✏️ Modifier la commande <?= htmlspecialchars($commande['numero_commande']) ?></h4>
-                        <p class="modif-intro">Cette commande est en attente de préparation. Vous pouvez encore ajouter ou retirer des articles.</p>
+                        <h4>âœï¸ Modifier la commande <?= htmlspecialchars($commande['numero_commande']) ?></h4>
+                        <p class="modif-intro">Cette commande est en attente de prÃ©paration. Vous pouvez encore ajouter ou retirer des articles.</p>
 
                         <ul class="liste-articles-modifiable">
                             <?php foreach ($commande['articles'] as $article): ?>
                             <li class="article-modifiable">
                                 <span class="article-quantite"><?= (int)($article['quantite'] ?? 1) ?></span>
-                                <span class="article-nom">× <?= htmlspecialchars($article['nom_produit'] ?? '') ?></span>
-                                <span class="article-prix"><?= number_format((float)($article['prix_unitaire'] ?? 0), 2, ',', ' ') ?> €</span>
+                                <span class="article-nom">Ã— <?= htmlspecialchars($article['nom_produit'] ?? '') ?></span>
+                                <span class="article-prix"><?= number_format((float)($article['prix_unitaire'] ?? 0), 2, ',', ' ') ?> â‚¬</span>
                                 <span class="article-sous-total">
-                                    (= <?= number_format((int)($article['quantite'] ?? 1) * (float)($article['prix_unitaire'] ?? 0), 2, ',', ' ') ?> €)
+                                    (= <?= number_format((int)($article['quantite'] ?? 1) * (float)($article['prix_unitaire'] ?? 0), 2, ',', ' ') ?> â‚¬)
                                 </span>
                                 <div class="article-btns">
                                     <button type="button" class="btn-retirer-article"
                                             data-nom="<?= htmlspecialchars($article['nom_produit'] ?? '') ?>"
                                             data-prix="<?= (float)($article['prix_unitaire'] ?? 0) ?>"
-                                            title="Retirer un exemplaire">−</button>
+                                            title="Retirer un exemplaire">âˆ’</button>
                                     <button type="button" class="btn-ajouter-article"
                                             data-nom="<?= htmlspecialchars($article['nom_produit'] ?? '') ?>"
                                             data-prix="<?= (float)($article['prix_unitaire'] ?? 0) ?>"
@@ -190,28 +212,28 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         </ul>
 
                         <p class="total-commande">
-                            Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> €
+                            Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> â‚¬
                         </p>
 
                         <p class="message-modification" style="display:none;"></p>
                         <div class="zone-paiement-supplementaire" style="display:none;"></div>
                     </div>
                     <?php endif; ?>
-
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
     </section>
 
-    <!-- ── Section fidélité ── -->
+    <?php if ($statutUtilisateur === 'client'): ?>
     <section class="card">
-        <h2>Fidélité</h2>
+        <h2>FidÃ©litÃ©</h2>
         <div class="fidelite">
-            <p><b>Points cumulés :</b> <?= $pointsFidelite ?> pts</p>
+            <p><b>Points cumulÃ©s :</b> <?= $pointsFidelite ?> pts</p>
             <p><b>Statut actuel :</b> <?= $statutFidelite ?></p>
-            <p><b>Avantage :</b> <?= $statutFidelite === 'Premium 🌟' ? 'Livraison offerte sur votre prochaine commande !' : 'Cumulez 50 points pour obtenir la livraison offerte.' ?></p>
+            <p><b>Avantage :</b> <?= $statutFidelite === 'Premium ðŸŒŸ' ? 'Livraison offerte sur votre prochaine commande !' : 'Cumulez 50 points pour obtenir la livraison offerte.' ?></p>
         </div>
     </section>
+    <?php endif; ?>
 
 </main>
 

@@ -46,6 +46,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             </a>
             
             <?php if (isset($_SESSION['user'])): ?>
+                <a href="livraison.php">Ma livraison</a>
                 <a href="profil.php">Mon Profil</a>
                 <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
             <?php else: ?>
