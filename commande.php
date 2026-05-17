@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $typeMessageRetourCommande = 'erreur';
     } elseif ($actionCommande === 'mettre_a_jour_statut') {
         $nouveauStatut = trim((string) ($_POST['statut_commande'] ?? ''));
-        $transitionValide = in_array($nouveauStatut, ['a_preparer', 'en_cours', 'en_attente'], true);
+        $transitionValide = in_array($nouveauStatut, ['a_preparer', 'en_cours', 'en_attente', 'en_livraison', 'livree'], true);
 
         if (!$transitionValide) {
             $messageRetourCommande = 'Changement de statut non autorise.';
@@ -74,6 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'En preparation';
             } elseif ($nouveauStatut === 'en_attente') {
                 $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'Prete';
+            } elseif ($nouveauStatut === 'en_livraison') {
+                $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'Livraison en cours';
+            } elseif ($nouveauStatut === 'livree') {
+                $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'Terminee';
             }
 
             sauvegarderCommandes($listeDesCommandesComplete);
@@ -147,9 +151,11 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
 function obtenirOptionsStatutDisponibles(string $statutActuel): array
 {
     return [
-        'a_preparer' => 'Payee',
-        'en_cours' => 'En preparation',
-        'en_attente' => 'Prete',
+        'a_preparer' => 'A preparer',
+        'en_cours' => 'En cours',
+        'en_attente' => 'En attente',
+        'en_livraison' => 'En livraison',
+        'livree' => 'Livree',
     ];
 }
 ?>
@@ -399,9 +405,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function obtenirOptionsStatut(statutActuel) {
         return [
-            { value: 'a_preparer', label: 'Payee' },
-            { value: 'en_cours', label: 'En preparation' },
-            { value: 'en_attente', label: 'Prete' }
+            { value: 'a_preparer', label: 'A preparer' },
+            { value: 'en_cours', label: 'En cours' },
+            { value: 'en_attente', label: 'En attente' },
+            { value: 'en_livraison', label: 'En livraison' },
+            { value: 'livree', label: 'Livree' }
         ];
     }
 
@@ -448,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
             selectStatut.appendChild(option);
         });
 
-        boutonStatut.disabled = (commande.statut_commande === 'en_livraison' || commande.statut_commande === 'livree');
+        boutonStatut.disabled = false;
         boutonLivreur.disabled = commande.statut_commande !== 'en_attente';
         selectLivreur.disabled = commande.statut_commande !== 'en_attente';
 
