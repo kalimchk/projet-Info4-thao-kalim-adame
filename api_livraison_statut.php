@@ -70,6 +70,9 @@ if ($nouveauStatut === 'abandonnee' && $motifAbandon !== '') {
     }
 }
 
+$listeDesCommandes[$indexCommande]['temps_estime'] = $nouveauStatut === 'livree'
+    ? 'Terminee'
+    : 'Livraison abandonnee';
 $listeDesCommandes[$indexCommande]['heure_fin_livraison'] = date('Y-m-d H:i:s');
 
 sauvegarderCommandes($listeDesCommandes);

@@ -288,7 +288,10 @@ function lireCommandeAttribueeAuLivreur(int $identifiantLivreur): ?array
     $listeDesCommandes = lireCommandes();
 
     foreach ($listeDesCommandes as $commande) {
-        if (($commande['livreur_id'] ?? 0) === $identifiantLivreur) {
+        if (
+            ($commande['livreur_id'] ?? 0) === $identifiantLivreur
+            && ($commande['statut_commande'] ?? '') === 'en_livraison'
+        ) {
             return $commande;
         }
     }
