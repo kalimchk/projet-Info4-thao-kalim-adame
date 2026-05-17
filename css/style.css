@@ -2144,7 +2144,23 @@ body.page-profil h2{
 }
 
 .js-action-blocage {
-    margin-top: 12px;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    min-width: 96px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.page-administateur .user {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px 18px;
 }
 
 .btn-bloquer {

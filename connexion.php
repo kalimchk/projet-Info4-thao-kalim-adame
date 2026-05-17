@@ -33,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         header('Location: accueil.php');
         exit();
+    } else {
+        $messageErreurConnexion = 'Email ou mot de passe incorrect.';
     }
-
-    $messageErreurConnexion = 'Email ou mot de passe incorrect.';
 }
 ?>
 <!DOCTYPE html>
@@ -56,6 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="accueil.php">Accueil</a>
             <a href="carte.php">Carte</a>
             <?php if (isset($_SESSION['user'])): ?>
+                <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
+                    <a href="administateur.php">Administration</a>
+                <?php endif; ?>
                 <a href="profil.php">Mon Profil</a>
                 <a href="deconnexion.php" style="color:#a45742; font-weight:600;">Déconnexion</a>
             <?php else: ?>

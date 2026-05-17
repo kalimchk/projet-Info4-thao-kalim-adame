@@ -86,6 +86,9 @@ if (isset($_SESSION['panier'])) {
                 <?php endif; ?>
             </a>
             <?php if (isset($_SESSION['user'])): ?>
+                <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
+                    <a href="administateur.php">Administration</a>
+                <?php endif; ?>
                 <a href="profil.php">Mon Profil</a>
                 <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
             <?php else: ?>

@@ -11,20 +11,23 @@ $page_active = basename($_SERVER['PHP_SELF']);
 
     <nav class="navbar">
         <a href="accueil.php" <?php echo $page_active === 'accueil.php' ? 'class="active"' : ''; ?>>Accueil</a>
-        <a href="carte.php"   <?php echo $page_active === 'carte.php'   ? 'class="active"' : ''; ?>>Carte</a>
+        <a href="carte.php" <?php echo $page_active === 'carte.php' ? 'class="active"' : ''; ?>>Carte</a>
 
         <a href="panier.php" class="lien-panier <?php echo $page_active === 'panier.php' ? 'active' : ''; ?>">
-            🛒 Mon Panier
+            Mon Panier
             <?php if (isset($nombre_articles_panier) && $nombre_articles_panier > 0): ?>
                 <span class="badge-panier">(<?= $nombre_articles_panier ?>)</span>
             <?php endif; ?>
         </a>
 
         <?php if (isset($_SESSION['user'])): ?>
-            <a href="profil.php"      <?php echo $page_active === 'profil.php'      ? 'class="active"' : ''; ?>>Mon Profil</a>
-            <a href="deconnexion.php" style="color:#a45742;font-weight:600;">Déconnexion</a>
+            <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
+                <a href="administateur.php" <?php echo $page_active === 'administateur.php' ? 'class="active"' : ''; ?>>Administration</a>
+            <?php endif; ?>
+            <a href="profil.php" <?php echo $page_active === 'profil.php' ? 'class="active"' : ''; ?>>Mon Profil</a>
+            <a href="deconnexion.php" style="color:#a45742;font-weight:600;">Deconnexion</a>
         <?php else: ?>
-            <a href="connexion.php"   <?php echo $page_active === 'connexion.php'   ? 'class="active"' : ''; ?>>Connexion</a>
+            <a href="connexion.php" <?php echo $page_active === 'connexion.php' ? 'class="active"' : ''; ?>>Connexion</a>
             <a href="inscription.php" <?php echo $page_active === 'inscription.php' ? 'class="active"' : ''; ?>>Inscription</a>
         <?php endif; ?>
 
