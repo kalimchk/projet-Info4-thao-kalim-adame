@@ -94,9 +94,6 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
                     <a href="administateur.php">Administration</a>
                 <?php endif; ?>
-                <?php if (($_SESSION['user']['statut'] ?? '') === 'livreur'): ?>
-                    <a href="livraison.php">Ma livraison</a>
-                <?php endif; ?>
                 <a href="profil.php">Mon Profil</a>
                 <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
             <?php else: ?>
@@ -140,10 +137,10 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <label><input type="checkbox" name="saveurs" value="umami">Umami</label>
                         <label><input type="checkbox" name="saveurs" value="boise">Boisé</label>
                         <label><input type="checkbox" name="saveurs" value="cremeux">Crémeux</label>
-                        <label><input type="checkbox" name="saveurs" value="legementtoaste">Légèrement toasté</label>
+                        <label><input type="checkbox" name="saveurs" value="legerementtoaste">Légèrement toasté</label>
                         <label><input type="checkbox" name="saveurs" value="marin">Marin</label>
                         <label><input type="checkbox" name="saveurs" value="iode">Iodé</label>
-                        <label><input type="checkbox" name="saveurs" value="legementacidule">Légèrement acidulé</label>
+                        <label><input type="checkbox" name="saveurs" value="legerementacidule">Légèrement acidulé</label>
                         <label><input type="checkbox" name="saveurs" value="intense">Intense</label>
                         <label><input type="checkbox" name="saveurs" value="beurre">Beurre</label>
                         <label><input type="checkbox" name="saveurs" value="doux">Doux</label>
@@ -151,7 +148,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <label><input type="checkbox" name="saveurs" value="fondant">Fondant</label>
                         <label><input type="checkbox" name="saveurs" value="riche">Riche</label>
                         <label><input type="checkbox" name="saveurs" value="parfume">Parfumé</label>
-                        <label><input type="checkbox" name="saveurs" value="legementcitronne">Légèrement citronné</label>
+                        <label><input type="checkbox" name="saveurs" value="legerementcitrone">Légèrement citronné</label>
                         <label><input type="checkbox" name="saveurs" value="puissant">Puissant</label>
                         <label><input type="checkbox" name="saveurs" value="vineux">Vineux</label>
                         <label><input type="checkbox" name="saveurs" value="acidule">Acidulé</label>
@@ -159,7 +156,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <label><input type="checkbox" name="saveurs" value="tomate">Tomate</label>
                         <label><input type="checkbox" name="saveurs" value="fromager">Fromager</label>
                         <label><input type="checkbox" name="saveurs" value="croustillant">Croustillant</label>
-                        <label><input type="checkbox" name="saveurs" value="legementamer">Légèrement amer</label>
+                        <label><input type="checkbox" name="saveurs" value="legerementamer">Légèrement amer</label>
                         <label><input type="checkbox" name="saveurs" value="cafe">Café</label>
                         <label><input type="checkbox" name="saveurs" value="vanille">Vanille</label>
                     </div>
@@ -237,8 +234,58 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 
         <section id="entrees" class="menu-section">
             <h2>Entrées</h2>
+            <div class="menu-grid" id="grille-entrees">
+                <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'entree') continue; ?>
+                    <article class="dish-card"
+                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                        <div class="dish-head">
+                            <h3><?= htmlspecialchars($p['nom']) ?></h3>
+                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> EUR</span>
+                        </div>
+                        <p class="type">Type : <?= htmlspecialchars($p['type']) ?></p>
+                        <p class="desc"><?= htmlspecialchars($p['description']) ?></p>
+                        <?php if (!empty($p['informations']['saveurs'])): ?>
+                            <p class="flavors"><strong>Saveurs :</strong> <?= htmlspecialchars(implode(', ', $p['informations']['saveurs'])) ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($p['informations']['allergenes'])): ?>
+                            <p class="allergens"><strong>Allergènes :</strong> <?= htmlspecialchars(implode(', ', $p['informations']['allergenes'])) ?></p>
+                        <?php endif; ?>
+                        <a class="add-cart" href="carte.php?type=<?= urlencode($p['type']) ?>&id=<?= urlencode($p['id']) ?>">Ajouter au panier</a>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
+        <section id="plats" class="menu-section">
+            <h2>Plats</h2>
             <div class="menu-grid" id="grille-plats">
-                <?php foreach ($plats as $p): ?>
+                <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'plat') continue; ?>
+                    <article class="dish-card"
+                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                        <div class="dish-head">
+                            <h3><?= htmlspecialchars($p['nom']) ?></h3>
+                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> EUR</span>
+                        </div>
+                        <p class="type">Type : <?= htmlspecialchars($p['type']) ?></p>
+                        <p class="desc"><?= htmlspecialchars($p['description']) ?></p>
+                        <?php if (!empty($p['informations']['saveurs'])): ?>
+                            <p class="flavors"><strong>Saveurs :</strong> <?= htmlspecialchars(implode(', ', $p['informations']['saveurs'])) ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($p['informations']['allergenes'])): ?>
+                            <p class="allergens"><strong>Allergènes :</strong> <?= htmlspecialchars(implode(', ', $p['informations']['allergenes'])) ?></p>
+                        <?php endif; ?>
+                        <a class="add-cart" href="carte.php?type=<?= urlencode($p['type']) ?>&id=<?= urlencode($p['id']) ?>">Ajouter au panier</a>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
+        <section id="desserts" class="menu-section">
+            <h2>Desserts</h2>
+            <div class="menu-grid" id="grille-desserts">
+                <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'dessert') continue; ?>
                     <article class="dish-card"
                              data-prix="<?= (float)($p['prix'] ?? 0) ?>"
                              data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
