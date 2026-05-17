@@ -70,27 +70,20 @@ if ($control_calcule === $control_recu) {
 }
 ?>
 
+<?php
+$isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
+$darkClass = $isDark ? ' class="dark-mode"' : '';
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"<?php echo $darkClass; ?>>
 <head>
     <meta charset="UTF-8">
     <title>Retour de Paiement - Pasta La Vista</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
 </head>
 <body class="page-carte" data-surveillance-session="<?php echo isset($_SESSION['user']) ? '1' : '0'; ?>">
-    <header class="site-header">
-        <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
-        <nav class="navbar">
-            <a class="active" href="accueil.html">Accueil</a>
-            <a href="carte.php">Carte</a>
-            <?php if (isset($_SESSION['user'])): ?>
-                <a href="profil.php">Mon Profil</a>
-                <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Deconnexion</a>
-            <?php else: ?>
-                <a href="connexion.php">Connexion</a>
-            <?php endif; ?>
-        </nav>
-    </header>
+    <?php include 'navbar.php'; ?>
 
     <main style="max-width: 600px; margin: 60px auto; text-align: center;">
         <section class="panel">
@@ -115,6 +108,7 @@ if ($control_calcule === $control_recu) {
     <footer class="site-footer">
         <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
     </footer>
+    <script src="js/darkmode.js"></script>
     <script src="js/session_surveillance.js"></script>
 </body>
 </html>

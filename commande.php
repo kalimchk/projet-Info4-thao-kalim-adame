@@ -174,47 +174,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     <link rel="stylesheet" href="css/darkmode.css">
 </head>
 <body class="page-commande" data-surveillance-session="1">
-
-<header class="site-header">
-    <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
-       <nav class="navbar">
-            <a href="accueil.php">Accueil</a>
-            <a href="carte.php">Carte</a>
-            
-            <a href="panier.php" class="lien-panier">
-                🛒 Mon Panier 
-                <?php if (isset($nombre_articles_panier) && $nombre_articles_panier > 0): ?>
-                    <span class="badge-panier">(<?= $nombre_articles_panier ?>)</span>
-                <?php endif; ?>
-            </a>
-            
-            <?php if (isset($_SESSION['user'])): ?>
-                <a href="profil.php">Mon Profil</a>
-                <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
-            <?php else: ?>
-                <a href="connexion.php">Connexion</a>
-                <a href="inscription.php">Inscription</a>
-            <?php endif; ?>
-            <label class="switch">
-                <input class="switch__input" id="dm-switch" type="checkbox" role="switch"
-                       <?php echo $isDark ? 'checked' : ''; ?>>
-                <span class="switch__icon">
-                    <span class="switch__icon-part switch__icon-part--1"></span>
-                    <span class="switch__icon-part switch__icon-part--2"></span>
-                    <span class="switch__icon-part switch__icon-part--3"></span>
-                    <span class="switch__icon-part switch__icon-part--4"></span>
-                    <span class="switch__icon-part switch__icon-part--5"></span>
-                    <span class="switch__icon-part switch__icon-part--6"></span>
-                    <span class="switch__icon-part switch__icon-part--7"></span>
-                    <span class="switch__icon-part switch__icon-part--8"></span>
-                    <span class="switch__icon-part switch__icon-part--9"></span>
-                    <span class="switch__icon-part switch__icon-part--10"></span>
-                    <span class="switch__icon-part switch__icon-part--11"></span>
-                </span>
-                <span class="switch__sr">Dark Mode</span>
-            </label>
-        </nav>
-</header>
+<?php include 'navbar.php'; ?>  
 
 <main class="commandes-container">
     <h1>Liste detaillee des commandes</h1>
@@ -276,6 +236,9 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 
             <article class="detail-card">
                 <h3>Attribuer a un livreur disponible</h3>
+                <p id="detail-livreur-info" style="display:none; padding:10px 14px; border-radius:8px; background:#fff8e1; border:1px solid #ffe082; color:#8a6d00; font-size:0.9rem; margin-bottom:12px;">
+                    ⚠️ L'attribution d'un livreur n'est possible que lorsque la commande est au statut <strong>En attente</strong> (commande prête). Changez d'abord le statut.
+                </p>
                 <form class="formulaire-detail" method="POST" action="">
                     <input type="hidden" name="action_commande" value="attribuer_livreur">
                     <input type="hidden" id="detail-commande-id-livreur" name="commande_id" value="">
@@ -456,9 +419,16 @@ document.addEventListener('DOMContentLoaded', function () {
             selectStatut.appendChild(option);
         });
 
+        const peutAttribuer = commande.statut_commande === 'en_attente';
+        const messageInfo = document.getElementById('detail-livreur-info');
+
         boutonStatut.disabled = false;
-        boutonLivreur.disabled = commande.statut_commande !== 'en_attente';
-        selectLivreur.disabled = commande.statut_commande !== 'en_attente';
+        boutonLivreur.disabled = !peutAttribuer;
+        selectLivreur.disabled = !peutAttribuer;
+
+        if (messageInfo) {
+            messageInfo.style.display = peutAttribuer ? 'none' : 'block';
+        }
 
         if (commande.livreur_id) {
             selectLivreur.value = String(commande.livreur_id);
