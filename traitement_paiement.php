@@ -65,12 +65,17 @@ $retour = $protocol . '://' . $host . $path . '/retour_paiement.php';
 $chaine_a_hacher = $api_key . '#' . $transaction . '#' . $montantFormate . '#' . $vendeur . '#' . $retour . '#';
 $control = md5($chaine_a_hacher);
 ?>
+<?php
+$isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
+$darkClass = $isDark ? ' class="dark-mode"' : '';
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"<?php echo $darkClass; ?>>
 <head>
     <meta charset="UTF-8">
     <title>Redirection CYBank</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
     <style>
         .loader-page { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
         .spinner { border: 4px solid var(--line-soft); border-top: 4px solid var(--accent); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px;}
@@ -89,5 +94,6 @@ $control = md5($chaine_a_hacher);
         <input type="hidden" name="retour" value="<?= $retour ?>">
         <input type="hidden" name="control" value="<?= $control ?>">
     </form>
+    <script src="js/darkmode.js"></script>
 </body>
 </html>
