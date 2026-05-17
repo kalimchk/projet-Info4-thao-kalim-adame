@@ -1,22 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const formulaireFiltres = document.querySelector('.filters-form');
-    const grillePlats = document.getElementById('grille-plats');
-    const grilleMenus = document.getElementById('grille-menus');
-    const selectTri = document.getElementById('select-tri');
-    const compteurResultats = document.getElementById('compteur-resultats');
-    const indicateurCharge = document.getElementById('indicateur-chargement');
+    const grilleEntrees  = document.getElementById('grille-entrees');
+    const grillePlats    = document.getElementById('grille-plats');
+    const grilleDesserts = document.getElementById('grille-desserts');
+    const grilleMenus    = document.getElementById('grille-menus');
+    const selectTri      = document.getElementById('select-tri');
+    const compteurResultats  = document.getElementById('compteur-resultats');
+    const indicateurCharge   = document.getElementById('indicateur-chargement');
 
     function setChargement(actif) {
-        if (indicateurCharge){
-            indicateurCharge.style.display = actif ? 'block' : 'none';
-        }
+        if (indicateurCharge) indicateurCharge.style.display = actif ? 'block' : 'none';
     }
 
     function mettreAJourCompteur(total) {
-        if (compteurResultats){
+        if (compteurResultats)
             compteurResultats.textContent = total + ' résultat' + (total > 1 ? 's' : '');
-        }
     }
 
     function echapper(texte) {
@@ -25,12 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return div.innerHTML;
     }
 
-    //Construire HTML d'un plat 
     function construireCartePlat(plat) {
-        const saveurs = (plat.informations?.saveurs    || []).join(', ');
+        const saveurs    = (plat.informations?.saveurs    || []).join(', ');
         const allergenes = (plat.informations?.allergenes || []).join(', ');
         return `
-            <article class="dish-card" data-prix="${plat.prix}" data-type="${(plat.type||'').toLowerCase()}">
+            <article class="dish-card" data-prix="${plat.prix}" data-type="${(plat.type || '').toLowerCase()}">
                 <div class="dish-head">
                     <h3>${echapper(plat.nom)}</h3>
                     <span class="price">${parseFloat(plat.prix).toFixed(2).replace('.', ',')} EUR</span>
@@ -45,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
             </article>`;
     }
 
-    // Construire HTML d'un menu 
     function construireCarteMenu(menu) {
         const creneaux = (menu.creneaux_limites || []).join(', ');
         return `
@@ -66,18 +63,13 @@ document.addEventListener('DOMContentLoaded', function () {
             </article>`;
     }
 
-    //Transition animée sur une grille 
     function animerGrille(grille, nouveauContenu) {
-        if (!grille){
-            return;
-        }
+        if (!grille) return;
         grille.style.transition = 'opacity 0.2s';
         grille.style.opacity = '0';
         setTimeout(function () {
             grille.innerHTML = nouveauContenu;
             grille.style.opacity = '1';
-
-            // Animation en cascade sur chaque carte
             grille.querySelectorAll('.dish-card').forEach(function (carte, i) {
                 carte.style.opacity = '0';
                 carte.style.transform = 'translateY(16px)';
@@ -91,12 +83,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 200);
     }
 
-    //Filtres actifs
     function obtenirFiltresActifs() {
         const saveurs = [], allergenes = [], types = [];
-        if (!formulaireFiltres){
-            return { saveurs, allergenes, types };
-        }
+        if (!formulaireFiltres) return { saveurs, allergenes, types };
         formulaireFiltres.querySelectorAll('input[name="saveurs"]:checked').forEach(cb    => saveurs.push(cb.value));
         formulaireFiltres.querySelectorAll('input[name="allergenes"]:checked').forEach(cb => allergenes.push(cb.value));
         formulaireFiltres.querySelectorAll('input[name="types"]:checked').forEach(cb      => types.push(cb.value));
@@ -105,70 +94,60 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function construireURL(filtres) {
         const params = new URLSearchParams();
-        if (filtres.saveurs.length){
-            params.set('saveurs',    filtres.saveurs.join(','));
-        }
-        if (filtres.allergenes.length){
-            params.set('allergenes', filtres.allergenes.join(','));
-        }
-        if (filtres.types.length){
-            params.set('types',      filtres.types.join(','));
-        }
+        if (filtres.saveurs.length)    params.set('saveurs',    filtres.saveurs.join(','));
+        if (filtres.allergenes.length) params.set('allergenes', filtres.allergenes.join(','));
+        if (filtres.types.length)      params.set('types',      filtres.types.join(','));
         return 'api_filtrer_plats.php?' + params.toString();
     }
 
-    //Tri côté client 
     function trierArticles(grille, critere) {
-        if (!grille){
-            return;
-        }
+        if (!grille) return;
         const articles = Array.from(grille.querySelectorAll('.dish-card'));
         articles.sort(function (a, b) {
             const prixA = parseFloat(a.dataset.prix || '0');
             const prixB = parseFloat(b.dataset.prix || '0');
-            if (critere === 'prix-asc'){
-                return prixA - prixB;
-            }
-            if (critere === 'prix-desc'){
-                return prixB - prixA;
-            }
+            if (critere === 'prix-asc')  return prixA - prixB;
+            if (critere === 'prix-desc') return prixB - prixA;
             return 0;
         });
         articles.forEach(function (a) { grille.appendChild(a); });
     }
 
     function appliquerTriActuel() {
-        if (!selectTri){
-            return;
-        }
-        trierArticles(grillePlats, selectTri.value);
-        trierArticles(grilleMenus, selectTri.value);
+        if (!selectTri) return;
+        const critere = selectTri.value;
+        trierArticles(grilleEntrees,  critere);
+        trierArticles(grillePlats,    critere);
+        trierArticles(grilleDesserts, critere);
+        trierArticles(grilleMenus,    critere);
     }
 
-    // Requête asynchrone principale 
+    const VIDE = '<p class="etat-vide">Aucun résultat pour cette sélection.</p>';
+
     async function appliquerFiltres() {
         setChargement(true);
         try {
-            const reponse = await fetch(construireURL(obtenirFiltresActifs()));
+            const reponse  = await fetch(construireURL(obtenirFiltresActifs()));
             const resultat = await reponse.json();
-            if (!resultat.succes){
-                return;
-            }
+            if (!resultat.succes) return;
 
-            const htmlPlats = resultat.plats.length === 0
-                ? '<p class="etat-vide">Aucun plat ne correspond à votre sélection.</p>'
-                : resultat.plats.map(construireCartePlat).join('');
+            const plats = resultat.plats || [];
 
-            const htmlMenus = resultat.menus.length === 0
-                ? '<p class="etat-vide">Aucun menu ne correspond à votre sélection.</p>'
+            // Séparer par type
+            const entrees  = plats.filter(p => (p.type || '').toLowerCase() === 'entree');
+            const platsPrincipaux = plats.filter(p => (p.type || '').toLowerCase() === 'plat');
+            const desserts = plats.filter(p => (p.type || '').toLowerCase() === 'dessert');
+
+            animerGrille(grilleEntrees,  entrees.length  ? entrees.map(construireCartePlat).join('')          : VIDE);
+            animerGrille(grillePlats,    platsPrincipaux.length ? platsPrincipaux.map(construireCartePlat).join('') : VIDE);
+            animerGrille(grilleDesserts, desserts.length ? desserts.map(construireCartePlat).join('')         : VIDE);
+
+            const htmlMenus = (resultat.menus || []).length === 0
+                ? VIDE
                 : resultat.menus.map(construireCarteMenu).join('');
-
-            animerGrille(grillePlats, htmlPlats);
             animerGrille(grilleMenus, htmlMenus);
 
             mettreAJourCompteur(resultat.total);
-
-            // Réappliquer tri après animation (délai pour laisser le DOM se reconstruire)
             setTimeout(appliquerTriActuel, 250);
 
         } catch (e) {
@@ -177,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setChargement(false);
         }
     }
+
     let timerFiltres = null;
     if (formulaireFiltres) {
         formulaireFiltres.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
@@ -192,5 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+
     if (selectTri) selectTri.addEventListener('change', appliquerTriActuel);
 });
