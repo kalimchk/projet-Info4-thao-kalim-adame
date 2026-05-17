@@ -252,7 +252,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
         <?php $montantCommandeSelectionnee = calculerMontantTotalCommande($commandeSelectionnee['articles'] ?? []); ?>
         <?php $optionsStatutDisponibles = obtenirOptionsStatutDisponibles((string) ($commandeSelectionnee['statut_commande'] ?? '')); ?>
 
-        <section class="detail-commande">
+        <section id="detail-commande" class="detail-commande">
             <div class="detail-header">
                 <div>
                     <h2>Detail de la commande <?php echo echapperTexte($commandeSelectionnee['numero_commande'] ?? ''); ?></h2>
@@ -415,7 +415,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <p class="total">Total : <?php echo number_format($montantTotal, 2, ',', ' '); ?> EUR</p>
 
                         <div class="actions-commande">
-                            <a class="btn-principal lien-action" href="commande.php?commande_id=<?php echo (int) ($commande['id'] ?? 0); ?>">
+                            <a class="btn-principal lien-action" href="commande.php?commande_id=<?php echo (int) ($commande['id'] ?? 0); ?>#detail-commande">
                                 Voir le detail
                             </a>
                         </div>
@@ -432,5 +432,19 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 
 <script src="js/darkmode.js"></script>
 <script src="js/session_surveillance.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    if (window.location.hash !== '#detail-commande') {
+        return;
+    }
+
+    const detail = document.getElementById('detail-commande');
+    if (!detail) {
+        return;
+    }
+
+    detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>
 </body>
 </html>
