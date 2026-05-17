@@ -42,16 +42,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 const nouveauStatut = resultat.utilisateur && resultat.utilisateur.est_bloque;
                 const ligneUtilisateur = bouton.closest('.user');
                 const badge = ligneUtilisateur ? ligneUtilisateur.querySelector('.badge-blocage') : null;
+                const zoneBadges = ligneUtilisateur ? ligneUtilisateur.querySelector('.badges') : null;
 
                 bouton.dataset.estBloque = nouveauStatut ? '1' : '0';
                 bouton.textContent = nouveauStatut ? 'Debloquer' : 'Bloquer';
                 bouton.classList.toggle('btn-debloquer', nouveauStatut);
                 bouton.classList.toggle('btn-bloquer', !nouveauStatut);
 
-                if (badge) {
-                    badge.textContent = nouveauStatut ? 'Bloque' : 'Actif';
-                    badge.classList.toggle('badge-bloque', nouveauStatut);
-                    badge.classList.toggle('badge-actif', !nouveauStatut);
+                if (nouveauStatut && !badge && zoneBadges) {
+                    const nouveauBadge = document.createElement('span');
+                    nouveauBadge.className = 'badge badge-blocage badge-bloque';
+                    nouveauBadge.textContent = 'Bloque';
+                    zoneBadges.appendChild(nouveauBadge);
+                }
+
+                if (!nouveauStatut && badge) {
+                    badge.remove();
                 }
 
                 afficherMessage(resultat.message || 'Action terminee.', true);

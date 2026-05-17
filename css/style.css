@@ -2127,12 +2127,6 @@ body.page-profil h2{
 }
 .btn-paiement-supplement:hover { opacity: 0.85; }
 
-.badge-actif {
-    background: #e8f5e9;
-    color: #1b5e20;
-    border: 1px solid #a5d6a7;
-}
-
 .badge-bloque {
     background: #fdecea;
     color: #a45742;
@@ -2140,31 +2134,35 @@ body.page-profil h2{
 }
 
 .badge-blocage {
-    margin-left: 8px;
+    margin-left: 0;
+    font-size: 0.72rem;
+    padding: 4px 8px;
 }
 
-.js-action-blocage {
-    margin-top: 6px;
+body.page-administateur .js-action-blocage {
+    margin-top: 6px !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    align-self: end;
+    align-self: flex-start;
     justify-self: start;
-    min-width: 0;
-    width: fit-content;
-    padding: 4px 9px;
-    border-radius: 999px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    line-height: 1;
-    border: 1px solid transparent;
+    min-width: auto !important;
+    width: auto !important;
+    padding: 3px 8px !important;
+    border-radius: 999px !important;
+    font-size: 0.68rem !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    border: 1px solid transparent !important;
     box-shadow: none;
+    margin-bottom: 0;
 }
 
-.page-administateur .user {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    padding: 16px 18px;
+body.page-administateur .user {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 16px 18px !important;
+    align-items: start;
 }
 
 .btn-bloquer {

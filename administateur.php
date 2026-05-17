@@ -65,9 +65,9 @@ $nombreTotalUtilisateurs = count($listeDesUtilisateurs);
                         <p class="user-meta"><?php echo htmlspecialchars($utilisateur['telephone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
                         <div class="badges">
                             <span class="badge"><?php echo htmlspecialchars($utilisateur['statut'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                            <span class="badge badge-blocage <?php echo !empty($utilisateur['est_bloque']) ? 'badge-bloque' : 'badge-actif'; ?>">
-                                <?php echo !empty($utilisateur['est_bloque']) ? 'Bloque' : 'Actif'; ?>
-                            </span>
+                            <?php if (!empty($utilisateur['est_bloque'])): ?>
+                                <span class="badge badge-blocage badge-bloque">Bloque</span>
+                            <?php endif; ?>
                         </div>
                         <?php if ((int) ($utilisateur['id'] ?? 0) !== (int) ($utilisateurConnecte['id'] ?? 0)): ?>
                             <button
