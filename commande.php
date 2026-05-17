@@ -154,6 +154,24 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
 
     return $classesParStatut[$statutCommande] ?? 'badge-prepare';
 }
+
+function obtenirOptionsStatutDisponibles(string $statutActuel): array
+{
+    if ($statutActuel === 'a_preparer') {
+        return [
+            'en_cours' => 'Passer en preparation',
+            'en_attente' => 'Passer directement a prete',
+        ];
+    }
+
+    if ($statutActuel === 'en_cours') {
+        return [
+            'en_attente' => 'Passer a prete',
+        ];
+    }
+
+    return [];
+}
 ?>
 <?php
 $isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
@@ -232,6 +250,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 
     <?php if ($commandeSelectionnee !== null): ?>
         <?php $montantCommandeSelectionnee = calculerMontantTotalCommande($commandeSelectionnee['articles'] ?? []); ?>
+        <?php $optionsStatutDisponibles = obtenirOptionsStatutDisponibles((string) ($commandeSelectionnee['statut_commande'] ?? '')); ?>
 
         <section class="detail-commande">
             <div class="detail-header">
@@ -279,10 +298,13 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <input type="hidden" name="commande_id" value="<?php echo (int) ($commandeSelectionnee['id'] ?? 0); ?>">
                         <label for="statut_commande">Nouveau statut</label>
                         <select id="statut_commande" name="statut_commande">
-                            <?php if (($commandeSelectionnee['statut_commande'] ?? '') === 'a_preparer'): ?>
-                                <option value="en_cours">Passer en preparation</option>
-                            <?php elseif (($commandeSelectionnee['statut_commande'] ?? '') === 'en_cours'): ?>
-                                <option value="en_attente">Passer a l etat prete</option>
+                            <?php if (!empty($optionsStatutDisponibles)): ?>
+                                <option value="">Choisir une action</option>
+                                <?php foreach ($optionsStatutDisponibles as $codeStatut => $libelleStatut): ?>
+                                    <option value="<?php echo echapperTexte($codeStatut); ?>">
+                                        <?php echo echapperTexte($libelleStatut); ?>
+                                    </option>
+                                <?php endforeach; ?>
                             <?php else: ?>
                                 <option value="">Aucune action disponible</option>
                             <?php endif; ?>
@@ -290,7 +312,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <button
                             type="submit"
                             class="btn-principal"
-                            <?php echo in_array(($commandeSelectionnee['statut_commande'] ?? ''), ['a_preparer', 'en_cours'], true) ? '' : 'disabled'; ?>
+                            <?php echo !empty($optionsStatutDisponibles) ? '' : 'disabled'; ?>
                         >
                             Mettre a jour le statut
                         </button>
