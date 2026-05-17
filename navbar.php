@@ -24,6 +24,9 @@ $page_active = basename($_SERVER['PHP_SELF']);
             <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
                 <a href="administateur.php" <?php echo $page_active === 'administateur.php' ? 'class="active"' : ''; ?>>Administration</a>
             <?php endif; ?>
+            <?php if (($_SESSION['user']['statut'] ?? '') === 'livreur'): ?>
+                <a href="livraison.php" <?php echo $page_active === 'livraison.php' ? 'class="active"' : ''; ?>>Ma livraison</a>
+            <?php endif; ?>
             <a href="profil.php" <?php echo $page_active === 'profil.php' ? 'class="active"' : ''; ?>>Mon Profil</a>
             <a href="deconnexion.php" style="color:#a45742;font-weight:600;">Deconnexion</a>
         <?php else: ?>
