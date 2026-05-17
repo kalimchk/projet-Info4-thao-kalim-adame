@@ -60,24 +60,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $typeMessageRetourCommande = 'erreur';
     } elseif ($actionCommande === 'mettre_a_jour_statut') {
         $nouveauStatut = trim((string) ($_POST['statut_commande'] ?? ''));
-        $statutActuel = (string) ($commandeCible['statut_commande'] ?? '');
-        $transitionValide = false;
-
-        if ($statutActuel === 'a_preparer' && $nouveauStatut === 'en_cours') {
-            $transitionValide = true;
-            $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'En preparation';
-        }
-
-        if ($statutActuel === 'en_cours' && $nouveauStatut === 'en_attente') {
-            $transitionValide = true;
-            $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'Prete';
-        }
+        $transitionValide = in_array($nouveauStatut, ['a_preparer', 'en_cours', 'en_attente'], true);
 
         if (!$transitionValide) {
             $messageRetourCommande = 'Changement de statut non autorise.';
             $typeMessageRetourCommande = 'erreur';
         } else {
             $listeDesCommandesComplete[$indexCommandeCible]['statut_commande'] = $nouveauStatut;
+
+            if ($nouveauStatut === 'a_preparer') {
+                $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'En attente';
+            } elseif ($nouveauStatut === 'en_cours') {
+                $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'En preparation';
+            } elseif ($nouveauStatut === 'en_attente') {
+                $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'Prete';
+            }
+
             sauvegarderCommandes($listeDesCommandesComplete);
             header('Location: commande.php?commande_id=' . $identifiantCommandeFormulaire . '&message=statut_maj');
             exit();
@@ -148,20 +146,11 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
 
 function obtenirOptionsStatutDisponibles(string $statutActuel): array
 {
-    if ($statutActuel === 'a_preparer') {
-        return [
-            'en_cours' => 'Passer en preparation',
-            'en_attente' => 'Passer directement a prete',
-        ];
-    }
-
-    if ($statutActuel === 'en_cours') {
-        return [
-            'en_attente' => 'Passer a prete',
-        ];
-    }
-
-    return [];
+    return [
+        'a_preparer' => 'Payee',
+        'en_cours' => 'En preparation',
+        'en_attente' => 'Prete',
+    ];
 }
 ?>
 <?php
@@ -409,23 +398,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function obtenirOptionsStatut(statutActuel) {
-        if (statutActuel === 'a_preparer') {
-            return [
-                { value: '', label: 'Choisir une action' },
-                { value: 'en_cours', label: 'Passer en preparation' },
-                { value: 'en_attente', label: 'Passer directement a prete' }
-            ];
-        }
-
-        if (statutActuel === 'en_cours') {
-            return [
-                { value: '', label: 'Choisir une action' },
-                { value: 'en_attente', label: 'Passer a prete' }
-            ];
-        }
-
         return [
-            { value: '', label: 'Aucune action disponible' }
+            { value: 'a_preparer', label: 'Payee' },
+            { value: 'en_cours', label: 'En preparation' },
+            { value: 'en_attente', label: 'Prete' }
         ];
     }
 
@@ -468,10 +444,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const option = document.createElement('option');
             option.value = optionStatut.value;
             option.textContent = optionStatut.label;
+            option.selected = optionStatut.value === (commande.statut_commande || '');
             selectStatut.appendChild(option);
         });
 
-        boutonStatut.disabled = !(commande.statut_commande === 'a_preparer' || commande.statut_commande === 'en_cours');
+        boutonStatut.disabled = (commande.statut_commande === 'en_livraison' || commande.statut_commande === 'livree');
         boutonLivreur.disabled = commande.statut_commande !== 'en_attente';
         selectLivreur.disabled = commande.statut_commande !== 'en_attente';
 
