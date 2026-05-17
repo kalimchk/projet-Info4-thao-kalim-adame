@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const plats = resultat.plats || [];
 
-            // Séparer par type
+            
             const entrees  = plats.filter(p => (p.type || '').toLowerCase() === 'entree');
             const platsPrincipaux = plats.filter(p => (p.type || '').toLowerCase() === 'plat');
             const desserts = plats.filter(p => (p.type || '').toLowerCase() === 'dessert');
