@@ -28,14 +28,12 @@ foreach ($toutesLesCommandes as $commande) {
 }
 
 $pointsFidelite = $statutUtilisateur === 'client' ? count($mesCommandes) * 10 : 0;
-$statutFidelite = $pointsFidelite >= 50 ? 'Premium ðŸŒŸ' : 'Classique';
+$statutFidelite = $pointsFidelite >= 50 ? 'Premium' : 'Classique';
 $titreHistorique = $statutUtilisateur === 'livreur' ? 'Mes anciennes livraisons' : 'Mes anciennes commandes';
 $messageHistoriqueVide = $statutUtilisateur === 'livreur'
     ? 'Vous n avez effectue aucune livraison pour le moment.'
     : 'Vous n avez passe aucune commande pour le moment.';
-?>
 
-<?php
 $isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
 $darkClass = $isDark ? ' class="dark-mode"' : '';
 ?>
@@ -66,7 +64,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 <a href="livraison.php">Ma livraison</a>
             <?php endif; ?>
             <a href="profil.php">Mon Profil</a>
-            <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">DÃ©connexion</a>
+            <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Deconnexion</a>
         <?php else: ?>
             <a href="connexion.php">Connexion</a>
         <?php endif; ?>
@@ -92,7 +90,6 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 </header>
 
 <main class="page">
-
     <section class="card">
         <h1>Mon profil</h1>
         <p id="message-retour-profil" class="message-retour" style="display:none;"></p>
@@ -107,7 +104,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             </div>
 
             <div class="field">
-                <div class="label-row"><label>PrÃ©nom</label></div>
+                <div class="label-row"><label>Prenom</label></div>
                 <p id="valeur-prenom" class="value profil-valeur"><?= htmlspecialchars($utilisateurConnecte['prenom'] ?? '') ?></p>
                 <input id="input-prenom" type="text" name="prenom"
                        value="<?= htmlspecialchars($utilisateurConnecte['prenom'] ?? '') ?>"
@@ -123,7 +120,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             </div>
 
             <div class="field">
-                <div class="label-row"><label>TÃ©lÃ©phone</label></div>
+                <div class="label-row"><label>Telephone</label></div>
                 <p id="valeur-telephone" class="value profil-valeur"><?= htmlspecialchars($utilisateurConnecte['telephone'] ?? '') ?></p>
                 <input id="input-telephone" type="tel" name="telephone"
                        value="<?= htmlspecialchars($utilisateurConnecte['telephone'] ?? '') ?>"
@@ -136,15 +133,15 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     <input id="affichage-mdp" type="password"
                            value="<?= htmlspecialchars($utilisateurConnecte['password'] ?? '') ?>"
                            readonly style="border:none; background:transparent; flex:1; font-size:1rem; color:var(--ink);">
-                    <button type="button" id="toggle-mdp-profil" class="btn-oeil" title="Afficher/Cacher le mot de passe">ðŸ‘ï¸</button>
+                    <button type="button" id="toggle-mdp-profil" class="btn-oeil" title="Afficher/Cacher le mot de passe">Voir</button>
                 </div>
             </div>
         </div>
 
         <div class="profil-actions" style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
-            <button id="btn-modifier-profil" type="button" class="btn">âœï¸ Modifier mes informations</button>
-            <button id="btn-valider-profil"  type="button" class="btn" style="display:none;">âœ… Valider</button>
-            <button id="btn-annuler-profil"  type="button" class="btn btn-ghost" style="display:none;">Annuler</button>
+            <button id="btn-modifier-profil" type="button" class="btn">Modifier mes informations</button>
+            <button id="btn-valider-profil" type="button" class="btn" style="display:none;">Valider</button>
+            <button id="btn-annuler-profil" type="button" class="btn btn-ghost" style="display:none;">Annuler</button>
         </div>
     </section>
 
@@ -159,8 +156,8 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <div>
                             <p class="order-title"><b>Commande <?= htmlspecialchars($commande['numero_commande']) ?></b></p>
                             <p class="order-meta">
-                                PassÃ©e le : <?= htmlspecialchars($commande['heure_commande']) ?><br>
-                                Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> â‚¬
+                                Passee le : <?= htmlspecialchars($commande['heure_commande']) ?><br>
+                                Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> EUR
                             </p>
                             <?php if ($statutUtilisateur === 'livreur'): ?>
                                 <p class="order-meta">
@@ -176,32 +173,32 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                             <br>
                             <?php $estLivraison = stripos($commande['commentaire_client'] ?? '', 'Mode : Livraison') !== false; ?>
                             <?php if (($statutUtilisateur === 'client') && ($commande['statut_commande'] === 'livree') && $estLivraison && !isset($commande['note'])): ?>
-                                <a href="notes.php?id=<?= $commande['id'] ?>" class="btn" style="padding:6px 12px; font-size:0.85rem; background:var(--muted); text-decoration:none;">â­ Noter</a>
+                                <a href="notes.php?id=<?= $commande['id'] ?>" class="btn" style="padding:6px 12px; font-size:0.85rem; background:var(--muted); text-decoration:none;">Noter</a>
                             <?php elseif (($statutUtilisateur === 'client') && ($commande['statut_commande'] === 'livree') && $estLivraison && isset($commande['note'])): ?>
-                                <span style="color:var(--accent-deep); font-weight:bold;">Note : <?= $commande['note'] ?>/5 â­</span>
+                                <span style="color:var(--accent-deep); font-weight:bold;">Note : <?= $commande['note'] ?>/5</span>
                             <?php endif; ?>
                         </div>
                     </article>
 
                     <?php if (($statutUtilisateur === 'client') && (($commande['statut_commande'] ?? '') === 'a_preparer')): ?>
                     <div class="commande-modifiable" data-id-commande="<?= (int)$commande['id'] ?>">
-                        <h4>âœï¸ Modifier la commande <?= htmlspecialchars($commande['numero_commande']) ?></h4>
-                        <p class="modif-intro">Cette commande est en attente de prÃ©paration. Vous pouvez encore ajouter ou retirer des articles.</p>
+                        <h4>Modifier la commande <?= htmlspecialchars($commande['numero_commande']) ?></h4>
+                        <p class="modif-intro">Cette commande est en attente de preparation. Vous pouvez encore ajouter ou retirer des articles.</p>
 
                         <ul class="liste-articles-modifiable">
                             <?php foreach ($commande['articles'] as $article): ?>
                             <li class="article-modifiable">
                                 <span class="article-quantite"><?= (int)($article['quantite'] ?? 1) ?></span>
-                                <span class="article-nom">Ã— <?= htmlspecialchars($article['nom_produit'] ?? '') ?></span>
-                                <span class="article-prix"><?= number_format((float)($article['prix_unitaire'] ?? 0), 2, ',', ' ') ?> â‚¬</span>
+                                <span class="article-nom">x <?= htmlspecialchars($article['nom_produit'] ?? '') ?></span>
+                                <span class="article-prix"><?= number_format((float)($article['prix_unitaire'] ?? 0), 2, ',', ' ') ?> EUR</span>
                                 <span class="article-sous-total">
-                                    (= <?= number_format((int)($article['quantite'] ?? 1) * (float)($article['prix_unitaire'] ?? 0), 2, ',', ' ') ?> â‚¬)
+                                    (= <?= number_format((int)($article['quantite'] ?? 1) * (float)($article['prix_unitaire'] ?? 0), 2, ',', ' ') ?> EUR)
                                 </span>
                                 <div class="article-btns">
                                     <button type="button" class="btn-retirer-article"
                                             data-nom="<?= htmlspecialchars($article['nom_produit'] ?? '') ?>"
                                             data-prix="<?= (float)($article['prix_unitaire'] ?? 0) ?>"
-                                            title="Retirer un exemplaire">âˆ’</button>
+                                            title="Retirer un exemplaire">-</button>
                                     <button type="button" class="btn-ajouter-article"
                                             data-nom="<?= htmlspecialchars($article['nom_produit'] ?? '') ?>"
                                             data-prix="<?= (float)($article['prix_unitaire'] ?? 0) ?>"
@@ -212,7 +209,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         </ul>
 
                         <p class="total-commande">
-                            Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> â‚¬
+                            Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> EUR
                         </p>
 
                         <p class="message-modification" style="display:none;"></p>
@@ -226,15 +223,14 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 
     <?php if ($statutUtilisateur === 'client'): ?>
     <section class="card">
-        <h2>FidÃ©litÃ©</h2>
+        <h2>Fidelite</h2>
         <div class="fidelite">
-            <p><b>Points cumulÃ©s :</b> <?= $pointsFidelite ?> pts</p>
+            <p><b>Points cumules :</b> <?= $pointsFidelite ?> pts</p>
             <p><b>Statut actuel :</b> <?= $statutFidelite ?></p>
-            <p><b>Avantage :</b> <?= $statutFidelite === 'Premium ðŸŒŸ' ? 'Livraison offerte sur votre prochaine commande !' : 'Cumulez 50 points pour obtenir la livraison offerte.' ?></p>
+            <p><b>Avantage :</b> <?= $statutFidelite === 'Premium' ? 'Livraison offerte sur votre prochaine commande !' : 'Cumulez 50 points pour obtenir la livraison offerte.' ?></p>
         </div>
     </section>
     <?php endif; ?>
-
 </main>
 
 <footer class="site-footer">
