@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/config/function.php';
+verifierEtatSessionUtilisateur();
 
 // Action pour vider le panier
 if (isset($_GET['action']) && $_GET['action'] === 'vider') {
@@ -43,7 +44,7 @@ $utilisateurConnecte = $_SESSION['user'] ?? null;
         .cybank-logo { font-weight: bold; color: #0055A4; font-size: 1.2rem; margin-bottom: 10px; }
     </style>
 </head>
-<body class="page-carte">
+<body class="page-carte" data-surveillance-session="<?php echo isset($_SESSION['user']) ? '1' : '0'; ?>">
     <header class="site-header">
         <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
         <nav class="navbar">
@@ -160,6 +161,7 @@ $utilisateurConnecte = $_SESSION['user'] ?? null;
 
     <footer class="site-footer">
         <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
-    </footer>
+</footer>
+<script src="js/session_surveillance.js"></script>
 </body>
 </html>

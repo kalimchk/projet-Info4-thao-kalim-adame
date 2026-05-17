@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__ . '/config/function.php';
+verifierEtatSessionUtilisateur();
 $isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
 $darkClass = $isDark ? ' class="dark-mode"' : '';
 ?>
@@ -14,7 +16,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     <link rel="stylesheet" href="css/darkmode.css">
 </head>
 
-<body class="page-accueil">
+<body class="page-accueil" data-surveillance-session="<?php echo isset($_SESSION['user']) ? '1' : '0'; ?>">
     <?php include 'navbar.php'; ?>   
 
     <main>
@@ -194,6 +196,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     <footer class="site-footer">
         <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
     </footer>
-<script src="js/darkmode.js"></script>
+    <script src="js/darkmode.js"></script>
+    <script src="js/session_surveillance.js"></script>
 </body>
 </html>

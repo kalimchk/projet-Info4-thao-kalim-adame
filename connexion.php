@@ -1,8 +1,14 @@
 <?php
 session_start();
 require_once __DIR__ . '/config/function.php';
+verifierEtatSessionUtilisateur();
 
 $messageErreurConnexion = '';
+$messageInformation = '';
+
+if (($_GET['message'] ?? '') === 'compte_bloque') {
+    $messageInformation = 'Votre compte est bloque. Vous ne pouvez plus utiliser le site.';
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emailUtilisateur = trim($_POST['email'] ?? '');
@@ -10,7 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $utilisateurConnecte = trouverUtilisateurParEmail($emailUtilisateur);
 
-    if ($utilisateurConnecte !== null && ($utilisateurConnecte['password'] ?? '') === $motDePasseUtilisateur) {
+    if ($utilisateurConnecte !== null && utilisateurEstBloque($utilisateurConnecte)) {
+        $messageErreurConnexion = 'Votre compte est bloque.';
+    } elseif ($utilisateurConnecte !== null && ($utilisateurConnecte['password'] ?? '') === $motDePasseUtilisateur) {
         $_SESSION['user'] = $utilisateurConnecte;
 
         if (($utilisateurConnecte['statut'] ?? '') === 'restaurateur') {
@@ -59,6 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <main>
         <h1>Connexion</h1>
+
+        <?php if ($messageInformation !== ''): ?>
+            <p class="message-retour"><?= htmlspecialchars($messageInformation, ENT_QUOTES, 'UTF-8') ?></p>
+        <?php endif; ?>
 
         <?php if ($messageErreurConnexion !== ''): ?>
             <p class="message-erreur"><?= htmlspecialchars($messageErreurConnexion, ENT_QUOTES, 'UTF-8') ?></p>

@@ -2126,3 +2126,33 @@ body.page-profil h2{
     transition: opacity 0.2s;
 }
 .btn-paiement-supplement:hover { opacity: 0.85; }
+
+.badge-actif {
+    background: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #a5d6a7;
+}
+
+.badge-bloque {
+    background: #fdecea;
+    color: #a45742;
+    border: 1px solid #f5b7b1;
+}
+
+.badge-blocage {
+    margin-left: 8px;
+}
+
+.js-action-blocage {
+    margin-top: 12px;
+}
+
+.btn-bloquer {
+    background: #a45742;
+    color: #fff;
+}
+
+.btn-debloquer {
+    background: #2e7d32;
+    color: #fff;
+}

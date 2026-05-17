@@ -1,13 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/config/function.php';
-
-if (!isset($_SESSION['user'])) {
-    header('Location: connexion.php');
-    exit();
-}
-
-$utilisateurConnecte = $_SESSION['user'];
+$utilisateurConnecte = obtenirUtilisateurConnecteOuRediriger();
 
 if (($utilisateurConnecte['statut'] ?? '') !== 'livreur') {
     header('Location: accueil.html');
@@ -32,7 +26,7 @@ function echapperTexteLivraison(?string $texte): string
     <title>Livraison - Pasta La Vista</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="page-livraison">
+<body class="page-livraison" data-surveillance-session="1">
 <header class="site-header">
     <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
         <nav class="navbar">
@@ -117,5 +111,6 @@ function echapperTexteLivraison(?string $texte): string
     <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
 </footer>
 
+<script src="js/session_surveillance.js"></script>
 </body>
 </html>

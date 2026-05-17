@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__ . '/config/function.php';
+verifierEtatSessionUtilisateur();
 
 if (!isset($_SESSION['panier'])) {
     $_SESSION['panier'] = [];
@@ -68,7 +70,7 @@ if (isset($_SESSION['panier'])) {
     <title>Carte - Pasta La Vista</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="page-carte">
+<body class="page-carte" data-surveillance-session="<?php echo isset($_SESSION['user']) ? '1' : '0'; ?>">
     <header class="site-header">
         <a class="logo" href="accueil.php">
             <img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista">
@@ -236,5 +238,6 @@ if (isset($_SESSION['panier'])) {
     </footer>
 
     <script src="js/carte.js"></script>
+    <script src="js/session_surveillance.js"></script>
 </body>
 </html>

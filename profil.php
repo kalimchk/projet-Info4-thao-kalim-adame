@@ -1,13 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/config/function.php';
-
-if (!isset($_SESSION['user'])) {
-    header('Location: connexion.php');
-    exit();
-}
-
-$utilisateurConnecte = $_SESSION['user'];
+$utilisateurConnecte = obtenirUtilisateurConnecteOuRediriger();
 $nomCompletUtilisateur = trim($utilisateurConnecte['prenom'] . ' ' . $utilisateurConnecte['nom']);
 
 $toutesLesCommandes = lireCommandes();
@@ -32,7 +26,7 @@ $statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
     <link rel="stylesheet" href="css/style.css">
     <title>Mon Profil - Pasta La Vista</title>
 </head>
-<body class="page-profil">
+<body class="page-profil" data-surveillance-session="1">
 <header class="site-header">
     <a class="logo" href="accueil.php">
         <img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista">
@@ -198,5 +192,6 @@ $statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
 
 <script src="js/profil.js"></script>
 <script src="js/modifier_commande.js"></script>
+<script src="js/session_surveillance.js"></script>
 </body>
 </html>

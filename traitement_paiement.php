@@ -1,13 +1,14 @@
 <?php
 session_start();
 require_once __DIR__ . '/config/function.php';
-require_once __DIR__ . '/config/getapikey.php'; 
+require_once __DIR__ . '/config/getapikey.php';
 
-if (!isset($_SESSION['user']) || empty($_SESSION['panier'])) {
+$utilisateurConnecte = obtenirUtilisateurConnecteOuRediriger('connexion.php');
+
+if (empty($_SESSION['panier'])) {
     header('Location: panier.php');
     exit();
 }
-
 
 $_SESSION['options_commande'] = [
     'mode_retrait' => $_POST['mode_retrait'] ?? 'livraison',
@@ -21,26 +22,47 @@ foreach ($_SESSION['panier'] as $article) {
     $montantTotal += $article['prix'] * $article['quantite'];
 }
 
-$montantFormate = number_format($montantTotal, 2, '.', ''); 
+$montantFormate = number_format($montantTotal, 2, '.', '');
 
-$transaction = uniqid('PLV'); 
-$vendeur = 'TEST'; 
-$api_key = getAPIKey($vendeur); 
+$transaction = uniqid('PLV');
+$vendeur = 'TEST';
+$api_key = getAPIKey($vendeur);
 
+$articlesCommande = [];
+foreach ($_SESSION['panier'] as $article) {
+    $articlesCommande[] = [
+        'nom_produit' => $article['nom'],
+        'quantite' => $article['quantite'],
+        'prix_unitaire' => $article['prix']
+    ];
+}
+
+enregistrerPaiementEnAttente([
+    'transaction' => $transaction,
+    'montant' => $montantFormate,
+    'utilisateur' => [
+        'id' => (int) ($utilisateurConnecte['id'] ?? 0),
+        'nom' => $utilisateurConnecte['nom'] ?? '',
+        'prenom' => $utilisateurConnecte['prenom'] ?? '',
+        'telephone' => $utilisateurConnecte['telephone'] ?? ''
+    ],
+    'options_commande' => $_SESSION['options_commande'],
+    'articles' => $articlesCommande,
+    'date_creation' => date('Y-m-d H:i:s')
+]);
 
 $estHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on');
-$protocol = $estHttps ? "https" : "http";
+$protocol = $estHttps ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'];
-
 
 $path = str_replace('\\', '/', dirname($_SERVER['PHP_SELF']));
 if ($path === '/') {
     $path = '';
 }
 
-$retour = $protocol . "://" . $host . $path . "/retour_paiement.php";
+$retour = $protocol . '://' . $host . $path . '/retour_paiement.php';
 
-$chaine_a_hacher = $api_key . "#" . $transaction . "#" . $montantFormate . "#" . $vendeur . "#" . $retour . "#";
+$chaine_a_hacher = $api_key . '#' . $transaction . '#' . $montantFormate . '#' . $vendeur . '#' . $retour . '#';
 $control = md5($chaine_a_hacher);
 ?>
 <!DOCTYPE html>
@@ -58,7 +80,7 @@ $control = md5($chaine_a_hacher);
 <body class="page-carte loader-page" onload="document.getElementById('cybank_form').submit();">
     <div class="spinner"></div>
     <h2 style="font-family: 'Cormorant Garamond', serif;">Redirection vers CYBank...</h2>
-    <p style="color: var(--muted);">Veuillez patienter pendant la sécurisation de votre paiement.</p>
+    <p style="color: var(--muted);">Veuillez patienter pendant la securisation de votre paiement.</p>
 
     <form id="cybank_form" action="https://www.plateforme-smc.fr/cybank/index.php" method="POST" style="display: none;">
         <input type="hidden" name="transaction" value="<?= $transaction ?>">

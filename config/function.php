@@ -1,5 +1,11 @@
 <?php
 
+function normaliserUtilisateur(array $utilisateur): array
+{
+    $utilisateur['est_bloque'] = (bool) ($utilisateur['est_bloque'] ?? false);
+    return $utilisateur;
+}
+
 function lireFichierJson(string $cheminDuFichier): array
 {
     if (!file_exists($cheminDuFichier)) {
@@ -23,7 +29,13 @@ function enregistrerFichierJson(string $cheminDuFichier, array $donnees): void
 function lireUtilisateurs(): array
 {
     $cheminDesUtilisateurs = __DIR__ . '/../data/utilisateurs.json';
-    return lireFichierJson($cheminDesUtilisateurs);
+    $listeDesUtilisateurs = lireFichierJson($cheminDesUtilisateurs);
+
+    foreach ($listeDesUtilisateurs as $indexUtilisateur => $utilisateur) {
+        $listeDesUtilisateurs[$indexUtilisateur] = normaliserUtilisateur($utilisateur);
+    }
+
+    return $listeDesUtilisateurs;
 }
 
 function sauvegarderUtilisateurs(array $listeDesUtilisateurs): void
@@ -45,6 +57,24 @@ function trouverUtilisateurParEmail(string $emailUtilisateur): ?array
     return null;
 }
 
+function trouverUtilisateurParId(int $identifiantUtilisateur): ?array
+{
+    $listeDesUtilisateurs = lireUtilisateurs();
+
+    foreach ($listeDesUtilisateurs as $utilisateur) {
+        if ((int) ($utilisateur['id'] ?? 0) === $identifiantUtilisateur) {
+            return $utilisateur;
+        }
+    }
+
+    return null;
+}
+
+function utilisateurEstBloque(array $utilisateur): bool
+{
+    return (bool) ($utilisateur['est_bloque'] ?? false);
+}
+
 function ajouterUtilisateur(
     string $nomUtilisateur,
     string $prenomUtilisateur,
@@ -62,6 +92,7 @@ function ajouterUtilisateur(
         'telephone' => $telephoneUtilisateur,
         'password' => $motDePasseUtilisateur,
         'statut' => 'client',
+        'est_bloque' => false,
         'restaurant_id' => null,
         'restaurant_nom' => null,
     ];
@@ -80,6 +111,158 @@ function sauvegarderCommandes(array $listeDesCommandes): void
 {
     $cheminDesCommandes = __DIR__ . '/../data/commandes.json';
     enregistrerFichierJson($cheminDesCommandes, $listeDesCommandes);
+}
+
+function lirePaiementsEnAttente(): array
+{
+    $cheminDesPaiements = __DIR__ . '/../data/paiements_en_attente.json';
+    return lireFichierJson($cheminDesPaiements);
+}
+
+function sauvegarderPaiementsEnAttente(array $listeDesPaiements): void
+{
+    $cheminDesPaiements = __DIR__ . '/../data/paiements_en_attente.json';
+    enregistrerFichierJson($cheminDesPaiements, $listeDesPaiements);
+}
+
+function enregistrerPaiementEnAttente(array $paiementEnAttente): void
+{
+    $listeDesPaiements = lirePaiementsEnAttente();
+    $transaction = (string) ($paiementEnAttente['transaction'] ?? '');
+    $paiementMisAJour = false;
+
+    foreach ($listeDesPaiements as $indexPaiement => $paiement) {
+        if (($paiement['transaction'] ?? '') === $transaction) {
+            $listeDesPaiements[$indexPaiement] = $paiementEnAttente;
+            $paiementMisAJour = true;
+            break;
+        }
+    }
+
+    if (!$paiementMisAJour) {
+        $listeDesPaiements[] = $paiementEnAttente;
+    }
+
+    sauvegarderPaiementsEnAttente($listeDesPaiements);
+}
+
+function trouverPaiementEnAttenteParTransaction(string $transaction): ?array
+{
+    $listeDesPaiements = lirePaiementsEnAttente();
+
+    foreach ($listeDesPaiements as $paiement) {
+        if (($paiement['transaction'] ?? '') === $transaction) {
+            return $paiement;
+        }
+    }
+
+    return null;
+}
+
+function supprimerPaiementEnAttenteParTransaction(string $transaction): void
+{
+    $listeDesPaiements = lirePaiementsEnAttente();
+
+    foreach ($listeDesPaiements as $indexPaiement => $paiement) {
+        if (($paiement['transaction'] ?? '') === $transaction) {
+            array_splice($listeDesPaiements, $indexPaiement, 1);
+            break;
+        }
+    }
+
+    sauvegarderPaiementsEnAttente($listeDesPaiements);
+}
+
+function deconnecterUtilisateurSession(): void
+{
+    $_SESSION = [];
+
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        session_destroy();
+    }
+}
+
+function verifierEtatSessionUtilisateur(): array
+{
+    if (session_status() !== PHP_SESSION_ACTIVE || !isset($_SESSION['user'])) {
+        return [
+            'etat' => 'absent',
+            'utilisateur' => null,
+        ];
+    }
+
+    $identifiantUtilisateur = (int) ($_SESSION['user']['id'] ?? 0);
+
+    if ($identifiantUtilisateur <= 0) {
+        deconnecterUtilisateurSession();
+        return [
+            'etat' => 'absent',
+            'utilisateur' => null,
+        ];
+    }
+
+    $utilisateur = trouverUtilisateurParId($identifiantUtilisateur);
+
+    if ($utilisateur === null) {
+        deconnecterUtilisateurSession();
+        return [
+            'etat' => 'absent',
+            'utilisateur' => null,
+        ];
+    }
+
+    if (utilisateurEstBloque($utilisateur)) {
+        deconnecterUtilisateurSession();
+        return [
+            'etat' => 'bloque',
+            'utilisateur' => null,
+        ];
+    }
+
+    $_SESSION['user'] = $utilisateur;
+
+    return [
+        'etat' => 'ok',
+        'utilisateur' => $utilisateur,
+    ];
+}
+
+function obtenirUtilisateurConnecteOuRediriger(string $urlDeConnexion = 'connexion.php'): array
+{
+    $etatDeSession = verifierEtatSessionUtilisateur();
+
+    if (($etatDeSession['etat'] ?? '') !== 'ok') {
+        $separateur = strpos($urlDeConnexion, '?') !== false ? '&' : '?';
+        $urlDeRedirection = $urlDeConnexion;
+
+        if (($etatDeSession['etat'] ?? '') === 'bloque') {
+            $urlDeRedirection .= $separateur . 'message=compte_bloque';
+        }
+
+        header('Location: ' . $urlDeRedirection);
+        exit();
+    }
+
+    return $etatDeSession['utilisateur'];
+}
+
+function obtenirUtilisateurConnecteOuErreurJson(): array
+{
+    $etatDeSession = verifierEtatSessionUtilisateur();
+
+    if (($etatDeSession['etat'] ?? '') !== 'ok') {
+        echo json_encode([
+            'succes' => false,
+            'session_valide' => false,
+            'compte_bloque' => ($etatDeSession['etat'] ?? '') === 'bloque',
+            'message' => ($etatDeSession['etat'] ?? '') === 'bloque'
+                ? 'Votre compte est bloque.'
+                : 'Non connecte.',
+        ]);
+        exit();
+    }
+
+    return $etatDeSession['utilisateur'];
 }
 
 function lireCommandesDuRestaurant(int $identifiantRestaurant): array

@@ -7,6 +7,7 @@
         "telephone": "01 45 00 10 10",
         "password": "resto123",
         "statut": "restaurateur",
+        "est_bloque": false,
         "restaurant_id": 1,
         "restaurant_nom": "Pasta La Vista"
     },
@@ -18,6 +19,7 @@
         "telephone": "01 45 00 10 20",
         "password": "admin123",
         "statut": "admin",
+        "est_bloque": false,
         "restaurant_id": null,
         "restaurant_nom": null
     },
@@ -29,6 +31,7 @@
         "telephone": "06 12 34 56 78",
         "password": "client123",
         "statut": "client",
+        "est_bloque": false,
         "restaurant_id": null,
         "restaurant_nom": null
     },
@@ -40,6 +43,7 @@
         "telephone": "06 10 20 30 40",
         "password": "livreur123",
         "statut": "livreur",
+        "est_bloque": false,
         "restaurant_id": 1,
         "restaurant_nom": "Pasta La Vista"
     },
@@ -51,6 +55,7 @@
         "telephone": "0752399438",
         "password": "123456",
         "statut": "client",
+        "est_bloque": false,
         "restaurant_id": null,
         "restaurant_nom": null
     }

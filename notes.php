@@ -1,12 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/config/function.php';
-
-
-if (!isset($_SESSION['user'])) {
-    header('Location: connexion.php');
-    exit();
-}
+$utilisateurConnecte = obtenirUtilisateurConnecteOuRediriger();
 
 $id_commande = (int)($_GET['id'] ?? 0);
 $commandes = lireCommandes();
@@ -22,7 +17,6 @@ foreach ($commandes as $index => $c) {
     }
 }
 
-$utilisateurConnecte = $_SESSION['user'];
 $nomCompletUtilisateur = trim($utilisateurConnecte['prenom'] . ' ' . $utilisateurConnecte['nom']);
 
 
@@ -59,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <title>Noter ma commande - Pasta La Vista</title>
 </head>
 
-<body class="page-notes">
+<body class="page-notes" data-surveillance-session="1">
   <header class="site-header">
     <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
     <nav class="navbar">
@@ -122,5 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
   </footer>
 
+  <script src="js/session_surveillance.js"></script>
 </body>
 </html>

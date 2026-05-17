@@ -3,32 +3,30 @@ session_start();
 require_once __DIR__ . '/config/function.php';
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['user'])) { 
-    echo json_encode(['succes'=>false,'message'=>'Non connecté.']); 
-    exit(); 
-}
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') { 
-    echo json_encode(['succes'=>false,'message'=>'Méthode non autorisée.']); 
-    exit(); 
+$utilisateurConnecte = obtenirUtilisateurConnecteOuErreurJson();
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['succes' => false, 'message' => 'Methode non autorisee.']);
+    exit();
 }
 
 $donnees = json_decode(file_get_contents('php://input'), true);
-$nom = trim($donnees['nom']       ?? '');
-$prenom = trim($donnees['prenom']    ?? '');
-$email = trim($donnees['email']     ?? '');
+$nom = trim($donnees['nom'] ?? '');
+$prenom = trim($donnees['prenom'] ?? '');
+$email = trim($donnees['email'] ?? '');
 $telephone = trim($donnees['telephone'] ?? '');
 
-if (!$nom || !$prenom || !$email || !$telephone) { 
-    echo json_encode(['succes'=>false,'message'=>'Tous les champs sont obligatoires.']); 
-    exit(); 
+if (!$nom || !$prenom || !$email || !$telephone) {
+    echo json_encode(['succes' => false, 'message' => 'Tous les champs sont obligatoires.']);
+    exit();
 }
-if (!filter_var($email, FILTER_VALIDATE_EMAIL))  { 
-    echo json_encode(['succes'=>false,'message'=>'Email invalide.']); 
-    exit(); 
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(['succes' => false, 'message' => 'Email invalide.']);
+    exit();
 }
 
 $listeUtilisateurs = lireUtilisateurs();
-$idConnecte = $_SESSION['user']['id'];
+$idConnecte = $utilisateurConnecte['id'];
 $trouve = false;
 
 foreach ($listeUtilisateurs as $i => $u) {
@@ -43,8 +41,8 @@ foreach ($listeUtilisateurs as $i => $u) {
 }
 
 if (!$trouve) {
-    echo json_encode(['succes'=>false,'message'=>'Utilisateur introuvable.']);
-     exit(); 
+    echo json_encode(['succes' => false, 'message' => 'Utilisateur introuvable.']);
+    exit();
 }
 
 sauvegarderUtilisateurs($listeUtilisateurs);
@@ -53,4 +51,4 @@ $_SESSION['user']['prenom'] = $prenom;
 $_SESSION['user']['email'] = $email;
 $_SESSION['user']['telephone'] = $telephone;
 
-echo json_encode(['succes'=>true,'message'=>'Profil mis à jour.','user'=>compact('nom','prenom','email','telephone')]);
+echo json_encode(['succes' => true, 'message' => 'Profil mis a jour.', 'user' => compact('nom', 'prenom', 'email', 'telephone')]);
