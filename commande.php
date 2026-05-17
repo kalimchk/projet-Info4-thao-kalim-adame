@@ -118,15 +118,6 @@ $compteursParStatut = compterCommandesParStatut($listeDesCommandes);
 $definitionsDesStatuts = obtenirDefinitionDesStatutsCommande();
 $identifiantCommandeSelectionnee = (int) ($_POST['commande_id'] ?? ($_GET['commande_id'] ?? 0));
 
-$commandeSelectionnee = null;
-
-foreach ($listeDesCommandes as $commande) {
-    if (($commande['id'] ?? 0) === $identifiantCommandeSelectionnee) {
-        $commandeSelectionnee = $commande;
-        break;
-    }
-}
-
 if ($messageRetourCommande === '') {
     if (($_GET['message'] ?? '') === 'statut_maj') {
         $messageRetourCommande = 'Statut mis a jour.';
@@ -248,128 +239,87 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
         <?php endforeach; ?>
     </section>
 
-    <?php if ($commandeSelectionnee !== null): ?>
-        <?php $montantCommandeSelectionnee = calculerMontantTotalCommande($commandeSelectionnee['articles'] ?? []); ?>
-        <?php $optionsStatutDisponibles = obtenirOptionsStatutDisponibles((string) ($commandeSelectionnee['statut_commande'] ?? '')); ?>
-
-        <section id="detail-commande" class="detail-commande">
-            <div class="detail-header">
-                <div>
-                    <h2>Detail de la commande <?php echo echapperTexte($commandeSelectionnee['numero_commande'] ?? ''); ?></h2>
-                    <p class="description-section">Affichage complet prevu pour la phase suivante. Cette zone est uniquement visuelle.</p>
-                </div>
-                <a class="btn-retour-detail" href="commande.php">Fermer le detail</a>
+    <section id="detail-commande" class="detail-commande" style="display:none;">
+        <div class="detail-header">
+            <div>
+                <h2 id="detail-titre">Detail de la commande</h2>
+                <p class="description-section">Consultez puis modifiez la commande sans recharger la page.</p>
             </div>
+            <button type="button" id="fermer-detail-commande" class="btn-retour-detail">Fermer le detail</button>
+        </div>
 
-            <div class="detail-grid">
-                <article class="detail-card">
-                    <h3>Informations generales</h3>
-                    <p><strong>Client :</strong> <?php echo echapperTexte($commandeSelectionnee['client_nom'] ?? ''); ?></p>
-                    <p><strong>Telephone :</strong> <?php echo echapperTexte($commandeSelectionnee['client_telephone'] ?? ''); ?></p>
-                    <p><strong>Adresse :</strong> <?php echo echapperTexte($commandeSelectionnee['adresse_livraison'] ?? ''); ?></p>
-                    <p><strong>Heure :</strong> <?php echo echapperTexte($commandeSelectionnee['heure_commande'] ?? ''); ?></p>
-                    <p><strong>Statut actuel :</strong> <?php echo echapperTexte(obtenirLibelleCourtStatut($commandeSelectionnee['statut_commande'] ?? '')); ?></p>
-                    <p><strong>Delai estime :</strong> <?php echo echapperTexte($commandeSelectionnee['temps_estime'] ?? ''); ?></p>
-                    <?php if (($commandeSelectionnee['commentaire_client'] ?? '') !== ''): ?>
-                        <p><strong>Commentaire :</strong> <?php echo echapperTexte($commandeSelectionnee['commentaire_client']); ?></p>
-                    <?php endif; ?>
-                </article>
-
-                <article class="detail-card">
-                    <h3>Produits commandes</h3>
-                    <ul class="liste-produits">
-                        <?php foreach (($commandeSelectionnee['articles'] ?? []) as $article): ?>
-                            <li>
-                                <?php echo (int) ($article['quantite'] ?? 0); ?> x
-                                <?php echo echapperTexte($article['nom_produit'] ?? ''); ?>
-                                - <?php echo number_format((float) ($article['prix_unitaire'] ?? 0), 2, ',', ' '); ?> EUR
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <p class="total">Total : <?php echo number_format($montantCommandeSelectionnee, 2, ',', ' '); ?> EUR</p>
-                </article>
-            </div>
-
-            <div class="detail-grid">
-                <article class="detail-card">
-                    <h3>Changer le statut</h3>
-                    <form class="formulaire-detail" method="POST" action="">
-                        <input type="hidden" name="action_commande" value="mettre_a_jour_statut">
-                        <input type="hidden" name="commande_id" value="<?php echo (int) ($commandeSelectionnee['id'] ?? 0); ?>">
-                        <label for="statut_commande">Nouveau statut</label>
-                        <select id="statut_commande" name="statut_commande">
-                            <?php if (!empty($optionsStatutDisponibles)): ?>
-                                <option value="">Choisir une action</option>
-                                <?php foreach ($optionsStatutDisponibles as $codeStatut => $libelleStatut): ?>
-                                    <option value="<?php echo echapperTexte($codeStatut); ?>">
-                                        <?php echo echapperTexte($libelleStatut); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <option value="">Aucune action disponible</option>
-                            <?php endif; ?>
-                        </select>
-                        <button
-                            type="submit"
-                            class="btn-principal"
-                            <?php echo !empty($optionsStatutDisponibles) ? '' : 'disabled'; ?>
-                        >
-                            Mettre a jour le statut
-                        </button>
-                    </form>
-                </article>
-
-                <article class="detail-card">
-                    <h3>Attribuer a un livreur disponible</h3>
-                    <form class="formulaire-detail" method="POST" action="">
-                        <input type="hidden" name="action_commande" value="attribuer_livreur">
-                        <input type="hidden" name="commande_id" value="<?php echo (int) ($commandeSelectionnee['id'] ?? 0); ?>">
-                        <label for="livreur_commande">Livreur disponible</label>
-                        <select id="livreur_commande" name="livreur_id">
-                            <option value="">Choisir un livreur</option>
-                            <?php foreach ($listeDesLivreursDisponibles as $livreurDisponible): ?>
-                                <option
-                                    value="<?php echo (int) $livreurDisponible['id']; ?>"
-                                    <?php echo (($commandeSelectionnee['livreur_id'] ?? 0) === (int) $livreurDisponible['id']) ? 'selected' : ''; ?>
-                                >
-                                    <?php
-                                    echo echapperTexte(
-                                        $livreurDisponible['nom']
-                                        . ' - '
-                                        . $livreurDisponible['statut']
-                                        . ' - Zone '
-                                        . $livreurDisponible['zone']
-                                    );
-                                    ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <button
-                            type="submit"
-                            class="btn-secondaire"
-                            <?php echo (($commandeSelectionnee['statut_commande'] ?? '') === 'en_attente') ? '' : 'disabled'; ?>
-                        >
-                            Attribuer le livreur
-                        </button>
-                    </form>
-                </article>
-            </div>
+        <div class="detail-grid">
+            <article class="detail-card">
+                <h3>Informations generales</h3>
+                <p><strong>Client :</strong> <span id="detail-client"></span></p>
+                <p><strong>Telephone :</strong> <span id="detail-telephone"></span></p>
+                <p><strong>Adresse :</strong> <span id="detail-adresse"></span></p>
+                <p><strong>Heure :</strong> <span id="detail-heure"></span></p>
+                <p><strong>Statut actuel :</strong> <span id="detail-statut"></span></p>
+                <p><strong>Delai estime :</strong> <span id="detail-delai"></span></p>
+                <p id="detail-commentaire-ligne" style="display:none;"><strong>Commentaire :</strong> <span id="detail-commentaire"></span></p>
+            </article>
 
             <article class="detail-card">
-                <h3>Livreurs actuellement disponibles</h3>
-                <div class="liste-livreurs">
-                    <?php foreach ($listeDesLivreursDisponibles as $livreurDisponible): ?>
-                        <div class="livreur-card">
-                            <p><strong><?php echo echapperTexte($livreurDisponible['nom']); ?></strong></p>
-                            <p><?php echo echapperTexte($livreurDisponible['telephone']); ?></p>
-                            <p><?php echo echapperTexte($livreurDisponible['statut']); ?></p>
-                            <p>Zone : <?php echo echapperTexte($livreurDisponible['zone']); ?></p>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+                <h3>Produits commandes</h3>
+                <ul id="detail-produits" class="liste-produits"></ul>
+                <p class="total">Total : <span id="detail-total">0,00</span> EUR</p>
             </article>
-        </section>
-    <?php endif; ?>
+        </div>
+
+        <div class="detail-grid">
+            <article class="detail-card">
+                <h3>Changer le statut</h3>
+                <form class="formulaire-detail" method="POST" action="">
+                    <input type="hidden" name="action_commande" value="mettre_a_jour_statut">
+                    <input type="hidden" id="detail-commande-id-statut" name="commande_id" value="">
+                    <label for="statut_commande">Nouveau statut</label>
+                    <select id="statut_commande" name="statut_commande"></select>
+                    <button type="submit" id="detail-bouton-statut" class="btn-principal">Mettre a jour le statut</button>
+                </form>
+            </article>
+
+            <article class="detail-card">
+                <h3>Attribuer a un livreur disponible</h3>
+                <form class="formulaire-detail" method="POST" action="">
+                    <input type="hidden" name="action_commande" value="attribuer_livreur">
+                    <input type="hidden" id="detail-commande-id-livreur" name="commande_id" value="">
+                    <label for="livreur_commande">Livreur disponible</label>
+                    <select id="livreur_commande" name="livreur_id">
+                        <option value="">Choisir un livreur</option>
+                        <?php foreach ($listeDesLivreursDisponibles as $livreurDisponible): ?>
+                            <option value="<?php echo (int) $livreurDisponible['id']; ?>">
+                                <?php
+                                echo echapperTexte(
+                                    $livreurDisponible['nom']
+                                    . ' - '
+                                    . $livreurDisponible['statut']
+                                    . ' - Zone '
+                                    . $livreurDisponible['zone']
+                                );
+                                ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="submit" id="detail-bouton-livreur" class="btn-secondaire">Attribuer le livreur</button>
+                </form>
+            </article>
+        </div>
+
+        <article class="detail-card">
+            <h3>Livreurs actuellement disponibles</h3>
+            <div class="liste-livreurs">
+                <?php foreach ($listeDesLivreursDisponibles as $livreurDisponible): ?>
+                    <div class="livreur-card">
+                        <p><strong><?php echo echapperTexte($livreurDisponible['nom']); ?></strong></p>
+                        <p><?php echo echapperTexte($livreurDisponible['telephone']); ?></p>
+                        <p><?php echo echapperTexte($livreurDisponible['statut']); ?></p>
+                        <p>Zone : <?php echo echapperTexte($livreurDisponible['zone']); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </article>
+    </section>
 
     <?php foreach ($definitionsDesStatuts as $codeStatut => $definitionDuStatut): ?>
         <section class="bloc-statut">
@@ -382,7 +332,10 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 <?php foreach ($commandesParStatut[$codeStatut] as $commande): ?>
                     <?php $montantTotal = calculerMontantTotalCommande($commande['articles'] ?? []); ?>
 
-                    <article class="commande-card">
+                    <article
+                        class="commande-card"
+                        data-commande="<?php echo htmlspecialchars(json_encode($commande, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8'); ?>"
+                    >
                         <div class="commande-header">
                             <span class="commande-numero"><?php echo echapperTexte($commande['numero_commande'] ?? ''); ?></span>
                             <span class="badge <?php echo echapperTexte(obtenirClasseBadgeCommande($codeStatut)); ?>">
@@ -415,9 +368,9 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <p class="total">Total : <?php echo number_format($montantTotal, 2, ',', ' '); ?> EUR</p>
 
                         <div class="actions-commande">
-                            <a class="btn-principal lien-action" href="commande.php?commande_id=<?php echo (int) ($commande['id'] ?? 0); ?>#detail-commande">
+                            <button type="button" class="btn-principal lien-action js-voir-detail">
                                 Voir le detail
-                            </a>
+                            </button>
                         </div>
                     </article>
                 <?php endforeach; ?>
@@ -434,16 +387,120 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 <script src="js/session_surveillance.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    if (window.location.hash !== '#detail-commande') {
-        return;
+    const blocDetail = document.getElementById('detail-commande');
+    const boutonFermer = document.getElementById('fermer-detail-commande');
+    const boutonsVoirDetail = document.querySelectorAll('.js-voir-detail');
+    const selectStatut = document.getElementById('statut_commande');
+    const selectLivreur = document.getElementById('livreur_commande');
+    const boutonStatut = document.getElementById('detail-bouton-statut');
+    const boutonLivreur = document.getElementById('detail-bouton-livreur');
+    const commentaireLigne = document.getElementById('detail-commentaire-ligne');
+
+    function obtenirLibelleStatut(statutActuel) {
+        const libelles = {
+            a_preparer: 'A preparer',
+            en_cours: 'En cours',
+            en_attente: 'En attente',
+            en_livraison: 'En livraison',
+            livree: 'Livree'
+        };
+
+        return libelles[statutActuel] || 'Inconnu';
     }
 
-    const detail = document.getElementById('detail-commande');
-    if (!detail) {
-        return;
+    function obtenirOptionsStatut(statutActuel) {
+        if (statutActuel === 'a_preparer') {
+            return [
+                { value: '', label: 'Choisir une action' },
+                { value: 'en_cours', label: 'Passer en preparation' },
+                { value: 'en_attente', label: 'Passer directement a prete' }
+            ];
+        }
+
+        if (statutActuel === 'en_cours') {
+            return [
+                { value: '', label: 'Choisir une action' },
+                { value: 'en_attente', label: 'Passer a prete' }
+            ];
+        }
+
+        return [
+            { value: '', label: 'Aucune action disponible' }
+        ];
     }
 
-    detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    function formaterMontant(nombre) {
+        return Number(nombre || 0).toFixed(2).replace('.', ',');
+    }
+
+    function ouvrirDetail(commande) {
+        document.getElementById('detail-titre').textContent = 'Detail de la commande ' + (commande.numero_commande || '');
+        document.getElementById('detail-client').textContent = commande.client_nom || '';
+        document.getElementById('detail-telephone').textContent = commande.client_telephone || '';
+        document.getElementById('detail-adresse').textContent = commande.adresse_livraison || '';
+        document.getElementById('detail-heure').textContent = commande.heure_commande || '';
+        document.getElementById('detail-statut').textContent = obtenirLibelleStatut(commande.statut_commande || '');
+        document.getElementById('detail-delai').textContent = commande.temps_estime || '';
+        document.getElementById('detail-commentaire').textContent = commande.commentaire_client || '';
+        commentaireLigne.style.display = (commande.commentaire_client || '') !== '' ? 'block' : 'none';
+        document.getElementById('detail-commande-id-statut').value = commande.id || '';
+        document.getElementById('detail-commande-id-livreur').value = commande.id || '';
+
+        const listeProduits = document.getElementById('detail-produits');
+        listeProduits.innerHTML = '';
+        let total = 0;
+
+        (commande.articles || []).forEach(function (article) {
+            const quantite = Number(article.quantite || 0);
+            const prix = Number(article.prix_unitaire || 0);
+            total += quantite * prix;
+
+            const li = document.createElement('li');
+            li.textContent = quantite + ' x ' + (article.nom_produit || '') + ' - ' + formaterMontant(prix) + ' EUR';
+            listeProduits.appendChild(li);
+        });
+
+        document.getElementById('detail-total').textContent = formaterMontant(total);
+
+        const optionsStatut = obtenirOptionsStatut(commande.statut_commande || '');
+        selectStatut.innerHTML = '';
+        optionsStatut.forEach(function (optionStatut) {
+            const option = document.createElement('option');
+            option.value = optionStatut.value;
+            option.textContent = optionStatut.label;
+            selectStatut.appendChild(option);
+        });
+
+        boutonStatut.disabled = !(commande.statut_commande === 'a_preparer' || commande.statut_commande === 'en_cours');
+        boutonLivreur.disabled = commande.statut_commande !== 'en_attente';
+        selectLivreur.disabled = commande.statut_commande !== 'en_attente';
+
+        if (commande.livreur_id) {
+            selectLivreur.value = String(commande.livreur_id);
+        } else {
+            selectLivreur.value = '';
+        }
+
+        blocDetail.style.display = 'block';
+        blocDetail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    boutonsVoirDetail.forEach(function (bouton) {
+        bouton.addEventListener('click', function () {
+            const carte = bouton.closest('.commande-card');
+            if (!carte || !carte.dataset.commande) {
+                return;
+            }
+
+            ouvrirDetail(JSON.parse(carte.dataset.commande));
+        });
+    });
+
+    if (boutonFermer) {
+        boutonFermer.addEventListener('click', function () {
+            blocDetail.style.display = 'none';
+        });
+    }
 });
 </script>
 </body>
