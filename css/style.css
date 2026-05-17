@@ -2187,11 +2187,20 @@ body.page-administateur .badges {
     margin-bottom: 2px;
 }
 
+body.page-administateur .user-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
 body.page-administateur .user-action-slot {
     min-height: 24px;
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+    flex-shrink: 0;
 }
 
 body.page-administateur .user-action-note {

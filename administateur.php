@@ -63,25 +63,27 @@ $nombreTotalUtilisateurs = count($listeDesUtilisateurs);
                         </div>
                         <p class="user-meta"><?php echo htmlspecialchars($utilisateur['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
                         <p class="user-meta"><?php echo htmlspecialchars($utilisateur['telephone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
-                        <div class="badges">
-                            <span class="badge"><?php echo htmlspecialchars($utilisateur['statut'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
-                            <?php if (!empty($utilisateur['est_bloque'])): ?>
-                                <span class="badge badge-blocage badge-bloque">Bloque</span>
-                            <?php endif; ?>
-                        </div>
-                        <div class="user-action-slot">
-                            <?php if ((int) ($utilisateur['id'] ?? 0) !== (int) ($utilisateurConnecte['id'] ?? 0)): ?>
-                                <button
-                                    type="button"
-                                    class="js-action-blocage <?php echo !empty($utilisateur['est_bloque']) ? 'btn-debloquer' : 'btn-bloquer'; ?>"
-                                    data-user-id="<?php echo (int) ($utilisateur['id'] ?? 0); ?>"
-                                    data-est-bloque="<?php echo !empty($utilisateur['est_bloque']) ? '1' : '0'; ?>"
-                                >
-                                    <?php echo !empty($utilisateur['est_bloque']) ? 'Debloquer' : 'Bloquer'; ?>
-                                </button>
-                            <?php else: ?>
-                                <span class="user-action-note">Compte courant</span>
-                            <?php endif; ?>
+                        <div class="user-status-row">
+                            <div class="badges">
+                                <span class="badge"><?php echo htmlspecialchars($utilisateur['statut'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
+                                <?php if (!empty($utilisateur['est_bloque'])): ?>
+                                    <span class="badge badge-blocage badge-bloque">Bloque</span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="user-action-slot">
+                                <?php if ((int) ($utilisateur['id'] ?? 0) !== (int) ($utilisateurConnecte['id'] ?? 0)): ?>
+                                    <button
+                                        type="button"
+                                        class="js-action-blocage <?php echo !empty($utilisateur['est_bloque']) ? 'btn-debloquer' : 'btn-bloquer'; ?>"
+                                        data-user-id="<?php echo (int) ($utilisateur['id'] ?? 0); ?>"
+                                        data-est-bloque="<?php echo !empty($utilisateur['est_bloque']) ? '1' : '0'; ?>"
+                                    >
+                                        <?php echo !empty($utilisateur['est_bloque']) ? 'Debloquer' : 'Bloquer'; ?>
+                                    </button>
+                                <?php else: ?>
+                                    <span class="user-action-note">Compte courant</span>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </article>
                 <?php endforeach; ?>
