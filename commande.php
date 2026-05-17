@@ -8,31 +8,23 @@ if (($utilisateurConnecte['statut'] ?? '') !== 'restaurateur') {
     exit();
 }
 
-$identifiantRestaurant = (int) ($utilisateurConnecte['restaurant_id'] ?? 0);
-$nomRestaurant = $utilisateurConnecte['restaurant_nom'] ?? 'Restaurant';
-$listeDesCommandes = lireCommandesDuRestaurant($identifiantRestaurant);
-$commandesParStatut = regrouperCommandesParStatut($listeDesCommandes);
-$compteursParStatut = compterCommandesParStatut($listeDesCommandes);
-$definitionsDesStatuts = obtenirDefinitionDesStatutsCommande();
-$identifiantCommandeSelectionnee = (int) ($_GET['commande_id'] ?? 0);
-
 $listeDesLivreursDisponibles = [
     [
-        'id' => 1,
+        'id' => 4,
         'nom' => 'Nicolas Perrin',
         'telephone' => '06 10 20 30 40',
         'statut' => 'Disponible',
         'zone' => 'Cergy',
     ],
     [
-        'id' => 2,
+        'id' => 5,
         'nom' => 'Lea Fontaine',
         'telephone' => '06 11 22 33 44',
         'statut' => 'Disponible',
         'zone' => 'Pontoise',
     ],
     [
-        'id' => 3,
+        'id' => 6,
         'nom' => 'Sami Benali',
         'telephone' => '06 55 44 33 22',
         'statut' => 'Disponible',
@@ -40,12 +32,108 @@ $listeDesLivreursDisponibles = [
     ],
 ];
 
+$identifiantRestaurant = (int) ($utilisateurConnecte['restaurant_id'] ?? 0);
+$nomRestaurant = $utilisateurConnecte['restaurant_nom'] ?? 'Restaurant';
+$messageRetourCommande = '';
+$typeMessageRetourCommande = 'succes';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $actionCommande = trim((string) ($_POST['action_commande'] ?? ''));
+    $identifiantCommandeFormulaire = (int) ($_POST['commande_id'] ?? 0);
+    $listeDesCommandesComplete = lireCommandes();
+    $indexCommandeCible = -1;
+    $commandeCible = null;
+
+    foreach ($listeDesCommandesComplete as $indexCommande => $commande) {
+        if (
+            (int) ($commande['id'] ?? 0) === $identifiantCommandeFormulaire
+            && (int) ($commande['restaurant_id'] ?? 0) === $identifiantRestaurant
+        ) {
+            $indexCommandeCible = $indexCommande;
+            $commandeCible = $commande;
+            break;
+        }
+    }
+
+    if ($commandeCible === null) {
+        $messageRetourCommande = 'Commande introuvable.';
+        $typeMessageRetourCommande = 'erreur';
+    } elseif ($actionCommande === 'mettre_a_jour_statut') {
+        $nouveauStatut = trim((string) ($_POST['statut_commande'] ?? ''));
+        $statutActuel = (string) ($commandeCible['statut_commande'] ?? '');
+        $transitionValide = false;
+
+        if ($statutActuel === 'a_preparer' && $nouveauStatut === 'en_cours') {
+            $transitionValide = true;
+            $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'En preparation';
+        }
+
+        if ($statutActuel === 'en_cours' && $nouveauStatut === 'en_attente') {
+            $transitionValide = true;
+            $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'Prete';
+        }
+
+        if (!$transitionValide) {
+            $messageRetourCommande = 'Changement de statut non autorise.';
+            $typeMessageRetourCommande = 'erreur';
+        } else {
+            $listeDesCommandesComplete[$indexCommandeCible]['statut_commande'] = $nouveauStatut;
+            sauvegarderCommandes($listeDesCommandesComplete);
+            header('Location: commande.php?commande_id=' . $identifiantCommandeFormulaire . '&message=statut_maj');
+            exit();
+        }
+    } elseif ($actionCommande === 'attribuer_livreur') {
+        $identifiantLivreur = (int) ($_POST['livreur_id'] ?? 0);
+        $statutActuel = (string) ($commandeCible['statut_commande'] ?? '');
+        $livreurSelectionne = null;
+
+        foreach ($listeDesLivreursDisponibles as $livreurDisponible) {
+            if ((int) $livreurDisponible['id'] === $identifiantLivreur) {
+                $livreurSelectionne = $livreurDisponible;
+                break;
+            }
+        }
+
+        if ($statutActuel !== 'en_attente') {
+            $messageRetourCommande = 'La commande doit etre prete avant attribution.';
+            $typeMessageRetourCommande = 'erreur';
+        } elseif ($livreurSelectionne === null) {
+            $messageRetourCommande = 'Livreur invalide.';
+            $typeMessageRetourCommande = 'erreur';
+        } else {
+            $listeDesCommandesComplete[$indexCommandeCible]['livreur_id'] = (int) $livreurSelectionne['id'];
+            $listeDesCommandesComplete[$indexCommandeCible]['livreur_nom'] = $livreurSelectionne['nom'];
+            $listeDesCommandesComplete[$indexCommandeCible]['statut_commande'] = 'en_livraison';
+            $listeDesCommandesComplete[$indexCommandeCible]['temps_estime'] = 'Livraison en cours';
+            sauvegarderCommandes($listeDesCommandesComplete);
+            header('Location: commande.php?commande_id=' . $identifiantCommandeFormulaire . '&message=livreur_attribue');
+            exit();
+        }
+    }
+}
+
+$listeDesCommandes = lireCommandesDuRestaurant($identifiantRestaurant);
+$commandesParStatut = regrouperCommandesParStatut($listeDesCommandes);
+$compteursParStatut = compterCommandesParStatut($listeDesCommandes);
+$definitionsDesStatuts = obtenirDefinitionDesStatutsCommande();
+$identifiantCommandeSelectionnee = (int) ($_POST['commande_id'] ?? ($_GET['commande_id'] ?? 0));
+
 $commandeSelectionnee = null;
 
 foreach ($listeDesCommandes as $commande) {
     if (($commande['id'] ?? 0) === $identifiantCommandeSelectionnee) {
         $commandeSelectionnee = $commande;
         break;
+    }
+}
+
+if ($messageRetourCommande === '') {
+    if (($_GET['message'] ?? '') === 'statut_maj') {
+        $messageRetourCommande = 'Statut mis a jour.';
+    }
+
+    if (($_GET['message'] ?? '') === 'livreur_attribue') {
+        $messageRetourCommande = 'Livreur attribue avec succes.';
     }
 }
 
@@ -104,6 +192,11 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
 <main class="commandes-container">
     <h1>Liste detaillee des commandes</h1>
     <p class="commande-intro">Restaurant connecte : <?php echo echapperTexte($nomRestaurant); ?></p>
+    <?php if ($messageRetourCommande !== ''): ?>
+        <p class="message-retour <?php echo $typeMessageRetourCommande === 'erreur' ? 'erreur' : 'succes'; ?>">
+            <?php echo echapperTexte($messageRetourCommande); ?>
+        </p>
+    <?php endif; ?>
 
     <section class="resume-commandes">
         <?php foreach ($definitionsDesStatuts as $codeStatut => $definitionDuStatut): ?>
@@ -158,29 +251,42 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
             <div class="detail-grid">
                 <article class="detail-card">
                     <h3>Changer le statut</h3>
-                    <form class="formulaire-detail" method="GET" action="">
+                    <form class="formulaire-detail" method="POST" action="">
+                        <input type="hidden" name="action_commande" value="mettre_a_jour_statut">
                         <input type="hidden" name="commande_id" value="<?php echo (int) ($commandeSelectionnee['id'] ?? 0); ?>">
                         <label for="statut_commande">Nouveau statut</label>
-                        <select id="statut_commande" name="statut_commande_affichage">
-                            <?php foreach ($definitionsDesStatuts as $codeStatut => $definitionDuStatut): ?>
-                                <option value="<?php echo echapperTexte($codeStatut); ?>" <?php echo (($commandeSelectionnee['statut_commande'] ?? '') === $codeStatut) ? 'selected' : ''; ?>>
-                                    <?php echo echapperTexte($definitionDuStatut['titre']); ?>
-                                </option>
-                            <?php endforeach; ?>
+                        <select id="statut_commande" name="statut_commande">
+                            <?php if (($commandeSelectionnee['statut_commande'] ?? '') === 'a_preparer'): ?>
+                                <option value="en_cours">Passer en preparation</option>
+                            <?php elseif (($commandeSelectionnee['statut_commande'] ?? '') === 'en_cours'): ?>
+                                <option value="en_attente">Passer a l etat prete</option>
+                            <?php else: ?>
+                                <option value="">Aucune action disponible</option>
+                            <?php endif; ?>
                         </select>
-                        <button type="button" class="btn-principal bouton-inactif">Mettre a jour le statut</button>
+                        <button
+                            type="submit"
+                            class="btn-principal"
+                            <?php echo in_array(($commandeSelectionnee['statut_commande'] ?? ''), ['a_preparer', 'en_cours'], true) ? '' : 'disabled'; ?>
+                        >
+                            Mettre a jour le statut
+                        </button>
                     </form>
                 </article>
 
                 <article class="detail-card">
                     <h3>Attribuer a un livreur disponible</h3>
-                    <form class="formulaire-detail" method="GET" action="">
+                    <form class="formulaire-detail" method="POST" action="">
+                        <input type="hidden" name="action_commande" value="attribuer_livreur">
                         <input type="hidden" name="commande_id" value="<?php echo (int) ($commandeSelectionnee['id'] ?? 0); ?>">
                         <label for="livreur_commande">Livreur disponible</label>
-                        <select id="livreur_commande" name="livreur_affichage">
+                        <select id="livreur_commande" name="livreur_id">
                             <option value="">Choisir un livreur</option>
                             <?php foreach ($listeDesLivreursDisponibles as $livreurDisponible): ?>
-                                <option value="<?php echo (int) $livreurDisponible['id']; ?>">
+                                <option
+                                    value="<?php echo (int) $livreurDisponible['id']; ?>"
+                                    <?php echo (($commandeSelectionnee['livreur_id'] ?? 0) === (int) $livreurDisponible['id']) ? 'selected' : ''; ?>
+                                >
                                     <?php
                                     echo echapperTexte(
                                         $livreurDisponible['nom']
@@ -193,7 +299,13 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <button type="button" class="btn-secondaire bouton-inactif">Attribuer le livreur</button>
+                        <button
+                            type="submit"
+                            class="btn-secondaire"
+                            <?php echo (($commandeSelectionnee['statut_commande'] ?? '') === 'en_attente') ? '' : 'disabled'; ?>
+                        >
+                            Attribuer le livreur
+                        </button>
                     </form>
                 </article>
             </div>
