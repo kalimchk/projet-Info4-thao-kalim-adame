@@ -20,7 +20,9 @@ foreach ($commandes as $index => $c) {
 $nomCompletUtilisateur = trim($utilisateurConnecte['prenom'] . ' ' . $utilisateurConnecte['nom']);
 
 
-if (!$maCommande || ($maCommande['client_nom'] ?? '') !== $nomCompletUtilisateur || ($maCommande['statut_commande'] ?? '') !== 'livree' || isset($maCommande['note'])) {
+$estLivraison = stripos($maCommande['commentaire_client'] ?? '', 'Mode : Livraison') !== false;
+
+if (!$maCommande || ($maCommande['client_nom'] ?? '') !== $nomCompletUtilisateur || ($maCommande['statut_commande'] ?? '') !== 'livree' || !$estLivraison || isset($maCommande['note'])) {
     header('Location: profil.php');
     exit();
 }
@@ -43,13 +45,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+<?php
+$isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
+$darkClass = $isDark ? ' class="dark-mode"' : '';
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"<?php echo $darkClass; ?>>
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="logo/logo-pasta-la-vista.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/darkmode.css">
   <title>Noter ma commande - Pasta La Vista</title>
 </head>
 
@@ -62,6 +69,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <a href="panier.php">🛒 Mon Panier</a>
       <a href="profil.php">Mon Profil</a>
       <a href="deconnexion.php" style="color: #a45742; font-weight: bold;">Déconnexion</a>
+      <label class="switch">
+          <input class="switch__input" id="dm-switch" type="checkbox" role="switch"
+                 <?php echo $isDark ? 'checked' : ''; ?>>
+          <span class="switch__icon">
+              <span class="switch__icon-part switch__icon-part--1"></span>
+              <span class="switch__icon-part switch__icon-part--2"></span>
+              <span class="switch__icon-part switch__icon-part--3"></span>
+              <span class="switch__icon-part switch__icon-part--4"></span>
+              <span class="switch__icon-part switch__icon-part--5"></span>
+              <span class="switch__icon-part switch__icon-part--6"></span>
+              <span class="switch__icon-part switch__icon-part--7"></span>
+              <span class="switch__icon-part switch__icon-part--8"></span>
+              <span class="switch__icon-part switch__icon-part--9"></span>
+              <span class="switch__icon-part switch__icon-part--10"></span>
+              <span class="switch__icon-part switch__icon-part--11"></span>
+          </span>
+          <span class="switch__sr">Dark Mode</span>
+      </label>
     </nav>
   </header>
 
@@ -116,6 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
   </footer>
 
+  <script src="js/darkmode.js"></script>
   <script src="js/session_surveillance.js"></script>
 </body>
 </html>

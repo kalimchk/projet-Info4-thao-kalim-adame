@@ -22,12 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<?php
+$isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
+$darkClass = $isDark ? ' class="dark-mode"' : '';
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"<?php echo $darkClass; ?>>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
     <title>Inscription</title>
 </head>
 <body class="page-inscription">
@@ -46,6 +51,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="connexion.php">Connexion</a>
                 <a href="inscription.php">Inscription</a>
             <?php endif; ?>
+            <label class="switch">
+                <input class="switch__input" id="dm-switch" type="checkbox" role="switch"
+                       <?php echo $isDark ? 'checked' : ''; ?>>
+                <span class="switch__icon">
+                    <span class="switch__icon-part switch__icon-part--1"></span>
+                    <span class="switch__icon-part switch__icon-part--2"></span>
+                    <span class="switch__icon-part switch__icon-part--3"></span>
+                    <span class="switch__icon-part switch__icon-part--4"></span>
+                    <span class="switch__icon-part switch__icon-part--5"></span>
+                    <span class="switch__icon-part switch__icon-part--6"></span>
+                    <span class="switch__icon-part switch__icon-part--7"></span>
+                    <span class="switch__icon-part switch__icon-part--8"></span>
+                    <span class="switch__icon-part switch__icon-part--9"></span>
+                    <span class="switch__icon-part switch__icon-part--10"></span>
+                    <span class="switch__icon-part switch__icon-part--11"></span>
+                </span>
+                <span class="switch__sr">Dark Mode</span>
+            </label>
         </nav>
     </header>
 
@@ -91,5 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 
     <script src="js/inscription.js"></script>
+    <script src="js/darkmode.js"></script>
 </body>
 </html>

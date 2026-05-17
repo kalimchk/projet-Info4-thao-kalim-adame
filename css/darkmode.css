@@ -1,15 +1,10 @@
-/* ============================================
-   darkmode.css — Thème sombre adapté à Pasta La Vista
-   ============================================ */
-
-/* ── Bloquer transitions au 1er chargement ── */
 html.no-transition *,
 html.no-transition *::before,
 html.no-transition *::after {
   transition: none !important;
 }
 
-/* ── Transition fondu sur le fond uniquement ── */
+
 body {
   transition: background-color 0.6s ease, color 0.6s ease;
 }
@@ -18,7 +13,7 @@ body * {
   transition: background-color 0.6s ease, color 0.6s ease, border-color 0.6s ease;
 }
 
-/* ── Mode sombre : redéfinit les variables de style.css ── */
+
 html.dark-mode {
   --bg:               #1a1a22;
   --surface:          #0f0f13;
@@ -41,7 +36,7 @@ html.dark-mode {
   --shadow-card:      0 8px 20px rgba(0, 0, 0, 0.35);
   --shadow-panel:     0 12px 30px rgba(0, 0, 0, 0.4);
 
-  /* Toggle */
+ 
   --theme-toggle-light-scale: 1;
   --theme-toggle-dark-scale:  0;
   --theme-toggle-icon:        #e8e6e0;
@@ -51,7 +46,7 @@ html.dark-mode {
   --toggle-label-txt:         "light";
 }
 
-/* ── Variables toggle mode clair ── */
+
 :root {
   --theme-bg-clr:          #0f0f13;
   --theme-toggle-icon:     #2e2e2e;
@@ -63,7 +58,7 @@ html.dark-mode {
   --toggle-label-txt:      "dark";
 }
 
-/* Sync CSS :has() pour l'animation temps réel */
+
 :root:has(input#theme:checked) {
   --theme-toggle-light-scale: 1;
   --theme-toggle-dark-scale:  0;
@@ -72,15 +67,13 @@ html.dark-mode {
   --toggle-label-txt:         "light";
 }
 
-/* ── Widget conteneur ── */
-#darkmode-widget {
-  position: fixed;
-  top: 18px;
-  right: 24px;
-  z-index: 9999;
+
+.switch {
+  display: flex;
+  align-items: center;
 }
 
-/* ── Switch soleil / lune ── */
+
 .switch,
 .switch__input {
   position: relative;
@@ -228,7 +221,7 @@ html.dark-mode .switch__icon-part--3 ~ .switch__icon-part {
   height: 1px;
 }
 
-/* État coché (dark mode actif) */
+
 .switch__input:checked { background-color: hsl(223,10%,90%); }
 
 .switch__input:checked:before,
@@ -260,7 +253,7 @@ html.dark-mode .switch__input:checked ~ .switch__icon .switch__icon-part--3 {
 
 
 
-/* ── Responsive ── */
+
 @media (max-width: 480px) {
   #darkmode-widget {
     bottom: 16px;
@@ -269,4 +262,44 @@ html.dark-mode .switch__input:checked ~ .switch__icon .switch__icon-part--3 {
   .switch__input {
     font-size: 18px;
   }
+}
+
+
+html.dark-mode select,
+html.dark-mode select option,
+html.dark-mode input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+html.dark-mode textarea {
+  background-color: var(--surface-alt);
+  color: var(--ink);
+  border-color: var(--line-strong);
+  color-scheme: dark;
+}
+
+html.dark-mode select:focus,
+html.dark-mode input:focus,
+html.dark-mode textarea:focus {
+  outline-color: var(--accent);
+  border-color: var(--accent);
+}
+
+html.dark-mode body.page-carte .filter-group {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html.dark-mode body.page-carte .filter-options label {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--border, var(--line));
+}
+
+html.dark-mode body.page-carte .dish-card,
+html.dark-mode body.page-carte .menu-card {
+  background: var(--bg);
+  border-color: var(--line);
+}
+
+html.dark-mode body.page-carte .panel,
+html.dark-mode body.page-carte .filters {
+  background: var(--surface);
+  border-color: var(--line);
 }
