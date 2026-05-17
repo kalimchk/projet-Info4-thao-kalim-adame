@@ -2144,22 +2144,26 @@ body.page-profil h2{
 }
 
 .js-action-blocage {
-    margin-top: 10px;
+    margin-top: 6px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    align-self: flex-start;
-    min-width: 96px;
-    padding: 7px 12px;
+    align-self: end;
+    justify-self: start;
+    min-width: 0;
+    width: fit-content;
+    padding: 4px 9px;
     border-radius: 999px;
-    font-size: 0.82rem;
+    font-size: 0.72rem;
     font-weight: 600;
     line-height: 1;
+    border: 1px solid transparent;
+    box-shadow: none;
 }
 
 .page-administateur .user {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
     padding: 16px 18px;
 }
 
@@ -2171,4 +2175,16 @@ body.page-profil h2{
 .btn-debloquer {
     background: #2e7d32;
     color: #fff;
+}
+
+body.page-administateur .user-top {
+    margin-bottom: 0;
+}
+
+body.page-administateur .user-meta {
+    margin-bottom: 2px;
+}
+
+body.page-administateur .badges {
+    margin-bottom: 2px;
 }
