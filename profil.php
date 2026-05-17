@@ -56,7 +56,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 
 <main class="page">
 
-    <!-- ── Section profil éditable ── -->
+
     <section class="card">
         <h1>Mon profil</h1>
         <p id="message-retour-profil" class="message-retour" style="display:none;"></p>
@@ -94,7 +94,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                        maxlength="20" class="champ-profil" style="display:none;">
             </div>
 
-            <!-- Mot de passe : afficher/cacher uniquement, pas modifiable ici -->
+           
             <div class="field">
                 <div class="label-row"><label>Mot de passe</label></div>
                 <div class="mdp-wrapper value" style="display:flex; align-items:center; gap:10px;">
@@ -112,7 +112,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <button id="btn-annuler-profil"  type="button" class="btn btn-ghost" style="display:none;">Annuler</button>
         </div>
     </section>
-    <!-- ── Section commandes ── -->
+
     <section class="card">
         <h2>Mes anciennes commandes</h2>
         <div class="orders">
@@ -187,7 +187,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
         </div>
     </section>
 
-    <!-- ── Section fidélité ── -->
+
     <section class="card">
         <h2>Fidélité</h2>
         <div class="fidelite">
