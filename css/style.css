@@ -2186,3 +2186,50 @@ body.page-administateur .user-meta {
 body.page-administateur .badges {
     margin-bottom: 2px;
 }
+
+body.page-administateur .user-action-slot {
+    min-height: 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+body.page-administateur .user-action-note {
+    font-size: 0.72rem;
+    color: var(--muted);
+}
+
+body.page-administateur .js-action-blocage,
+body.page-administateur .btn-bloquer,
+body.page-administateur .btn-debloquer {
+    appearance: none;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 3px 8px !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+    font-family: inherit;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
+body.page-administateur .btn-bloquer {
+    background: #a45742 !important;
+    color: #fff !important;
+    border: 1px solid #a45742 !important;
+}
+
+body.page-administateur .btn-debloquer {
+    background: #2e7d32 !important;
+    color: #fff !important;
+    border: 1px solid #2e7d32 !important;
+}
