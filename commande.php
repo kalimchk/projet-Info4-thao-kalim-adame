@@ -155,14 +155,19 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
     return $classesParStatut[$statutCommande] ?? 'badge-prepare';
 }
 ?>
+<?php
+$isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
+$darkClass = $isDark ? ' class="dark-mode"' : '';
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"<?php echo $darkClass; ?>>
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="logo/logo-pasta-la-vista.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Commandes - Pasta La Vista</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
 </head>
 <body class="page-commande" data-surveillance-session="1">
 
@@ -186,6 +191,24 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
                 <a href="connexion.php">Connexion</a>
                 <a href="inscription.php">Inscription</a>
             <?php endif; ?>
+            <label class="switch">
+                <input class="switch__input" id="dm-switch" type="checkbox" role="switch"
+                       <?php echo $isDark ? 'checked' : ''; ?>>
+                <span class="switch__icon">
+                    <span class="switch__icon-part switch__icon-part--1"></span>
+                    <span class="switch__icon-part switch__icon-part--2"></span>
+                    <span class="switch__icon-part switch__icon-part--3"></span>
+                    <span class="switch__icon-part switch__icon-part--4"></span>
+                    <span class="switch__icon-part switch__icon-part--5"></span>
+                    <span class="switch__icon-part switch__icon-part--6"></span>
+                    <span class="switch__icon-part switch__icon-part--7"></span>
+                    <span class="switch__icon-part switch__icon-part--8"></span>
+                    <span class="switch__icon-part switch__icon-part--9"></span>
+                    <span class="switch__icon-part switch__icon-part--10"></span>
+                    <span class="switch__icon-part switch__icon-part--11"></span>
+                </span>
+                <span class="switch__sr">Dark Mode</span>
+            </label>
         </nav>
 </header>
 
@@ -385,6 +408,7 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
     <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
 </footer>
 
+<script src="js/darkmode.js"></script>
 <script src="js/session_surveillance.js"></script>
 </body>
 </html>

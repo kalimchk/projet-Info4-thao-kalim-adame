@@ -17,13 +17,18 @@ $pointsFidelite = count($mesCommandes) * 10;
 $statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
 ?>
 
+<?php
+$isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
+$darkClass = $isDark ? ' class="dark-mode"' : '';
+?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr"<?php echo $darkClass; ?>>
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="logo/logo-pasta-la-vista.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
     <title>Mon Profil - Pasta La Vista</title>
 </head>
 <body class="page-profil" data-surveillance-session="1">
@@ -44,6 +49,24 @@ $statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
         <?php else: ?>
             <a href="connexion.php">Connexion</a>
         <?php endif; ?>
+        <label class="switch">
+            <input class="switch__input" id="dm-switch" type="checkbox" role="switch"
+                   <?php echo $isDark ? 'checked' : ''; ?>>
+            <span class="switch__icon">
+                <span class="switch__icon-part switch__icon-part--1"></span>
+                <span class="switch__icon-part switch__icon-part--2"></span>
+                <span class="switch__icon-part switch__icon-part--3"></span>
+                <span class="switch__icon-part switch__icon-part--4"></span>
+                <span class="switch__icon-part switch__icon-part--5"></span>
+                <span class="switch__icon-part switch__icon-part--6"></span>
+                <span class="switch__icon-part switch__icon-part--7"></span>
+                <span class="switch__icon-part switch__icon-part--8"></span>
+                <span class="switch__icon-part switch__icon-part--9"></span>
+                <span class="switch__icon-part switch__icon-part--10"></span>
+                <span class="switch__icon-part switch__icon-part--11"></span>
+            </span>
+            <span class="switch__sr">Dark Mode</span>
+        </label>
     </nav>
 </header>
 
@@ -127,9 +150,12 @@ $statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
                                 <b>Statut : <?= htmlspecialchars(obtenirLibelleCourtStatut($commande['statut_commande'])) ?></b>
                             </span>
                             <br>
-                            <?php if (($commande['statut_commande'] === 'livree') && !isset($commande['note'])): ?>
+                            <?php
+                                $estLivraison = stripos($commande['commentaire_client'] ?? '', 'Mode : Livraison') !== false;
+                            ?>
+                            <?php if (($commande['statut_commande'] === 'livree') && $estLivraison && !isset($commande['note'])): ?>
                                 <a href="notes.php?id=<?= $commande['id'] ?>" class="btn" style="padding:6px 12px; font-size:0.85rem; background:var(--muted); text-decoration:none;">⭐ Noter</a>
-                            <?php elseif (isset($commande['note'])): ?>
+                            <?php elseif (($commande['statut_commande'] === 'livree') && $estLivraison && isset($commande['note'])): ?>
                                 <span style="color:var(--accent-deep); font-weight:bold;">Note : <?= $commande['note'] ?>/5 ⭐</span>
                             <?php endif; ?>
                         </div>
@@ -195,6 +221,7 @@ $statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
 
 <script src="js/profil.js"></script>
 <script src="js/modifier_commande.js"></script>
+<script src="js/darkmode.js"></script>
 <script src="js/session_surveillance.js"></script>
 </body>
 </html>
