@@ -4,6 +4,7 @@
   "nom": "Antipasto Gastronomico",
   "description": "Sélection de charcuteries italiennes, burrata, légumes grilles et focaccia maison.",
   "prix": 21.00,
+  "image": "img/plats/ent-01.jpg",
   "type": "Entree",
   "informations": {
     "saveurs": [
@@ -22,6 +23,7 @@
   "nom": "Carpaccio di Manzo al Tartufo",
   "description": "Carpaccio de boeuf, huile de truffe, roquette, parmesan et pignons toastes.",
   "prix": 24.00,
+  "image": "img/plats/ent-02.jpg",
   "type": "Entree",
   "informations": {
     "saveurs": [
@@ -40,6 +42,7 @@
   "nom": "Tartufo Nero Royale",
   "description": "Tagliolini frais maison nappes d'une emulsion au beurre de truffe noire d'Alba, copeaux de parmesan 36 mois et eclats de noisettes torrefiees.",
   "prix": 32.00,
+  "image": "img/plats/plt-01.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -61,6 +64,7 @@
   "nom": "Linguine allo Scoglio Imperiale",
   "description": "Linguine artisanales aux palourdes, moules, crevettes et calamars, jus de crustaces au vin blanc, persil frais et zeste de citron.",
   "prix": 29.00,
+  "image": "img/plats/plt-02.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -82,6 +86,7 @@
   "nom": "Risotto al Tartufo Bianco",
   "description": "Risotto Carnaroli cremeux au parmesan affine, beurre noisette et fines lamelles de truffe blanche.",
   "prix": 36.00,
+  "image": "img/plats/plt-03.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -99,6 +104,7 @@
   "nom": "Ravioli Ricotta & Spinaci",
   "description": "Ravioli maison garnis de ricotta et epinards, sauce sauge et beurre noisette.",
   "prix": 24.00,
+  "image": "img/plats/plt-04.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -118,6 +124,7 @@
   "nom": "Osso Buco alla Milanese",
   "description": "Jarret de veau braise lentement, gremolata fraîche et risotto safrane.",
   "prix": 34.00,
+  "image": "img/plats/plt-05.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -136,6 +143,7 @@
   "nom": "Branzino Mediterraneo",
   "description": "Jarret de veau braise lentement, gremolata fraîche et risotto safrane.",
   "prix": 31.00,
+  "image": "img/plats/plt-06.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -154,6 +162,7 @@
   "nom": "Pollo alla Parmigiana",
   "description": "Escalope de poulet panee, mozzarella fondante, sauce tomate San Marzano et basilic frais.",
   "prix": 26.00,
+  "image": "img/plats/plt-07.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -174,6 +183,7 @@
   "nom": "Pizza Burrata & Prosciutto di Parma",
   "description": "Base tomate, mozzarella fior di latte, burrata cremeuse, prosciutto 24 mois et roquette sauvage.",
   "prix": 23.00,
+  "image": "img/plats/plt-08.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -193,6 +203,7 @@
   "nom": "Pizza Tartufata",
   "description": "Creme de truffe noire, mozzarella, champignons sauvages et copeaux de parmesan.",
   "prix": 27.00,
+  "image": "img/plats/plt-09.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -212,6 +223,7 @@
   "nom": "Gnocchi al Gorgonzola e Noci",
   "description": "Gnocchi maison nappes d'une sauce au gorgonzola AOP et eclats de noix.",
   "prix": 22.00,
+  "image": "img/plats/plt-10.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -232,6 +244,7 @@
   "nom": "Filetto di Manzo al Barolo",
   "description": "Filet de boeuf grille, reduction de Barolo, puree de pommes de terre à l'huile d'olive et légumes rotis.",
   "prix": 38.00,
+  "image": "img/plats/plt-11.jpg",
   "type": "Plat",
   "informations": {
     "saveurs": [
@@ -252,6 +265,7 @@
   "nom": "Tiramisu Classico",
   "description": "Biscuit imbibe d'espresso, creme mascarpone onctueuse et cacao amer.",
   "prix": 12.00,
+  "image": "img/plats/des-01.jpg",
   "type": "Dessert",
   "informations": {
     "saveurs": [
@@ -272,6 +286,7 @@
   "nom": "Panna Cotta aux Fruits Rouges",
   "description": "Panna cotta vanille Bourbon, coulis de fruits rouges maison.",
   "prix": 11.00,
+  "image": "img/plats/des-02.jpg",
   "type": "Dessert",
   "informations": {
     "saveurs": [
