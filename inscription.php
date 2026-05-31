@@ -45,8 +45,17 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <a class="active" href="accueil.php">Accueil</a>
             <a href="carte.php">Carte</a>
             <?php if (isset($_SESSION['user'])): ?>
+                <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
+                    <a href="administateur.php">Administration</a>
+                <?php endif; ?>
+                <?php if (($_SESSION['user']['statut'] ?? '') === 'livreur'): ?>
+                    <a href="livraison.php">Ma livraison</a>
+                <?php endif; ?>
+                <?php if (($_SESSION['user']['statut'] ?? '') === 'restaurateur'): ?>
+                    <a href="commande.php">Commande</a>
+                <?php endif; ?>
                 <a href="profil.php">Mon Profil</a>
-                <a href="deconnexion.php" style="color:#a45742; font-weight:bold;">Déconnexion</a>
+                <a href="deconnexion.php" style="color:#a45742; font-weight:600;">Déconnexion</a>
             <?php else: ?>
                 <a href="connexion.php">Connexion</a>
                 <a href="inscription.php">Inscription</a>

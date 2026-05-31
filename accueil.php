@@ -30,7 +30,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     qui fait du bien.
                 </p>
                 <div class="hero-actions">
-                    <a class="btn" href="carte.html">Voir la carte</a>
+                    <a class="btn" href="carte.php">Voir la carte</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -170,7 +170,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 </article>
             </div>
             <p class="menu-link">
-                Pour tout voir, allez sur la page <a href="carte.html">Carte</a>.
+                Pour tout voir, allez sur la page <a href="carte.php">Carte</a>.
             </p>
         </section>
 

@@ -2242,3 +2242,82 @@ body.page-administateur .btn-debloquer {
     color: #fff !important;
     border: 1px solid #2e7d32 !important;
 }
+
+
+/* PHASE 4 — Améliorations visuelles */
+
+/* Images des plats */
+body.page-carte .dish-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+}
+body.page-carte .dish-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border-radius: 10px 10px 0 0;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+body.page-carte .dish-card:hover .dish-img {
+    transform: scale(1.03);
+}
+body.page-carte .dish-head,
+body.page-carte .type,
+body.page-carte .desc,
+body.page-carte .flavors,
+body.page-carte .allergens,
+body.page-carte .add-cart {
+    grid-column: 1;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+body.page-carte .dish-head {
+    padding-top: 16px;
+    margin-bottom: 4px;
+}
+body.page-carte .add-cart {
+    margin-top: auto;
+    margin-bottom: 16px;
+    align-self: flex-start;
+}
+
+/* Prix plus visibles */
+body.page-carte .price {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-deep);
+    letter-spacing: 0.5px;
+    text-transform: none;
+    background: var(--accent-wash);
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Badge panier */
+.badge-panier {
+    display: inline-block;
+    background: var(--accent-deep);
+    color: #fff;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 6px;
+    margin-left: 3px;
+    vertical-align: middle;
+}
+
+/* Responsive images */
+@media (max-width: 720px) {
+    body.page-carte .dish-img {
+        height: 160px;
+    }
+}

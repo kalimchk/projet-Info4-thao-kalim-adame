@@ -112,8 +112,12 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     <?php endforeach; ?>
                 </ul>
                 <p class="total">Total : <?php echo number_format($montantTotalCommande, 2, ',', ' '); ?> EUR</p>
-                <a href="https://www.google.com/maps" target="_blank" class="lien-bouton">
-                    <span class="btn-principal full-width">Ouvrir dans Maps</span>
+                <?php
+                    $adresseLivraison = $commandeAttribuee['adresse_livraison'] ?? '';
+                    $urlMaps = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($adresseLivraison);
+                ?>
+                <a href="<?php echo htmlspecialchars($urlMaps, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer" class="lien-bouton" aria-label="Ouvrir l'adresse dans Google Maps">
+                    <span class="btn-principal full-width">📍 Ouvrir dans Maps</span>
                 </a>
             </article>
         </section>

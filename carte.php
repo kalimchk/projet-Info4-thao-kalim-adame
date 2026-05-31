@@ -94,6 +94,12 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
                     <a href="administateur.php">Administration</a>
                 <?php endif; ?>
+                <?php if (($_SESSION['user']['statut'] ?? '') === 'livreur'): ?>
+                    <a href="livraison.php">Ma livraison</a>
+                <?php endif; ?>
+                <?php if (($_SESSION['user']['statut'] ?? '') === 'restaurateur'): ?>
+                    <a href="commande.php">Commande</a>
+                <?php endif; ?>
                 <a href="profil.php">Mon Profil</a>
                 <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
             <?php else: ?>
@@ -237,11 +243,14 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <div class="menu-grid" id="grille-entrees">
                 <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'entree') continue; ?>
                     <article class="dish-card"
-                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
-                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                            data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                            data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                        <?php if (!empty($p['image'])): ?>
+                            <img class="dish-img" src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['nom']) ?>" loading="lazy">
+                        <?php endif; ?>
                         <div class="dish-head">
                             <h3><?= htmlspecialchars($p['nom']) ?></h3>
-                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> EUR</span>
+                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> €</span>
                         </div>
                         <p class="type">Type : <?= htmlspecialchars($p['type']) ?></p>
                         <p class="desc"><?= htmlspecialchars($p['description']) ?></p>
@@ -262,11 +271,14 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <div class="menu-grid" id="grille-plats">
                 <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'plat') continue; ?>
                     <article class="dish-card"
-                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
-                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                            data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                            data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                        <?php if (!empty($p['image'])): ?>
+                            <img class="dish-img" src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['nom']) ?>" loading="lazy">
+                        <?php endif; ?>
                         <div class="dish-head">
                             <h3><?= htmlspecialchars($p['nom']) ?></h3>
-                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> EUR</span>
+                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> €</span>
                         </div>
                         <p class="type">Type : <?= htmlspecialchars($p['type']) ?></p>
                         <p class="desc"><?= htmlspecialchars($p['description']) ?></p>
@@ -287,11 +299,14 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <div class="menu-grid" id="grille-desserts">
                 <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'dessert') continue; ?>
                     <article class="dish-card"
-                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
-                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                            data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                            data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                        <?php if (!empty($p['image'])): ?>
+                            <img class="dish-img" src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['nom']) ?>" loading="lazy">
+                        <?php endif; ?>
                         <div class="dish-head">
                             <h3><?= htmlspecialchars($p['nom']) ?></h3>
-                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> EUR</span>
+                            <span class="price"><?= number_format($p['prix'], 2, ',', ' ') ?> €</span>
                         </div>
                         <p class="type">Type : <?= htmlspecialchars($p['type']) ?></p>
                         <p class="desc"><?= htmlspecialchars($p['description']) ?></p>
