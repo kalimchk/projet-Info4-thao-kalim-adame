@@ -10,16 +10,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telephoneUtilisateur = trim($_POST['telephone'] ?? '');
     $motDePasseUtilisateur = trim($_POST['password'] ?? '');
 
-    if ($nomUtilisateur !== '' && $prenomUtilisateur !== '' && $emailUtilisateur !== '' && $telephoneUtilisateur !== '' && $motDePasseUtilisateur !== '') {
-        ajouterUtilisateur(
-            $nomUtilisateur,
-            $prenomUtilisateur,
-            $emailUtilisateur,
-            $telephoneUtilisateur,
-            $motDePasseUtilisateur
-        );
+    
+if ($nomUtilisateur !== '' && $prenomUtilisateur !== '' && $emailUtilisateur !== '' && $telephoneUtilisateur !== '' && $motDePasseUtilisateur !== '') {
+    $inscriptionReussie = ajouterUtilisateur(
+        $nomUtilisateur,
+        $prenomUtilisateur,
+        $emailUtilisateur,
+        $telephoneUtilisateur,
+        $motDePasseUtilisateur
+    );
+
+    if ($inscriptionReussie) {
         $messageConfirmationInscription = 'Compte créé avec succès.';
+    } else {
+        $messageConfirmationInscription = 'Un compte existe déjà avec cette adresse email.';
     }
+}
 }
 ?>
 <?php

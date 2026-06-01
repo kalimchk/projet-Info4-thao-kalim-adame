@@ -10,23 +10,27 @@ if (!isset($_SESSION['panier'])) {
 $menuPath = __DIR__ . '/data/menu.json';
 $platsPath = __DIR__ . '/data/plats.json';
 
-$menu = file_exists($menuPath) ? json_decode(file_get_contents($menuPath), true) : [];
-$plats = file_exists($platsPath) ? json_decode(file_get_contents($platsPath), true) : [];
+$menu  = file_exists($menuPath)  ? (json_decode(file_get_contents($menuPath),  true) ?? []) : [];
+$plats = file_exists($platsPath) ? (json_decode(file_get_contents($platsPath), true) ?? []) : [];
+
+if (!is_array($menu))  $menu  = [];
+if (!is_array($plats)) $plats = [];
 
 if (isset($_GET['id']) && isset($_GET['type'])) {
-    $id_choisi = $_GET['id'];
-    $type_choisi = $_GET['type'];
+    $id_choisi    = $_GET['id'];
+    $type_choisi  = $_GET['type'];
+    $typeNormalise = strtolower($type_choisi);
 
-    $produit_ajouter = NULL;
+    $produit_ajouter = null;
 
-    if ($type_choisi === 'Plat' || $type_choisi === 'Entree' || $type_choisi === 'Dessert') {
+    if ($typeNormalise === 'plat' || $typeNormalise === 'entree' || $typeNormalise === 'dessert') {
         foreach ($plats as $p) {
             if (isset($p['id']) && $p['id'] === $id_choisi) {
                 $produit_ajouter = $p;
                 break;
             }
         }
-    } elseif ($type_choisi === 'menu') {
+    } elseif ($typeNormalise === 'menu') {
         foreach ($menu as $m) {
             if (isset($m['idm']) && $m['idm'] === $id_choisi) {
                 $produit_ajouter = $m;
@@ -39,12 +43,12 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
         if (isset($_SESSION['panier'][$id_choisi])) {
             $_SESSION['panier'][$id_choisi]['quantite']++;
         } else {
-            $prix_a_enregistrer = isset($produit_ajouter['prix']) ? $produit_ajouter['prix'] : (isset($produit_ajouter['prix_total']) ? $produit_ajouter['prix_total'] : 0);
+            $prix_a_enregistrer = $produit_ajouter['prix'] ?? ($produit_ajouter['prix_total'] ?? 0);
             $_SESSION['panier'][$id_choisi] = [
-                'nom' => isset($produit_ajouter['nom']) ? $produit_ajouter['nom'] : 'Produit inconnu',
-                'prix' => $prix_a_enregistrer,
-                'type' => $type_choisi,
-                'quantite' => 1
+                'nom'      => $produit_ajouter['nom'] ?? 'Produit inconnu',
+                'prix'     => $prix_a_enregistrer,
+                'type'     => $produit_ajouter['type'] ?? $type_choisi,
+                'quantite' => 1,
             ];
         }
     }
@@ -60,7 +64,6 @@ if (isset($_SESSION['panier'])) {
     }
 }
 ?>
-
 <?php
 $isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
 $darkClass = $isDark ? ' class="dark-mode"' : '';
@@ -151,20 +154,6 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <label><input type="checkbox" name="saveurs" value="beurre">Beurre</label>
                         <label><input type="checkbox" name="saveurs" value="doux">Doux</label>
                         <label><input type="checkbox" name="saveurs" value="herbace">Herbacé</label>
-                        <label><input type="checkbox" name="saveurs" value="fondant">Fondant</label>
-                        <label><input type="checkbox" name="saveurs" value="riche">Riche</label>
-                        <label><input type="checkbox" name="saveurs" value="parfume">Parfumé</label>
-                        <label><input type="checkbox" name="saveurs" value="legerementcitrone">Légèrement citronné</label>
-                        <label><input type="checkbox" name="saveurs" value="puissant">Puissant</label>
-                        <label><input type="checkbox" name="saveurs" value="vineux">Vineux</label>
-                        <label><input type="checkbox" name="saveurs" value="acidule">Acidulé</label>
-                        <label><input type="checkbox" name="saveurs" value="mediteraneen">Méditerranéen</label>
-                        <label><input type="checkbox" name="saveurs" value="tomate">Tomate</label>
-                        <label><input type="checkbox" name="saveurs" value="fromager">Fromager</label>
-                        <label><input type="checkbox" name="saveurs" value="croustillant">Croustillant</label>
-                        <label><input type="checkbox" name="saveurs" value="legerementamer">Légèrement amer</label>
-                        <label><input type="checkbox" name="saveurs" value="cafe">Café</label>
-                        <label><input type="checkbox" name="saveurs" value="vanille">Vanille</label>
                     </div>
                 </fieldset>
 
@@ -203,7 +192,6 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 <a href="#desserts">Desserts</a>
             </div>
 
-            <!-- Barre de tri Phase 3 -->
             <div style="display:flex; align-items:center; gap:16px; margin-top:16px; flex-wrap:wrap;">
                 <label for="select-tri" style="font-weight:600; color:var(--ink);">Trier par :</label>
                 <select id="select-tri" style="padding:8px 12px; border-radius:8px; border:1px solid var(--line-strong); background:var(--bg); font-size:0.95rem; color:var(--ink);">
@@ -243,8 +231,8 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <div class="menu-grid" id="grille-entrees">
                 <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'entree') continue; ?>
                     <article class="dish-card"
-                            data-prix="<?= (float)($p['prix'] ?? 0) ?>"
-                            data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
                         <?php if (!empty($p['image'])): ?>
                             <img class="dish-img" src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['nom']) ?>" loading="lazy">
                         <?php endif; ?>
@@ -271,8 +259,8 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <div class="menu-grid" id="grille-plats">
                 <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'plat') continue; ?>
                     <article class="dish-card"
-                            data-prix="<?= (float)($p['prix'] ?? 0) ?>"
-                            data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
                         <?php if (!empty($p['image'])): ?>
                             <img class="dish-img" src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['nom']) ?>" loading="lazy">
                         <?php endif; ?>
@@ -299,8 +287,8 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <div class="menu-grid" id="grille-desserts">
                 <?php foreach ($plats as $p): if (strtolower($p['type'] ?? '') !== 'dessert') continue; ?>
                     <article class="dish-card"
-                            data-prix="<?= (float)($p['prix'] ?? 0) ?>"
-                            data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
+                             data-prix="<?= (float)($p['prix'] ?? 0) ?>"
+                             data-type="<?= strtolower(htmlspecialchars($p['type'] ?? '')) ?>">
                         <?php if (!empty($p['image'])): ?>
                             <img class="dish-img" src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['nom']) ?>" loading="lazy">
                         <?php endif; ?>

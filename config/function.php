@@ -81,24 +81,33 @@ function ajouterUtilisateur(
     string $emailUtilisateur,
     string $telephoneUtilisateur,
     string $motDePasseUtilisateur
-): void {
+): bool {
     $listeDesUtilisateurs = lireUtilisateurs();
 
+    
+    foreach ($listeDesUtilisateurs as $utilisateur) {
+        if (strtolower($utilisateur['email'] ?? '') === strtolower($emailUtilisateur)) {
+            return false;
+        }
+    }
+
     $nouvelUtilisateur = [
-        'id' => count($listeDesUtilisateurs) + 1,
-        'nom' => $nomUtilisateur,
-        'prenom' => $prenomUtilisateur,
-        'email' => $emailUtilisateur,
-        'telephone' => $telephoneUtilisateur,
-        'password' => $motDePasseUtilisateur,
-        'statut' => 'client',
-        'est_bloque' => false,
-        'restaurant_id' => null,
+        'id'             => count($listeDesUtilisateurs) + 1,
+        'nom'            => $nomUtilisateur,
+        'prenom'         => $prenomUtilisateur,
+        'email'          => $emailUtilisateur,
+        'telephone'      => $telephoneUtilisateur,
+        'password'       => $motDePasseUtilisateur,
+        'statut'         => 'client',
+        'est_bloque'     => false,
+        'restaurant_id'  => null,
         'restaurant_nom' => null,
     ];
 
     $listeDesUtilisateurs[] = $nouvelUtilisateur;
     sauvegarderUtilisateurs($listeDesUtilisateurs);
+
+    return true;
 }
 
 function lireCommandes(): array
