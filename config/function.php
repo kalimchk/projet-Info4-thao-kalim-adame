@@ -559,6 +559,46 @@ function trouverProduitCatalogue(string $identifiantProduit, string $typeProduit
     return null;
 }
 
+function trouverProduitCatalogueParNomEtType(string $nomProduit, string $typeProduit): ?array
+{
+    $nomNormalise = strtolower(trim($nomProduit));
+    $typeNormalise = strtolower(trim($typeProduit));
+
+    if ($nomNormalise === '') {
+        return null;
+    }
+
+    foreach (lirePlats() as $plat) {
+        if (
+            strtolower(trim($plat['nom'] ?? '')) === $nomNormalise
+            && strtolower(trim($plat['type'] ?? '')) === $typeNormalise
+        ) {
+            return [
+                'id' => $plat['id'] ?? '',
+                'nom' => $plat['nom'] ?? 'Produit',
+                'type' => $plat['type'] ?? $typeProduit,
+                'prix' => (float) ($plat['prix'] ?? 0),
+            ];
+        }
+    }
+
+    foreach (lireMenus() as $menu) {
+        if (
+            strtolower(trim($menu['nom'] ?? '')) === $nomNormalise
+            && ($typeNormalise === 'menu' || $typeNormalise === '')
+        ) {
+            return [
+                'id' => $menu['idm'] ?? '',
+                'nom' => $menu['nom'] ?? 'Menu',
+                'type' => 'menu',
+                'prix' => (float) ($menu['prix_total'] ?? 0),
+            ];
+        }
+    }
+
+    return null;
+}
+
 function construireArticleCommandeDepuisProduit(array $produit, int $quantite): array
 {
     return [

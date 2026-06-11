@@ -56,6 +56,13 @@ foreach ($_SESSION['panier'] as $article) {
     );
 
     if ($produit === null) {
+        $produit = trouverProduitCatalogueParNomEtType(
+            (string) ($article['nom'] ?? ''),
+            (string) ($article['type'] ?? '')
+        );
+    }
+
+    if ($produit === null) {
         header('Location: panier.php');
         exit();
     }
@@ -73,9 +80,14 @@ if ($montantTotal <= 0) {
     exit();
 }
 
-$transaction = 'PLV' . bin2hex(random_bytes(12));
+$transaction = 'PLV' . date('ymdHis') . strtoupper(bin2hex(random_bytes(3)));
 $vendeur = 'TEST';
 $api_key = getAPIKey($vendeur);
+
+if (!preg_match('/^[0-9a-zA-Z]{10,24}$/', $transaction) || !is_numeric($montantFormate) || !preg_match('/^[0-9a-zA-Z]{15}$/', $api_key)) {
+    header('Location: panier.php');
+    exit();
+}
 
 enregistrerPaiementEnAttente([
     'transaction' => $transaction,
@@ -129,11 +141,11 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     <p style="color: var(--muted);">Veuillez patienter pendant la securisation de votre paiement.</p>
 
     <form id="cybank_form" action="https://www.plateforme-smc.fr/cybank/index.php" method="POST" style="display: none;">
-        <input type="hidden" name="transaction" value="<?= $transaction ?>">
-        <input type="hidden" name="montant" value="<?= $montantFormate ?>">
-        <input type="hidden" name="vendeur" value="<?= $vendeur ?>">
-        <input type="hidden" name="retour" value="<?= $retour ?>">
-        <input type="hidden" name="control" value="<?= $control ?>">
+        <input type="hidden" name="transaction" value="<?= e($transaction) ?>">
+        <input type="hidden" name="montant" value="<?= e($montantFormate) ?>">
+        <input type="hidden" name="vendeur" value="<?= e($vendeur) ?>">
+        <input type="hidden" name="retour" value="<?= e($retour) ?>">
+        <input type="hidden" name="control" value="<?= e($control) ?>">
     </form>
     <script src="js/darkmode.js"></script>
 </body>
