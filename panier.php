@@ -55,60 +55,12 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     </style>
 </head>
 <body class="page-carte" data-surveillance-session="<?php echo isset($_SESSION['user']) ? '1' : '0'; ?>">
-    <header class="site-header">
-        <a class="logo" href="accueil.php"><img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista"><span class="logo-text">Pasta La Vista</span></a>
-        <nav class="navbar">
-            <a href="accueil.php">Accueil</a>
-            <a href="carte.php">Carte</a>
-            
-            <a href="panier.php" class="lien-panier">
-                🛒 Mon Panier 
-                <?php if (isset($nombre_articles_panier) && $nombre_articles_panier > 0): ?>
-                    <span class="badge-panier">(<?= $nombre_articles_panier ?>)</span>
-                <?php endif; ?>
-            </a>
-            
-            <?php if (isset($_SESSION['user'])): ?>
-                <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
-                    <a href="administateur.php">Administration</a>
-                <?php endif; ?>
-                <?php if (($_SESSION['user']['statut'] ?? '') === 'livreur'): ?>
-                    <a href="livraison.php">Ma livraison</a>
-                <?php endif; ?>
-                <?php if (($_SESSION['user']['statut'] ?? '') === 'restaurateur'): ?>
-                    <a href="commande.php">Commande</a>
-                <?php endif; ?>
-                <a href="profil.php">Mon Profil</a>
-                <a href="deconnexion.php" style="color: #a45742; font-weight: 600;">Déconnexion</a>
-            <?php else: ?>
-                <a href="connexion.php">Connexion</a>
-                <a href="inscription.php">Inscription</a>
-            <?php endif; ?>
-            <label class="switch">
-                <input class="switch__input" id="dm-switch" type="checkbox" role="switch"
-                       <?php echo $isDark ? 'checked' : ''; ?>>
-                <span class="switch__icon">
-                    <span class="switch__icon-part switch__icon-part--1"></span>
-                    <span class="switch__icon-part switch__icon-part--2"></span>
-                    <span class="switch__icon-part switch__icon-part--3"></span>
-                    <span class="switch__icon-part switch__icon-part--4"></span>
-                    <span class="switch__icon-part switch__icon-part--5"></span>
-                    <span class="switch__icon-part switch__icon-part--6"></span>
-                    <span class="switch__icon-part switch__icon-part--7"></span>
-                    <span class="switch__icon-part switch__icon-part--8"></span>
-                    <span class="switch__icon-part switch__icon-part--9"></span>
-                    <span class="switch__icon-part switch__icon-part--10"></span>
-                    <span class="switch__icon-part switch__icon-part--11"></span>
-                </span>
-                <span class="switch__sr">Dark Mode</span>
-            </label>
-        </nav>
-    </header>
+    <?php include 'navbar.php'; ?>
 
     <main class="panier-container">
         <section class="panel">
             <h2>Votre Panier</h2>
-            
+
             <?php if (empty($panier)): ?>
                 <p class="intro">Votre panier est actuellement vide.</p>
                 <div style="margin-top: 20px;">
@@ -119,7 +71,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     <thead>
                         <tr>
                             <th>Produit</th>
-                            <th>Prix Unitaire</th>
+                            <th>Prix unitaire</th>
                             <th>Quantité</th>
                             <th>Sous-total</th>
                         </tr>
@@ -132,7 +84,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                                     <small style="color: var(--muted); text-transform: uppercase; font-size: 0.8rem;"><?= htmlspecialchars($article['type']) ?></small>
                                 </td>
                                 <td><?= number_format($article['prix'], 2, ',', ' ') ?> €</td>
-                                <td><?= $article['quantite'] ?></td>
+                                <td><?= (int) $article['quantite'] ?></td>
                                 <td><strong><?= number_format($article['prix'] * $article['quantite'], 2, ',', ' ') ?> €</strong></td>
                             </tr>
                         <?php endforeach; ?>
@@ -151,17 +103,17 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 </div>
 
                 <div class="cybank-box">
-                    <div class="cybank-logo">💳 Validation & Paiement Sécurisé</div>
+                    <div class="cybank-logo">Validation & Paiement Sécurisé</div>
                     <p>Pour finaliser votre commande de <strong><?= number_format($montantTotal, 2, ',', ' ') ?> €</strong>, veuillez choisir vos options.</p>
-                    
+
                     <?php if ($utilisateurConnecte): ?>
                         <form action="traitement_paiement.php" method="POST" style="margin-top: 15px; text-align: left;">
                             <input type="hidden" name="csrf_token" value="<?= e(genererTokenCsrf()) ?>">
                             <input type="hidden" name="montant" value="<?= $montantTotal ?>">
-                            
+
                             <div style="background: var(--bg); padding: 15px; border-radius: 8px; border: 1px solid var(--line-soft); margin-bottom: 20px;">
                                 <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--ink);">Options de retrait</h3>
-                                
+
                                 <div style="margin-bottom: 15px;">
                                     <strong>Mode :</strong><br>
                                     <label><input type="radio" name="mode_retrait" value="livraison" checked> Livraison</label>
