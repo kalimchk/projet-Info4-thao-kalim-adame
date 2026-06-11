@@ -22,10 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messageConfirmationInscription = 'Adresse email invalide.';
         $typeMessageInscription = 'erreur';
     } elseif (!telephoneValide($telephoneUtilisateur)) {
-        $messageConfirmationInscription = 'Numero de telephone invalide.';
+        $messageConfirmationInscription = 'Numéro de téléphone invalide.';
         $typeMessageInscription = 'erreur';
     } elseif (!motDePasseValide($motDePasseUtilisateur)) {
-        $messageConfirmationInscription = 'Le mot de passe doit contenir entre 8 et 72 caracteres.';
+        $messageConfirmationInscription = 'Le mot de passe doit contenir entre 8 et 72 caractères.';
         $typeMessageInscription = 'erreur';
     } else {
         $inscriptionReussie = ajouterUtilisateur(
@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
 
         if ($inscriptionReussie) {
-            $messageConfirmationInscription = 'Compte cree avec succes.';
+            $messageConfirmationInscription = 'Compte créé avec succès.';
         } else {
-            $messageConfirmationInscription = 'Un compte existe déjà avec cette adresse email.';
+            $messageConfirmationInscription = 'Un compte existe déjà avec cet email ou ce numéro de téléphone.';
             $typeMessageInscription = 'erreur';
         }
     }
@@ -74,8 +74,8 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <input id="nom" type="text" name="nom" placeholder="Nom" required maxlength="60">
             <p class="erreur-champ" id="erreur-nom" style="display:none;"></p>
 
-            <label for="prenom">Prenom</label>
-            <input id="prenom" type="text" name="prenom" placeholder="Prenom" required maxlength="60">
+            <label for="prenom">Prénom</label>
+            <input id="prenom" type="text" name="prenom" placeholder="Prénom" required maxlength="60">
             <p class="erreur-champ" id="erreur-prenom" style="display:none;"></p>
 
             <label for="email">Email</label>
@@ -92,7 +92,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 <button type="button" class="btn-oeil" id="toggle-mdp-inscription" title="Afficher/Cacher">Afficher</button>
             </div>
             <p class="erreur-champ" id="erreur-password" style="display:none;"></p>
-            <p class="compteur-chars" id="compteur-mdp-inscription">0 / 64 caracteres</p>
+            <p class="compteur-chars" id="compteur-mdp-inscription">0 / 64 caractères</p>
 
             <button type="submit">S'inscrire</button>
         </form>

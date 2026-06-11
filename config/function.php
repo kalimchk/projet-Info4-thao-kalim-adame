@@ -48,6 +48,11 @@ function telephoneValide(string $telephone): bool
     return preg_match('/^[0-9 .+\-]{10,20}$/', $telephone) === 1;
 }
 
+function normaliserTelephone(string $telephone): string
+{
+    return preg_replace('/[^0-9]/', '', $telephone);
+}
+
 function motDePasseValide(string $motDePasse): bool
 {
     return strlen($motDePasse) >= 8 && strlen($motDePasse) <= 72;
@@ -189,9 +194,13 @@ function ajouterUtilisateur(
 ): bool {
     $listeDesUtilisateurs = lireUtilisateurs();
     $emailNormalise = normaliserEmail($emailUtilisateur);
+    $telephoneNormalise = normaliserTelephone($telephoneUtilisateur);
 
     foreach ($listeDesUtilisateurs as $utilisateur) {
-        if (normaliserEmail($utilisateur['email'] ?? '') === $emailNormalise) {
+        if (
+            normaliserEmail($utilisateur['email'] ?? '') === $emailNormalise
+            || normaliserTelephone($utilisateur['telephone'] ?? '') === $telephoneNormalise
+        ) {
             return false;
         }
     }
