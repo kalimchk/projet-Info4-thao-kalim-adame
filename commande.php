@@ -8,29 +8,20 @@ if (($utilisateurConnecte['statut'] ?? '') !== 'restaurateur') {
     exit();
 }
 
-$listeDesLivreursDisponibles = [
-    [
-        'id' => 4,
-        'nom' => 'Nicolas Perrin',
-        'telephone' => '06 10 20 30 40',
+$listeDesLivreursDisponibles = [];
+foreach (lireUtilisateurs() as $utilisateur) {
+    if (($utilisateur['statut'] ?? '') !== 'livreur' || utilisateurEstBloque($utilisateur)) {
+        continue;
+    }
+
+    $listeDesLivreursDisponibles[] = [
+        'id' => (int) ($utilisateur['id'] ?? 0),
+        'nom' => trim(($utilisateur['prenom'] ?? '') . ' ' . ($utilisateur['nom'] ?? '')),
+        'telephone' => $utilisateur['telephone'] ?? '',
         'statut' => 'Disponible',
-        'zone' => 'Cergy',
-    ],
-    [
-        'id' => 5,
-        'nom' => 'Lea Fontaine',
-        'telephone' => '06 11 22 33 44',
-        'statut' => 'Disponible',
-        'zone' => 'Pontoise',
-    ],
-    [
-        'id' => 6,
-        'nom' => 'Sami Benali',
-        'telephone' => '06 55 44 33 22',
-        'statut' => 'Disponible',
-        'zone' => 'Eragny',
-    ],
-];
+        'zone' => 'Zone locale',
+    ];
+}
 
 $identifiantRestaurant = (int) ($utilisateurConnecte['restaurant_id'] ?? 0);
 $nomRestaurant = $utilisateurConnecte['restaurant_nom'] ?? 'Restaurant';

@@ -31,7 +31,7 @@ foreach ($toutesLesCommandes as $commande) {
 }
 
 $pointsFidelite = $statutUtilisateur === 'client' ? count($mesCommandes) * 10 : 0;
-$statutFidelite = $pointsFidelite >= 50 ? 'Premium 🌟' : 'Classique';
+$statutFidelite = $pointsFidelite >= 50 ? 'Premium' : 'Classique';
 $titreHistorique = $statutUtilisateur === 'livreur' ? 'Mes anciennes livraisons' : 'Mes anciennes commandes';
 $messageHistoriqueVide = $statutUtilisateur === 'livreur'
     ? 'Vous n avez effectue aucune livraison pour le moment.'
@@ -152,7 +152,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     <?php if (($commande['statut_commande'] ?? '') === 'a_preparer'): ?>
                     <div class="commande-modifiable" data-id-commande="<?= (int)$commande['id'] ?>">
                         <h4>✏️ Modifier la commande <?= htmlspecialchars($commande['numero_commande']) ?></h4>
-                        <p class="modif-intro">Cette commande est en attente de préparation. Vous pouvez encore ajouter ou retirer des articles.</p>
+                        <p class="modif-intro">Cette commande est en attente de préparation. Vous pouvez encore retirer des articles. Les ajouts sont bloqués pour éviter de contourner le paiement.</p>
 
                         <ul class="liste-articles-modifiable">
                             <?php foreach ($commande['articles'] as $article): ?>
@@ -168,10 +168,6 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                                             data-nom="<?= htmlspecialchars($article['nom_produit'] ?? '') ?>"
                                             data-prix="<?= (float)($article['prix_unitaire'] ?? 0) ?>"
                                             title="Retirer un exemplaire">−</button>
-                                    <button type="button" class="btn-ajouter-article"
-                                            data-nom="<?= htmlspecialchars($article['nom_produit'] ?? '') ?>"
-                                            data-prix="<?= (float)($article['prix_unitaire'] ?? 0) ?>"
-                                            title="Ajouter un exemplaire">+</button>
                                 </div>
                             </li>
                             <?php endforeach; ?>
@@ -182,7 +178,6 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         </p>
 
                         <p class="message-modification" style="display:none;"></p>
-                        <div class="zone-paiement-supplementaire" style="display:none;"></div>
                     </div>
                     <?php endif; ?>
 
@@ -197,7 +192,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
         <div class="fidelite">
             <p><b>Points cumulés :</b> <?= $pointsFidelite ?> pts</p>
             <p><b>Statut actuel :</b> <?= $statutFidelite ?></p>
-            <p><b>Avantage :</b> <?= $statutFidelite === 'Premium 🌟' ? 'Livraison offerte sur votre prochaine commande !' : 'Cumulez 50 points pour obtenir la livraison offerte.' ?></p>
+            <p><b>Avantage :</b> <?= $statutFidelite === 'Premium' ? 'Statut prioritaire indique sur votre profil.' : 'Cumulez 50 points pour passer Premium.' ?></p>
         </div>
     </section>
 

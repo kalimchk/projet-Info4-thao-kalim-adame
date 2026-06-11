@@ -27,8 +27,12 @@ document.addEventListener('DOMContentLoaded', function () {
     function construireCartePlat(plat) {
         const saveurs    = (plat.informations?.saveurs    || []).join(', ');
         const allergenes = (plat.informations?.allergenes || []).join(', ');
+        const image = plat.image
+            ? `<img class="dish-img" src="${echapper(plat.image)}" alt="${echapper(plat.nom)}" loading="lazy">`
+            : '';
         return `
             <article class="dish-card" data-prix="${plat.prix}" data-type="${(plat.type || '').toLowerCase()}">
+                ${image}
                 <div class="dish-head">
                     <h3>${echapper(plat.nom)}</h3>
                     <span class="price">${parseFloat(plat.prix).toFixed(2).replace('.', ',')} EUR</span>

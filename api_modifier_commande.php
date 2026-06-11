@@ -102,9 +102,9 @@ $commandes[$idx]['articles'] = $articles;
 $commandes[$idx]['montant_paye'] = $montantPaye;
 sauvegarderCommandes($commandes);
 
-$ticket = null;
+$messageModification = 'Commande mise a jour.';
 if ($difference < 0) {
-    $ticket = ['montant' => abs($difference), 'message' => 'Ticket de reduction de ' . number_format(abs($difference), 2, ',', '') . ' EUR sur votre prochaine commande.'];
+    $messageModification = 'Commande mise a jour. Le nouveau total est inferieur de ' . number_format(abs($difference), 2, ',', '') . ' EUR.';
 }
 
 echo json_encode([
@@ -113,7 +113,5 @@ echo json_encode([
     'ancien_montant' => $ancienMontant,
     'nouveau_montant' => $nouveauMontant,
     'difference' => $difference,
-    'paiement_requis' => false,
-    'ticket_reduction' => $ticket,
-    'message' => $difference < 0 ? $ticket['message'] : 'Commande mise a jour.',
+    'message' => $messageModification,
 ]);
