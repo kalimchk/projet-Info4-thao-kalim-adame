@@ -12,41 +12,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telephoneUtilisateur = substr(trim($_POST['telephone'] ?? ''), 0, 20);
     $motDePasseUtilisateur = trim($_POST['password'] ?? '');
 
-    
-if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
-    $messageConfirmationInscription = 'Requete invalide, veuillez recommencer.';
-    $typeMessageInscription = 'erreur';
-} elseif ($nomUtilisateur === '' || $prenomUtilisateur === '' || $emailUtilisateur === '' || $telephoneUtilisateur === '' || $motDePasseUtilisateur === '') {
-    $messageConfirmationInscription = 'Tous les champs sont obligatoires.';
-    $typeMessageInscription = 'erreur';
-} elseif (!filter_var($emailUtilisateur, FILTER_VALIDATE_EMAIL)) {
-    $messageConfirmationInscription = 'Adresse email invalide.';
-    $typeMessageInscription = 'erreur';
-} elseif (!telephoneValide($telephoneUtilisateur)) {
-    $messageConfirmationInscription = 'Numero de telephone invalide.';
-    $typeMessageInscription = 'erreur';
-} elseif (!motDePasseValide($motDePasseUtilisateur)) {
-    $messageConfirmationInscription = 'Le mot de passe doit contenir entre 8 et 72 caracteres.';
-    $typeMessageInscription = 'erreur';
-} else {
-    $inscriptionReussie = ajouterUtilisateur(
-        $nomUtilisateur,
-        $prenomUtilisateur,
-        $emailUtilisateur,
-        $telephoneUtilisateur,
-        $motDePasseUtilisateur
-    );
-
-    if ($inscriptionReussie) {
-        $messageConfirmationInscription = 'Compte créé avec succès.';
-    } else {
-        $messageConfirmationInscription = 'Un compte existe déjà avec cette adresse email.';
+    if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
+        $messageConfirmationInscription = 'Requete invalide, veuillez recommencer.';
         $typeMessageInscription = 'erreur';
+    } elseif ($nomUtilisateur === '' || $prenomUtilisateur === '' || $emailUtilisateur === '' || $telephoneUtilisateur === '' || $motDePasseUtilisateur === '') {
+        $messageConfirmationInscription = 'Tous les champs sont obligatoires.';
+        $typeMessageInscription = 'erreur';
+    } elseif (!filter_var($emailUtilisateur, FILTER_VALIDATE_EMAIL)) {
+        $messageConfirmationInscription = 'Adresse email invalide.';
+        $typeMessageInscription = 'erreur';
+    } elseif (!telephoneValide($telephoneUtilisateur)) {
+        $messageConfirmationInscription = 'Numero de telephone invalide.';
+        $typeMessageInscription = 'erreur';
+    } elseif (!motDePasseValide($motDePasseUtilisateur)) {
+        $messageConfirmationInscription = 'Le mot de passe doit contenir entre 8 et 72 caracteres.';
+        $typeMessageInscription = 'erreur';
+    } else {
+        $inscriptionReussie = ajouterUtilisateur(
+            $nomUtilisateur,
+            $prenomUtilisateur,
+            $emailUtilisateur,
+            $telephoneUtilisateur,
+            $motDePasseUtilisateur
+        );
+
+        if ($inscriptionReussie) {
+            $messageConfirmationInscription = 'Compte créé avec succès.';
+        } else {
+            $messageConfirmationInscription = 'Un compte existe déjà avec cette adresse email.';
+            $typeMessageInscription = 'erreur';
+        }
     }
 }
-}
-?>
-<?php
+
 $isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
 $darkClass = $isDark ? ' class="dark-mode"' : '';
 ?>
@@ -91,7 +89,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <label for="password">Mot de passe</label>
             <div class="mdp-wrapper">
                 <input id="password" type="password" name="password" placeholder="Mot de passe" required maxlength="64">
-                <button type="button" class="btn-oeil" id="toggle-mdp-inscription" title="Afficher/Cacher">👁️</button>
+                <button type="button" class="btn-oeil" id="toggle-mdp-inscription" title="Afficher/Cacher">Afficher</button>
             </div>
             <p class="erreur-champ" id="erreur-password" style="display:none;"></p>
             <p class="compteur-chars" id="compteur-mdp-inscription">0 / 64 caractères</p>
