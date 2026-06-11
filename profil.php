@@ -97,7 +97,15 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                        maxlength="20" class="champ-profil" style="display:none;">
             </div>
 
-           
+            <div class="field">
+                <div class="label-row"><label>Adresse</label></div>
+                <p id="valeur-adresse" class="value profil-valeur"><?= htmlspecialchars($utilisateurConnecte['adresse'] ?? '') ?></p>
+                <input id="input-adresse" type="text" name="adresse"
+                       value="<?= htmlspecialchars($utilisateurConnecte['adresse'] ?? '') ?>"
+                       maxlength="200" class="champ-profil" style="display:none;"
+                       placeholder="Ex : 12 rue des Lilas, 95000 Cergy">
+            </div>
+            
             <div class="field">
                 <div class="label-row"><label>Mot de passe</label></div>
                 <p class="value">Protege et non affiche.</p>
