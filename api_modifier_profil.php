@@ -15,6 +15,7 @@ $nom = substr(trim($donnees['nom'] ?? ''), 0, 60);
 $prenom = substr(trim($donnees['prenom'] ?? ''), 0, 60);
 $email = substr(normaliserEmail($donnees['email'] ?? ''), 0, 100);
 $telephone = substr(trim($donnees['telephone'] ?? ''), 0, 20);
+$adresse = substr(trim($donnees['adresse'] ?? ''), 0, 200);
 $csrfToken = $donnees['csrf_token'] ?? '';
 
 if (!verifierTokenCsrf($csrfToken)) {
@@ -47,6 +48,7 @@ foreach ($listeUtilisateurs as $i => $u) {
         $listeUtilisateurs[$i]['prenom'] = $prenom;
         $listeUtilisateurs[$i]['email'] = $email;
         $listeUtilisateurs[$i]['telephone'] = $telephone;
+        $listeUtilisateurs[$i]['adresse'] = $adresse;
         $trouve = true;
         break;
     }
@@ -61,5 +63,10 @@ $_SESSION['user']['nom'] = $nom;
 $_SESSION['user']['prenom'] = $prenom;
 $_SESSION['user']['email'] = $email;
 $_SESSION['user']['telephone'] = $telephone;
+$_SESSION['user']['adresse'] = $adresse;
 
+<<<<<<< HEAD
 echo json_encode(['succes' => true, 'message' => 'Profil mis à jour.', 'user' => compact('nom', 'prenom', 'email', 'telephone')]);
+=======
+echo json_encode(['succes' => true, 'message' => 'Profil mis a jour.', 'user' => compact('nom', 'prenom', 'email', 'telephone', 'adresse')]);
+>>>>>>> c3942cd07e82098f3868ff24133331a0d5bae3e6
