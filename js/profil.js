@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const boutonValider = document.getElementById('btn-valider-profil');
     const boutonAnnuler = document.getElementById('btn-annuler-profil');
     const messageRetour = document.getElementById('message-retour-profil');
-    const champs = ['nom', 'prenom', 'email', 'telephone'];
+    const champs = ['nom', 'prenom', 'email', 'telephone', 'adresse'];
 
     // Afficher/cacher le mot de passe 
     const toggleMdp = document.getElementById('toggle-mdp-profil');
@@ -103,8 +103,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const prenom = document.getElementById('input-prenom')?.value.trim() ?? '';
         const email = document.getElementById('input-email')?.value.trim() ?? '';
         const telephone = document.getElementById('input-telephone')?.value.trim() ?? '';
+        const adresse = document.getElementById('input-adresse')?.value.trim() ?? '';
 
-        if (!nom || !prenom || !email || !telephone) {
+        if (!nom || !prenom || !email || !telephone || !adresse) {
             afficherMessage('❌ Tous les champs sont obligatoires.', 'erreur');
             return null;
         }
@@ -116,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
             afficherMessage('❌ Numéro de téléphone invalide (10 chiffres attendus).', 'erreur');
             return null;
         }
-        return { nom, prenom, email, telephone, csrf_token: window.CSRF_TOKEN || '' };
+        return { nom, prenom, email, telephone, adresse, csrf_token: window.CSRF_TOKEN || '' };
     }
 
     async function envoyerModifications(donnees) {
