@@ -64,50 +64,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     <title>Connexion</title>
 </head>
 <body class="page-connexion">
-    <header class="site-header">
-        <a class="logo" href="accueil.php">
-            <img class="logo-img" src="logo/logo-pasta-la-vista.png" alt="Logo Pasta La Vista">
-            <span class="logo-text">Pasta La Vista</span>
-        </a>
-        <nav class="navbar">
-            <a href="accueil.php">Accueil</a>
-            <a href="carte.php">Carte</a>
-            <?php if (isset($_SESSION['user'])): ?>
-                <?php if (($_SESSION['user']['statut'] ?? '') === 'admin'): ?>
-                    <a href="administateur.php">Administration</a>
-                <?php endif; ?>
-                <?php if (($_SESSION['user']['statut'] ?? '') === 'livreur'): ?>
-                    <a href="livraison.php">Ma livraison</a>
-                <?php endif; ?>
-                <?php if (($_SESSION['user']['statut'] ?? '') === 'restaurateur'): ?>
-                    <a href="commande.php">Commande</a>
-                <?php endif; ?>
-                <a href="profil.php">Mon Profil</a>
-                <a href="deconnexion.php" style="color:#a45742; font-weight:600;">Déconnexion</a>
-            <?php else: ?>
-                <a href="connexion.php">Connexion</a>
-                <a href="inscription.php">Inscription</a>
-            <?php endif; ?>
-            <label class="switch">
-                <input class="switch__input" id="dm-switch" type="checkbox" role="switch"
-                       <?php echo $isDark ? 'checked' : ''; ?>>
-                <span class="switch__icon">
-                    <span class="switch__icon-part switch__icon-part--1"></span>
-                    <span class="switch__icon-part switch__icon-part--2"></span>
-                    <span class="switch__icon-part switch__icon-part--3"></span>
-                    <span class="switch__icon-part switch__icon-part--4"></span>
-                    <span class="switch__icon-part switch__icon-part--5"></span>
-                    <span class="switch__icon-part switch__icon-part--6"></span>
-                    <span class="switch__icon-part switch__icon-part--7"></span>
-                    <span class="switch__icon-part switch__icon-part--8"></span>
-                    <span class="switch__icon-part switch__icon-part--9"></span>
-                    <span class="switch__icon-part switch__icon-part--10"></span>
-                    <span class="switch__icon-part switch__icon-part--11"></span>
-                </span>
-                <span class="switch__sr">Dark Mode</span>
-            </label>
-        </nav>
-    </header>
+    <?php include 'navbar.php'; ?>
 
     <main>
         <h1>Connexion</h1>
