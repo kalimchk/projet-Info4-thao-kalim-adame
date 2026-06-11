@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (inputMdp && compteur) {
         inputMdp.addEventListener('input', function () {
             const longueur = inputMdp.value.length;
-            compteur.textContent = longueur + ' / 64 caractères';
+            compteur.textContent = longueur + ' / 64 caracteres';
             compteur.style.color = longueur >= 60 ? '#a45742' : '';
         });
     }
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('prenom')?.addEventListener('blur', function () {
-        afficherErreur('erreur-prenom', this.value.trim() === '' ? 'Le prénom est obligatoire.' : '');
+        afficherErreur('erreur-prenom', this.value.trim() === '' ? 'Le prenom est obligatoire.' : '');
     });
 
     document.getElementById('email')?.addEventListener('blur', function () {
@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('telephone')?.addEventListener('blur', function () {
         const ok = /^\d{10}$/.test(this.value.replace(/[\s.\-]/g, ''));
-        afficherErreur('erreur-telephone', !ok ? 'Téléphone invalide (10 chiffres).' : '');
+        afficherErreur('erreur-telephone', !ok ? 'Telephone invalide (10 chiffres).' : '');
     });
 
     document.getElementById('password')?.addEventListener('blur', function () {
-        afficherErreur('erreur-password', this.value.length < 8 ? 'Mot de passe trop court (8 caractères min).' : '');
+        afficherErreur('erreur-password', this.value.length < 8 ? 'Mot de passe trop court (8 caracteres min).' : '');
     });
 
     const form = document.getElementById('form-inscription');
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (!prenom.value.trim()) {
-            afficherErreur('erreur-prenom', 'Le prénom est obligatoire.');
+            afficherErreur('erreur-prenom', 'Le prenom est obligatoire.');
             valide = false;
         }
 
@@ -85,12 +85,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (!/^\d{10}$/.test(telephone.value.replace(/[\s.\-]/g, ''))) {
-            afficherErreur('erreur-telephone', 'Téléphone invalide (10 chiffres).');
+            afficherErreur('erreur-telephone', 'Telephone invalide (10 chiffres).');
             valide = false;
         }
 
         if (password.value.length < 8) {
-            afficherErreur('erreur-password', 'Mot de passe trop court (8 caractères min).');
+            afficherErreur('erreur-password', 'Mot de passe trop court (8 caracteres min).');
             valide = false;
         }
 

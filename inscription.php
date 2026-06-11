@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
 
         if ($inscriptionReussie) {
-            $messageConfirmationInscription = 'Compte créé avec succès.';
+            $messageConfirmationInscription = 'Compte cree avec succes.';
         } else {
-            $messageConfirmationInscription = 'Un compte existe déjà avec cette adresse email.';
+            $messageConfirmationInscription = 'Un compte existe deja avec cette adresse email.';
             $typeMessageInscription = 'erreur';
         }
     }
@@ -74,15 +74,15 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <input id="nom" type="text" name="nom" placeholder="Nom" required maxlength="60">
             <p class="erreur-champ" id="erreur-nom" style="display:none;"></p>
 
-            <label for="prenom">Prénom</label>
-            <input id="prenom" type="text" name="prenom" placeholder="Prénom" required maxlength="60">
+            <label for="prenom">Prenom</label>
+            <input id="prenom" type="text" name="prenom" placeholder="Prenom" required maxlength="60">
             <p class="erreur-champ" id="erreur-prenom" style="display:none;"></p>
 
             <label for="email">Email</label>
             <input id="email" type="email" name="email" placeholder="Email" required maxlength="100">
             <p class="erreur-champ" id="erreur-email" style="display:none;"></p>
 
-            <label for="telephone">Téléphone</label>
+            <label for="telephone">Telephone</label>
             <input id="telephone" type="tel" name="telephone" placeholder="0612345678" required maxlength="15">
             <p class="erreur-champ" id="erreur-telephone" style="display:none;"></p>
 
@@ -92,7 +92,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 <button type="button" class="btn-oeil" id="toggle-mdp-inscription" title="Afficher/Cacher">Afficher</button>
             </div>
             <p class="erreur-champ" id="erreur-password" style="display:none;"></p>
-            <p class="compteur-chars" id="compteur-mdp-inscription">0 / 64 caractères</p>
+            <p class="compteur-chars" id="compteur-mdp-inscription">0 / 64 caracteres</p>
 
             <button type="submit">S'inscrire</button>
         </form>

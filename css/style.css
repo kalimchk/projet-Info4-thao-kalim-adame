@@ -2321,3 +2321,78 @@ body.page-carte .price {
         height: 160px;
     }
 }
+
+/* Navbar commune */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 78px;
+    padding: 18px 8vw;
+    background: var(--header-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+}
+
+.site-header .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    text-decoration: none;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.site-header .logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.site-header .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.site-header .navbar a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 999px;
+    line-height: 1.2;
+}
+
+.site-header .navbar a:hover {
+    background: var(--accent-wash);
+    text-decoration: none;
+}
+
+.site-header .navbar a.active {
+    border: 1px solid var(--accent);
+}
+
+@media (max-width: 720px) {
+    .site-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .site-header .navbar {
+        justify-content: flex-start;
+    }
+}
