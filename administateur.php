@@ -51,7 +51,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                             <div class="badges">
                                 <span class="badge"><?php echo htmlspecialchars($utilisateur['statut'] ?? '', ENT_QUOTES, 'UTF-8'); ?></span>
                                 <?php if (!empty($utilisateur['est_bloque'])): ?>
-                                    <span class="badge badge-blocage badge-bloque">Bloque</span>
+                                    <span class="badge badge-blocage badge-bloque">Bloqué</span>
                                 <?php endif; ?>
                             </div>
                             <div class="user-action-slot">
@@ -62,7 +62,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                                         data-user-id="<?php echo (int) ($utilisateur['id'] ?? 0); ?>"
                                         data-est-bloque="<?php echo !empty($utilisateur['est_bloque']) ? '1' : '0'; ?>"
                                     >
-                                        <?php echo !empty($utilisateur['est_bloque']) ? 'Debloquer' : 'Bloquer'; ?>
+                                        <?php echo !empty($utilisateur['est_bloque']) ? 'Débloquer' : 'Bloquer'; ?>
                                     </button>
                                 <?php else: ?>
                                     <span class="user-action-note">Compte courant</span>

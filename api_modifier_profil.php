@@ -19,7 +19,7 @@ $adresse = substr(trim($donnees['adresse'] ?? ''), 0, 200);
 $csrfToken = $donnees['csrf_token'] ?? '';
 
 if (!verifierTokenCsrf($csrfToken)) {
-    refuserRequeteJson('Requete invalide.');
+    refuserRequeteJson('Requête invalide.');
 }
 
 if (!$nom || !$prenom || !$email || !$telephone) {
@@ -31,7 +31,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 if (!telephoneValide($telephone)) {
-    refuserRequeteJson('Telephone invalide.');
+    refuserRequeteJson('Téléphone invalide.');
 }
 
 $listeUtilisateurs = lireUtilisateurs();
@@ -40,7 +40,7 @@ $trouve = false;
 
 foreach ($listeUtilisateurs as $i => $u) {
     if (normaliserEmail($u['email'] ?? '') === $email && (int) ($u['id'] ?? 0) !== $idConnecte) {
-        refuserRequeteJson('Cette adresse email est deja utilisee.');
+        refuserRequeteJson('Cette adresse email est déjà utilisée.');
     }
 
     if ((int) ($u['id'] ?? 0) === $idConnecte) {
@@ -65,4 +65,8 @@ $_SESSION['user']['email'] = $email;
 $_SESSION['user']['telephone'] = $telephone;
 $_SESSION['user']['adresse'] = $adresse;
 
+<<<<<<< HEAD
+echo json_encode(['succes' => true, 'message' => 'Profil mis à jour.', 'user' => compact('nom', 'prenom', 'email', 'telephone')]);
+=======
 echo json_encode(['succes' => true, 'message' => 'Profil mis a jour.', 'user' => compact('nom', 'prenom', 'email', 'telephone', 'adresse')]);
+>>>>>>> c3942cd07e82098f3868ff24133331a0d5bae3e6

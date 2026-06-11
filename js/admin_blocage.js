@@ -46,14 +46,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 const zoneBadges = ligneUtilisateur ? ligneUtilisateur.querySelector('.badges') : null;
 
                 bouton.dataset.estBloque = nouveauStatut ? '1' : '0';
-                bouton.textContent = nouveauStatut ? 'Debloquer' : 'Bloquer';
+                bouton.textContent = nouveauStatut ? 'Débloquer' : 'Bloquer';
                 bouton.classList.toggle('btn-debloquer', nouveauStatut);
                 bouton.classList.toggle('btn-bloquer', !nouveauStatut);
 
                 if (nouveauStatut && !badge && zoneBadges) {
                     const nouveauBadge = document.createElement('span');
                     nouveauBadge.className = 'badge badge-blocage badge-bloque';
-                    nouveauBadge.textContent = 'Bloque';
+                    nouveauBadge.textContent = 'Bloqué';
                     zoneBadges.appendChild(nouveauBadge);
                 }
 

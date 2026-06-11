@@ -29,7 +29,7 @@ function verifierTokenCsrf(?string $token): bool
         && hash_equals($_SESSION['csrf_token'], $token);
 }
 
-function refuserRequeteJson(string $message = 'Requete refusee.'): void
+function refuserRequeteJson(string $message = 'Requête refusée.'): void
 {
     echo json_encode([
         'succes' => false,
@@ -375,7 +375,7 @@ function obtenirUtilisateurConnecteOuErreurJson(): array
             'session_valide' => false,
             'compte_bloque' => ($etatDeSession['etat'] ?? '') === 'bloque',
             'message' => ($etatDeSession['etat'] ?? '') === 'bloque'
-                ? 'Votre compte est bloque.'
+                ? 'Votre compte est bloqué.'
                 : 'Non connecte.',
         ]);
         exit();
@@ -422,12 +422,12 @@ function obtenirDefinitionDesStatutsCommande(): array
 {
     return [
         'a_preparer' => [
-            'titre' => 'Commandes a preparer',
+            'titre' => 'Commandes à préparer',
             'description' => 'Les commandes viennent d arriver et doivent entrer en cuisine.',
         ],
         'en_cours' => [
             'titre' => 'Commandes en cours',
-            'description' => 'La preparation a commence et l equipe est en train de les traiter.',
+            'description' => 'La préparation a commencé et l\'équipe est en train de les traiter.',
         ],
         'en_attente' => [
             'titre' => 'Commandes en attente',
@@ -435,7 +435,7 @@ function obtenirDefinitionDesStatutsCommande(): array
         ],
         'en_livraison' => [
             'titre' => 'Commandes en livraison',
-            'description' => 'Le livreur a recupere la commande et l achemine vers le client.',
+            'description' => 'Le livreur a récupéré la commande et l\'achemine vers le client.',
         ],
         'livree' => [
             'titre' => 'Commandes livrees',
@@ -447,7 +447,7 @@ function obtenirDefinitionDesStatutsCommande(): array
 function obtenirLibelleCourtStatut(string $statutCommande): string
 {
     $libellesCourts = [
-        'a_preparer' => 'A preparer',
+        'a_preparer' => 'À préparer',
         'en_cours' => 'En cours',
         'en_attente' => 'En attente',
         'en_livraison' => 'En livraison',

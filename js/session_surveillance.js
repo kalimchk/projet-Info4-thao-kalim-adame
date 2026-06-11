@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
             redirectionEnCours = true;
 
             if (resultat.compte_bloque) {
-                alert(resultat.message || 'Votre compte a ete bloque.');
+                alert(resultat.message || 'Votre compte a été bloqué.');
                 window.location.href = 'connexion.php?message=compte_bloque';
                 return;
             }

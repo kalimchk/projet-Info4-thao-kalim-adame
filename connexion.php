@@ -7,7 +7,7 @@ $messageErreurConnexion = '';
 $messageInformation = '';
 
 if (($_GET['message'] ?? '') === 'compte_bloque') {
-    $messageInformation = 'Votre compte est bloque. Vous ne pouvez plus utiliser le site.';
+    $messageInformation = 'Votre compte est bloqué. Vous ne pouvez plus utiliser le site.';
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,12 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
         $utilisateurConnecte = null;
-        $messageErreurConnexion = 'Requete invalide, veuillez recommencer.';
+        $messageErreurConnexion = 'Requête invalide, veuillez recommencer.';
     } else {
         $utilisateurConnecte = trouverUtilisateurParEmail($emailUtilisateur);
 
         if ($utilisateurConnecte !== null && utilisateurEstBloque($utilisateurConnecte)) {
-            $messageErreurConnexion = 'Votre compte est bloque.';
+            $messageErreurConnexion = 'Votre compte est bloqué.';
         } elseif ($utilisateurConnecte !== null && verifierMotDePasse($motDePasseUtilisateur, $utilisateurConnecte)) {
             session_regenerate_id(true);
 

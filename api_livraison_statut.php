@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 if (($utilisateurConnecte['statut'] ?? '') !== 'livreur') {
-    echo json_encode(['succes' => false, 'message' => 'Acces refuse : vous n etes pas livreur.']);
+    echo json_encode(['succes' => false, 'message' => 'Accès refusé : vous n êtes pas livreur.']);
     exit();
 }
 
@@ -21,7 +21,7 @@ $nouveauStatut = trim($donnees['nouveau_statut'] ?? '');
 $motifAbandon = trim($donnees['motif_abandon'] ?? '');
 
 if (!verifierTokenCsrf($donnees['csrf_token'] ?? '')) {
-    refuserRequeteJson('Requete invalide.');
+    refuserRequeteJson('Requête invalide.');
 }
 
 if ($idCommande <= 0) {
