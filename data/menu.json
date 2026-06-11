@@ -19,7 +19,7 @@
     "prix_total": 54.00,
     "plats_inclus": {
       "entrees": ["ent-01","ent-02"],
-      "plats": ["plt-05", "plt-06", "plt-7"],
+      "plats": ["plt-05", "plt-06", "plt-07"],
       "desserts": ["des-01", "des-02"]
     },
     "nb_personnes_min": 1,

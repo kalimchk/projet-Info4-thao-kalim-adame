@@ -28,12 +28,12 @@
   "informations": {
     "saveurs": [
       "frais", 
-      "délicat", 
+      "delicat", 
       "umami"
     ],
     "allergenes": [
       "lait", 
-      "fruit à coque"
+      "fruit a coque"
     ]
   }
 },
@@ -55,7 +55,7 @@
       "gluten",
       "oeuf",
       "lait", 
-      "fruit à coque"
+      "fruit a coque"
     ]
   }
 },
@@ -234,7 +234,7 @@
     "allergenes": [
         "gluten",
         "lait",
-        "fruit à coque"
+        "fruit a coque"
         
     ]
   }
