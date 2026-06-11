@@ -25,6 +25,10 @@ $donnees = json_decode(file_get_contents('php://input'), true);
 $identifiantUtilisateur = (int) ($donnees['user_id'] ?? 0);
 $action = trim((string) ($donnees['action'] ?? ''));
 
+if (!verifierTokenCsrf($donnees['csrf_token'] ?? '')) {
+    refuserRequeteJson('Requete invalide.');
+}
+
 if ($identifiantUtilisateur <= 0 || !in_array($action, ['bloquer', 'debloquer'], true)) {
     echo json_encode([
         'succes' => false,

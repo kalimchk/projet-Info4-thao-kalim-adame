@@ -20,6 +20,10 @@ $idCommande = (int) ($donnees['id_commande'] ?? 0);
 $nouveauStatut = trim($donnees['nouveau_statut'] ?? '');
 $motifAbandon = trim($donnees['motif_abandon'] ?? '');
 
+if (!verifierTokenCsrf($donnees['csrf_token'] ?? '')) {
+    refuserRequeteJson('Requete invalide.');
+}
+
 if ($idCommande <= 0) {
     echo json_encode(['succes' => false, 'message' => 'Identifiant de commande manquant.']);
     exit();

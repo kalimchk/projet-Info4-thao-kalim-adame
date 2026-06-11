@@ -4,7 +4,7 @@ require_once __DIR__ . '/config/function.php';
 $utilisateurConnecte = obtenirUtilisateurConnecteOuRediriger();
 
 if (($utilisateurConnecte['statut'] ?? '') !== 'admin') {
-    header('Location: accueil.html');
+    header('Location: accueil.php');
     exit();
 }
 
@@ -78,6 +78,9 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     <footer class="site-footer">
         <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
     </footer>
+    <script>
+    window.CSRF_TOKEN = <?= json_encode(genererTokenCsrf()) ?>;
+    </script>
     <script src="js/admin_blocage.js"></script>
     <script src="js/darkmode.js"></script>
     <script src="js/session_surveillance.js"></script>

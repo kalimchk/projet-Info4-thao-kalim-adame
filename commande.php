@@ -4,7 +4,7 @@ require_once __DIR__ . '/config/function.php';
 $utilisateurConnecte = obtenirUtilisateurConnecteOuRediriger();
 
 if (($utilisateurConnecte['statut'] ?? '') !== 'restaurateur') {
-    header('Location: accueil.html');
+    header('Location: accueil.php');
     exit();
 }
 
@@ -38,6 +38,10 @@ $messageRetourCommande = '';
 $typeMessageRetourCommande = 'succes';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
+        $messageRetourCommande = 'Requete invalide, veuillez recommencer.';
+        $typeMessageRetourCommande = 'erreur';
+    } else {
     $actionCommande = trim((string) ($_POST['action_commande'] ?? ''));
     $identifiantCommandeFormulaire = (int) ($_POST['commande_id'] ?? 0);
     $listeDesCommandesComplete = lireCommandes();
@@ -111,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: commande.php?commande_id=' . $identifiantCommandeFormulaire . '&message=livreur_attribue');
             exit();
         }
+    }
     }
 }
 
@@ -226,6 +231,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <article class="detail-card">
                 <h3>Changer le statut</h3>
                 <form class="formulaire-detail" method="POST" action="">
+                    <input type="hidden" name="csrf_token" value="<?php echo e(genererTokenCsrf()); ?>">
                     <input type="hidden" name="action_commande" value="mettre_a_jour_statut">
                     <input type="hidden" id="detail-commande-id-statut" name="commande_id" value="">
                     <label for="statut_commande">Nouveau statut</label>
@@ -240,6 +246,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     ⚠️ L'attribution d'un livreur n'est possible que lorsque la commande est au statut <strong>En attente</strong> (commande prête). Changez d'abord le statut.
                 </p>
                 <form class="formulaire-detail" method="POST" action="">
+                    <input type="hidden" name="csrf_token" value="<?php echo e(genererTokenCsrf()); ?>">
                     <input type="hidden" name="action_commande" value="attribuer_livreur">
                     <input type="hidden" id="detail-commande-id-livreur" name="commande_id" value="">
                     <label for="livreur_commande">Livreur disponible</label>

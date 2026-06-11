@@ -5,41 +5,82 @@ require_once __DIR__ . '/config/getapikey.php';
 
 $utilisateurConnecte = obtenirUtilisateurConnecteOuRediriger('connexion.php');
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
+    header('Location: panier.php');
+    exit();
+}
+
 if (empty($_SESSION['panier'])) {
     header('Location: panier.php');
     exit();
 }
 
+$modesRetraitAutorises = ['livraison', 'emporter'];
+$momentsAutorises = ['immediat', 'planifie'];
+$modeRetrait = in_array($_POST['mode_retrait'] ?? '', $modesRetraitAutorises, true)
+    ? $_POST['mode_retrait']
+    : 'livraison';
+$momentPreparation = in_array($_POST['moment_preparation'] ?? '', $momentsAutorises, true)
+    ? $_POST['moment_preparation']
+    : 'immediat';
+$datePlanifiee = trim($_POST['date_planifiee'] ?? '');
+$heurePlanifiee = trim($_POST['heure_planifiee'] ?? '');
+
+if ($momentPreparation === 'planifie') {
+    $dateValide = preg_match('/^\d{4}-\d{2}-\d{2}$/', $datePlanifiee) === 1 && $datePlanifiee >= date('Y-m-d');
+    $heureValide = preg_match('/^\d{2}:\d{2}$/', $heurePlanifiee) === 1;
+
+    if (!$dateValide || !$heureValide) {
+        header('Location: panier.php');
+        exit();
+    }
+} else {
+    $datePlanifiee = '';
+    $heurePlanifiee = '';
+}
+
 $_SESSION['options_commande'] = [
-    'mode_retrait' => $_POST['mode_retrait'] ?? 'livraison',
-    'moment_preparation' => $_POST['moment_preparation'] ?? 'immediat',
-    'date_planifiee' => $_POST['date_planifiee'] ?? '',
-    'heure_planifiee' => $_POST['heure_planifiee'] ?? ''
+    'mode_retrait' => $modeRetrait,
+    'moment_preparation' => $momentPreparation,
+    'date_planifiee' => $datePlanifiee,
+    'heure_planifiee' => $heurePlanifiee
 ];
 
 $montantTotal = 0;
+$articlesCommande = [];
+
 foreach ($_SESSION['panier'] as $article) {
-    $montantTotal += $article['prix'] * $article['quantite'];
+    $produit = trouverProduitCatalogue(
+        (string) ($article['produit_id'] ?? ''),
+        (string) ($article['type'] ?? '')
+    );
+
+    if ($produit === null) {
+        header('Location: panier.php');
+        exit();
+    }
+
+    $quantite = max(1, (int) ($article['quantite'] ?? 1));
+    $articleCommande = construireArticleCommandeDepuisProduit($produit, $quantite);
+    $articlesCommande[] = $articleCommande;
+    $montantTotal += $articleCommande['prix_unitaire'] * $articleCommande['quantite'];
 }
 
 $montantFormate = number_format($montantTotal, 2, '.', '');
 
-$transaction = uniqid('PLV');
+if ($montantTotal <= 0) {
+    header('Location: panier.php');
+    exit();
+}
+
+$transaction = 'PLV' . bin2hex(random_bytes(12));
 $vendeur = 'TEST';
 $api_key = getAPIKey($vendeur);
-
-$articlesCommande = [];
-foreach ($_SESSION['panier'] as $article) {
-    $articlesCommande[] = [
-        'nom_produit' => $article['nom'],
-        'quantite' => $article['quantite'],
-        'prix_unitaire' => $article['prix']
-    ];
-}
 
 enregistrerPaiementEnAttente([
     'transaction' => $transaction,
     'montant' => $montantFormate,
+    'vendeur' => $vendeur,
     'utilisateur' => [
         'id' => (int) ($utilisateurConnecte['id'] ?? 0),
         'nom' => $utilisateurConnecte['nom'] ?? '',
@@ -53,7 +94,7 @@ enregistrerPaiementEnAttente([
 
 $estHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on');
 $protocol = $estHttps ? 'https' : 'http';
-$host = $_SERVER['HTTP_HOST'];
+$host = preg_replace('/[^A-Za-z0-9.:\-]/', '', $_SERVER['HTTP_HOST'] ?? 'localhost');
 
 $path = str_replace('\\', '/', dirname($_SERVER['PHP_SELF']));
 if ($path === '/') {

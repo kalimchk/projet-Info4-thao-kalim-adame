@@ -1,5 +1,103 @@
 <?php
 
+function e(?string $texte): string
+{
+    return htmlspecialchars((string) $texte, ENT_QUOTES, 'UTF-8');
+}
+
+function genererTokenCsrf(): string
+{
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    return $_SESSION['csrf_token'];
+}
+
+function verifierTokenCsrf(?string $token): bool
+{
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+
+    return is_string($token)
+        && isset($_SESSION['csrf_token'])
+        && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+function refuserRequeteJson(string $message = 'Requete refusee.'): void
+{
+    echo json_encode([
+        'succes' => false,
+        'message' => $message,
+    ]);
+    exit();
+}
+
+function normaliserEmail(string $email): string
+{
+    return strtolower(trim($email));
+}
+
+function telephoneValide(string $telephone): bool
+{
+    return preg_match('/^[0-9 .+\-]{10,20}$/', $telephone) === 1;
+}
+
+function motDePasseValide(string $motDePasse): bool
+{
+    return strlen($motDePasse) >= 8 && strlen($motDePasse) <= 72;
+}
+
+function hacherMotDePasse(string $motDePasse): string
+{
+    return password_hash($motDePasse, PASSWORD_DEFAULT);
+}
+
+function verifierMotDePasse(string $motDePasse, array $utilisateur): bool
+{
+    $hash = (string) ($utilisateur['password_hash'] ?? '');
+
+    if ($hash !== '') {
+        if (strpos($hash, 'sha256$') === 0) {
+            $morceaux = explode('$', $hash, 3);
+            if (count($morceaux) !== 3) {
+                return false;
+            }
+
+            return hash_equals($morceaux[2], hash('sha256', $morceaux[1] . $motDePasse));
+        }
+
+        return password_verify($motDePasse, $hash);
+    }
+
+    return hash_equals((string) ($utilisateur['password'] ?? ''), $motDePasse);
+}
+
+function migrerMotDePasseUtilisateur(int $identifiantUtilisateur, string $motDePasse): void
+{
+    $listeDesUtilisateurs = lireUtilisateurs();
+
+    foreach ($listeDesUtilisateurs as $indexUtilisateur => $utilisateur) {
+        if ((int) ($utilisateur['id'] ?? 0) === $identifiantUtilisateur) {
+            $listeDesUtilisateurs[$indexUtilisateur]['password_hash'] = hacherMotDePasse($motDePasse);
+            unset($listeDesUtilisateurs[$indexUtilisateur]['password']);
+            sauvegarderUtilisateurs($listeDesUtilisateurs);
+            return;
+        }
+    }
+}
+
+function nettoyerUtilisateurPourSession(array $utilisateur): array
+{
+    unset($utilisateur['password'], $utilisateur['password_hash']);
+    return $utilisateur;
+}
+
 function normaliserUtilisateur(array $utilisateur): array
 {
     $utilisateur['est_bloque'] = (bool) ($utilisateur['est_bloque'] ?? false);
@@ -20,9 +118,15 @@ function lireFichierJson(string $cheminDuFichier): array
 
 function enregistrerFichierJson(string $cheminDuFichier, array $donnees): void
 {
+    $dossier = dirname($cheminDuFichier);
+    if (!is_dir($dossier)) {
+        mkdir($dossier, 0755, true);
+    }
+
     file_put_contents(
         $cheminDuFichier,
-        json_encode($donnees, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+        json_encode($donnees, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+        LOCK_EX
     );
 }
 
@@ -47,9 +151,10 @@ function sauvegarderUtilisateurs(array $listeDesUtilisateurs): void
 function trouverUtilisateurParEmail(string $emailUtilisateur): ?array
 {
     $listeDesUtilisateurs = lireUtilisateurs();
+    $emailNormalise = normaliserEmail($emailUtilisateur);
 
     foreach ($listeDesUtilisateurs as $utilisateur) {
-        if (($utilisateur['email'] ?? '') === $emailUtilisateur) {
+        if (normaliserEmail($utilisateur['email'] ?? '') === $emailNormalise) {
             return $utilisateur;
         }
     }
@@ -83,21 +188,26 @@ function ajouterUtilisateur(
     string $motDePasseUtilisateur
 ): bool {
     $listeDesUtilisateurs = lireUtilisateurs();
+    $emailNormalise = normaliserEmail($emailUtilisateur);
 
-    
     foreach ($listeDesUtilisateurs as $utilisateur) {
-        if (strtolower($utilisateur['email'] ?? '') === strtolower($emailUtilisateur)) {
+        if (normaliserEmail($utilisateur['email'] ?? '') === $emailNormalise) {
             return false;
         }
     }
 
+    $prochainId = 1;
+    foreach ($listeDesUtilisateurs as $utilisateur) {
+        $prochainId = max($prochainId, (int) ($utilisateur['id'] ?? 0) + 1);
+    }
+
     $nouvelUtilisateur = [
-        'id'             => count($listeDesUtilisateurs) + 1,
+        'id'             => $prochainId,
         'nom'            => $nomUtilisateur,
         'prenom'         => $prenomUtilisateur,
-        'email'          => $emailUtilisateur,
+        'email'          => $emailNormalise,
         'telephone'      => $telephoneUtilisateur,
-        'password'       => $motDePasseUtilisateur,
+        'password_hash'  => hacherMotDePasse($motDePasseUtilisateur),
         'statut'         => 'client',
         'est_bloque'     => false,
         'restaurant_id'  => null,
@@ -228,11 +338,11 @@ function verifierEtatSessionUtilisateur(): array
         ];
     }
 
-    $_SESSION['user'] = $utilisateur;
+    $_SESSION['user'] = nettoyerUtilisateurPourSession($utilisateur);
 
     return [
         'etat' => 'ok',
-        'utilisateur' => $utilisateur,
+        'utilisateur' => $_SESSION['user'],
     ];
 }
 
@@ -404,6 +514,60 @@ function calculerMontantTotalCommande(array $listeDesArticles): float
     }
 
     return $montantTotalCommande;
+}
+
+function lirePlats(): array
+{
+    return lireFichierJson(__DIR__ . '/../data/plats.json');
+}
+
+function lireMenus(): array
+{
+    return lireFichierJson(__DIR__ . '/../data/menu.json');
+}
+
+function trouverProduitCatalogue(string $identifiantProduit, string $typeProduit): ?array
+{
+    $typeNormalise = strtolower(trim($typeProduit));
+
+    if (in_array($typeNormalise, ['plat', 'entree', 'dessert'], true)) {
+        foreach (lirePlats() as $plat) {
+            if (($plat['id'] ?? '') === $identifiantProduit) {
+                return [
+                    'id' => $plat['id'],
+                    'nom' => $plat['nom'] ?? 'Produit',
+                    'type' => $plat['type'] ?? $typeProduit,
+                    'prix' => (float) ($plat['prix'] ?? 0),
+                ];
+            }
+        }
+    }
+
+    if ($typeNormalise === 'menu') {
+        foreach (lireMenus() as $menu) {
+            if (($menu['idm'] ?? '') === $identifiantProduit) {
+                return [
+                    'id' => $menu['idm'],
+                    'nom' => $menu['nom'] ?? 'Menu',
+                    'type' => 'menu',
+                    'prix' => (float) ($menu['prix_total'] ?? 0),
+                ];
+            }
+        }
+    }
+
+    return null;
+}
+
+function construireArticleCommandeDepuisProduit(array $produit, int $quantite): array
+{
+    return [
+        'produit_id' => (string) ($produit['id'] ?? ''),
+        'type_produit' => (string) ($produit['type'] ?? ''),
+        'nom_produit' => (string) ($produit['nom'] ?? 'Produit'),
+        'quantite' => max(1, $quantite),
+        'prix_unitaire' => max(0, (float) ($produit['prix'] ?? 0)),
+    ];
 }
 
 function mettreAJourStatutCommande(int $identifiantCommande, string $nouveauStatutCommande): bool

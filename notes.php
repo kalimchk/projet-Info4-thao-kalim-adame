@@ -20,19 +20,27 @@ foreach ($commandes as $index => $c) {
 $nomCompletUtilisateur = trim($utilisateurConnecte['prenom'] . ' ' . $utilisateurConnecte['nom']);
 
 
-$estLivraison = stripos($maCommande['commentaire_client'] ?? '', 'Mode : Livraison') !== false;
+$estLivraison = $maCommande !== null && stripos($maCommande['commentaire_client'] ?? '', 'Mode : Livraison') !== false;
+$commandeAppartientUtilisateur = false;
 
-if (!$maCommande || ($maCommande['client_nom'] ?? '') !== $nomCompletUtilisateur || ($maCommande['statut_commande'] ?? '') !== 'livree' || !$estLivraison || isset($maCommande['note'])) {
+if ($maCommande !== null) {
+    if (isset($maCommande['client_id'])) {
+        $commandeAppartientUtilisateur = (int) ($maCommande['client_id'] ?? 0) === (int) ($utilisateurConnecte['id'] ?? 0);
+    } else {
+        $commandeAppartientUtilisateur = ($maCommande['client_nom'] ?? '') === $nomCompletUtilisateur;
+    }
+}
+
+if (!$maCommande || !$commandeAppartientUtilisateur || ($maCommande['statut_commande'] ?? '') !== 'livree' || !$estLivraison || isset($maCommande['note'])) {
     header('Location: profil.php');
     exit();
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $note = (int)($_POST['note'] ?? 0);
-    $commentaire = trim($_POST['commentaire'] ?? '');
+    $commentaire = substr(trim($_POST['commentaire'] ?? ''), 0, 500);
 
-    if ($note >= 1 && $note <= 5) {
+    if (verifierTokenCsrf($_POST['csrf_token'] ?? '') && $note >= 1 && $note <= 5) {
         
         $commandes[$indexCommande]['note'] = $note;
         $commandes[$indexCommande]['commentaire_note'] = $commentaire;
@@ -122,6 +130,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
       </div>
 
       <form method="POST" action="">
+        <input type="hidden" name="csrf_token" value="<?= e(genererTokenCsrf()) ?>">
         <div class="field" style="margin-top: 20px;">
           <label for="note" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--ink);">Votre note globale sur 5 :</label>
           <select name="note" id="note" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--line-strong); background: var(--bg); font-size: 1rem;">

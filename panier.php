@@ -4,7 +4,12 @@ require_once __DIR__ . '/config/function.php';
 verifierEtatSessionUtilisateur();
 
 
-if (isset($_GET['action']) && $_GET['action'] === 'vider') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action_panier'] ?? '') === 'vider') {
+    if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
+        header('Location: panier.php');
+        exit();
+    }
+
     unset($_SESSION['panier']);
     header('Location: panier.php');
     exit();
@@ -135,7 +140,11 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 </table>
 
                 <div class="panier-actions">
-                    <a href="panier.php?action=vider" class="btn-vider">🗑️ Vider le panier</a>
+                    <form method="POST" action="panier.php" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="<?= e(genererTokenCsrf()) ?>">
+                        <input type="hidden" name="action_panier" value="vider">
+                        <button type="submit" class="btn-vider" style="background:none;border:0;cursor:pointer;">Vider le panier</button>
+                    </form>
                     <div class="total-panier">
                         Total : <?= number_format($montantTotal, 2, ',', ' ') ?> €
                     </div>
@@ -147,6 +156,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     
                     <?php if ($utilisateurConnecte): ?>
                         <form action="traitement_paiement.php" method="POST" style="margin-top: 15px; text-align: left;">
+                            <input type="hidden" name="csrf_token" value="<?= e(genererTokenCsrf()) ?>">
                             <input type="hidden" name="montant" value="<?= $montantTotal ?>">
                             
                             <div style="background: var(--bg); padding: 15px; border-radius: 8px; border: 1px solid var(--line-soft); margin-bottom: 20px;">

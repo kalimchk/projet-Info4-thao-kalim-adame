@@ -11,30 +11,42 @@ if (($_GET['message'] ?? '') === 'compte_bloque') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $emailUtilisateur = trim($_POST['email'] ?? '');
+    $emailUtilisateur = normaliserEmail($_POST['email'] ?? '');
     $motDePasseUtilisateur = trim($_POST['password'] ?? '');
 
-    $utilisateurConnecte = trouverUtilisateurParEmail($emailUtilisateur);
-
-    if ($utilisateurConnecte !== null && utilisateurEstBloque($utilisateurConnecte)) {
-        $messageErreurConnexion = 'Votre compte est bloque.';
-    } elseif ($utilisateurConnecte !== null && ($utilisateurConnecte['password'] ?? '') === $motDePasseUtilisateur) {
-        $_SESSION['user'] = $utilisateurConnecte;
-
-        if (($utilisateurConnecte['statut'] ?? '') === 'restaurateur') {
-            header('Location: commande.php'); exit();
-        }
-        if (($utilisateurConnecte['statut'] ?? '') === 'admin') {
-            header('Location: administateur.php'); exit();
-        }
-        if (($utilisateurConnecte['statut'] ?? '') === 'livreur') {
-            header('Location: livraison.php'); exit();
-        }
-
-        header('Location: accueil.php');
-        exit();
+    if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
+        $utilisateurConnecte = null;
+        $messageErreurConnexion = 'Requete invalide, veuillez recommencer.';
     } else {
-        $messageErreurConnexion = 'Email ou mot de passe incorrect.';
+        $utilisateurConnecte = trouverUtilisateurParEmail($emailUtilisateur);
+
+        if ($utilisateurConnecte !== null && utilisateurEstBloque($utilisateurConnecte)) {
+            $messageErreurConnexion = 'Votre compte est bloque.';
+        } elseif ($utilisateurConnecte !== null && verifierMotDePasse($motDePasseUtilisateur, $utilisateurConnecte)) {
+            session_regenerate_id(true);
+
+            if (empty($utilisateurConnecte['password_hash']) || strpos((string) ($utilisateurConnecte['password_hash'] ?? ''), 'sha256$') === 0) {
+                migrerMotDePasseUtilisateur((int) ($utilisateurConnecte['id'] ?? 0), $motDePasseUtilisateur);
+                $utilisateurConnecte = trouverUtilisateurParId((int) ($utilisateurConnecte['id'] ?? 0)) ?? $utilisateurConnecte;
+            }
+
+            $_SESSION['user'] = nettoyerUtilisateurPourSession($utilisateurConnecte);
+
+            if (($utilisateurConnecte['statut'] ?? '') === 'restaurateur') {
+                header('Location: commande.php'); exit();
+            }
+            if (($utilisateurConnecte['statut'] ?? '') === 'admin') {
+                header('Location: administateur.php'); exit();
+            }
+            if (($utilisateurConnecte['statut'] ?? '') === 'livreur') {
+                header('Location: livraison.php'); exit();
+            }
+
+            header('Location: accueil.php');
+            exit();
+        } else {
+            $messageErreurConnexion = 'Email ou mot de passe incorrect.';
+        }
     }
 }
 ?>
@@ -109,6 +121,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
         <?php endif; ?>
 
         <form method="POST" action="" id="form-connexion" novalidate>
+            <input type="hidden" name="csrf_token" value="<?= e(genererTokenCsrf()) ?>">
             <label for="email">Email</label>
             <input id="email" type="email" name="email" placeholder="Email" required autocomplete="email">
             <p class="erreur-champ" id="erreur-email" style="display:none;"></p>
@@ -124,9 +137,6 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <button type="submit">Se connecter</button>
         </form>
 
-        <p>Compte restaurateur : restaurateur@pasta.fr / resto123</p>
-        <p>Compte admin : admin@pasta.fr / admin123</p>
-        <p>Compte livreur : livreur@pasta.fr / livreur123</p>
     </main>
 
     <footer class="site-footer">

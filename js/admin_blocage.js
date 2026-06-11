@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                     body: JSON.stringify({
                         user_id: userId,
-                        action: action
+                        action: action,
+                        csrf_token: window.CSRF_TOKEN || ''
                     })
                 });
 

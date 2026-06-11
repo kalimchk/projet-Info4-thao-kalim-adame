@@ -18,12 +18,16 @@ $paiementReussi = false;
 $messageErreur = '';
 $utilisateur = null;
 
-if ($control_calcule === $control_recu) {
+if ($transaction === '' || $montant === '' || $vendeur === '' || $control_recu === '') {
+    $messageErreur = 'Retour de paiement incomplet.';
+} elseif ($control_calcule === $control_recu) {
     if ($statut === 'accepted') {
         $paiementEnAttente = trouverPaiementEnAttenteParTransaction($transaction);
 
         if ($paiementEnAttente === null) {
             $messageErreur = 'Paiement valide mais commande introuvable.';
+        } elseif (($paiementEnAttente['vendeur'] ?? '') !== $vendeur || (string) ($paiementEnAttente['montant'] ?? '') !== number_format((float) $montant, 2, '.', '')) {
+            $messageErreur = 'Erreur de securite : les informations de paiement ne correspondent pas a la commande.';
         } else {
             $paiementReussi = true;
             $utilisateur = $paiementEnAttente['utilisateur'];
@@ -46,11 +50,13 @@ if ($control_calcule === $control_recu) {
                 'numero_commande' => 'PLV-' . $nouvelId,
                 'statut_commande' => 'a_preparer',
                 'heure_commande' => date('Y-m-d H:i:s'),
+                'client_id' => (int) ($utilisateur['id'] ?? 0),
                 'client_nom' => ($utilisateur['prenom'] ?? '') . ' ' . ($utilisateur['nom'] ?? ''),
                 'client_telephone' => $utilisateur['telephone'] ?? '',
                 'adresse_livraison' => 'Adresse liee au compte client',
                 'commentaire_client' => $texteCommentaire,
                 'temps_estime' => 'En attente',
+                'montant_paye' => (float) ($paiementEnAttente['montant'] ?? 0),
                 'articles' => $articlesCommande
             ];
 

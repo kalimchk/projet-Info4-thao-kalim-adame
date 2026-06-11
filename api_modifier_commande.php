@@ -15,9 +15,16 @@ $idCmd = (int) ($donnees['id_commande'] ?? 0);
 $article = $donnees['article'] ?? null;
 $quantite = (int) ($donnees['quantite'] ?? 1);
 
+if (!verifierTokenCsrf($donnees['csrf_token'] ?? '')) {
+    refuserRequeteJson('Requete invalide.');
+}
+
 if (!$idCmd || !$article) {
-    echo json_encode(['succes' => false, 'message' => 'Donnees manquantes.']);
-    exit();
+    refuserRequeteJson('Donnees manquantes.');
+}
+
+if ($quantite < 1 || $quantite > 10) {
+    refuserRequeteJson('Quantite invalide.');
 }
 
 $commandes = lireCommandes();
@@ -30,55 +37,69 @@ foreach ($commandes as $i => $c) {
 }
 
 if ($idx === -1) {
-    echo json_encode(['succes' => false, 'message' => 'Commande introuvable.']);
-    exit();
+    refuserRequeteJson('Commande introuvable.');
 }
 
 $cmd = $commandes[$idx];
 $nomComplet = trim($utilisateurConnecte['prenom'] . ' ' . $utilisateurConnecte['nom']);
-if (($cmd['client_nom'] ?? '') !== $nomComplet) {
-    echo json_encode(['succes' => false, 'message' => 'Acces refuse.']);
-    exit();
+$commandeAppartientUtilisateur = false;
+if (isset($cmd['client_id'])) {
+    $commandeAppartientUtilisateur = (int) ($cmd['client_id'] ?? 0) === (int) ($utilisateurConnecte['id'] ?? 0);
+} else {
+    $commandeAppartientUtilisateur = ($cmd['client_nom'] ?? '') === $nomComplet;
+}
+
+if (!$commandeAppartientUtilisateur) {
+    refuserRequeteJson('Acces refuse.');
 }
 if (($cmd['statut_commande'] ?? '') !== 'a_preparer') {
-    echo json_encode(['succes' => false, 'message' => 'Commande non modifiable.']);
-    exit();
+    refuserRequeteJson('Commande non modifiable.');
 }
 
 $ancienMontant = calculerMontantTotalCommande($cmd['articles'] ?? []);
-$articles = $cmd['articles'];
+$articles = is_array($cmd['articles'] ?? null) ? $cmd['articles'] : [];
 $typeAction = $article['type_action'] ?? 'ajouter';
 $nomProduit = trim($article['nom_produit'] ?? '');
-$prix = (float) ($article['prix_unitaire'] ?? 0);
+
+if (!in_array($typeAction, ['ajouter', 'retirer'], true) || $nomProduit === '') {
+    refuserRequeteJson('Action invalide.');
+}
+
+$indexArticleCible = -1;
+foreach ($articles as $i => $a) {
+    if (strtolower($a['nom_produit'] ?? '') === strtolower($nomProduit)) {
+        $indexArticleCible = $i;
+        break;
+    }
+}
+
+if ($indexArticleCible === -1) {
+    refuserRequeteJson('Article introuvable dans la commande.');
+}
 
 if ($typeAction === 'ajouter') {
-    $trouve = false;
-    foreach ($articles as $i => $a) {
-        if (strtolower($a['nom_produit'] ?? '') === strtolower($nomProduit)) {
-            $articles[$i]['quantite'] += $quantite;
-            $trouve = true;
-            break;
-        }
-    }
-    if (!$trouve) {
-        $articles[] = ['nom_produit' => $nomProduit, 'quantite' => $quantite, 'prix_unitaire' => $prix];
-    }
+    $articles[$indexArticleCible]['quantite'] += $quantite;
 } elseif ($typeAction === 'retirer') {
-    foreach ($articles as $i => $a) {
-        if (strtolower($a['nom_produit'] ?? '') === strtolower($nomProduit)) {
-            $articles[$i]['quantite'] -= $quantite;
-            if ($articles[$i]['quantite'] <= 0) {
-                array_splice($articles, $i, 1);
-            }
-            break;
-        }
+    $articles[$indexArticleCible]['quantite'] -= $quantite;
+    if ($articles[$indexArticleCible]['quantite'] <= 0) {
+        array_splice($articles, $indexArticleCible, 1);
     }
 }
 
 $nouveauMontant = calculerMontantTotalCommande($articles);
 $difference = $nouveauMontant - $ancienMontant;
+$montantPaye = (float) ($cmd['montant_paye'] ?? $ancienMontant);
+
+if (empty($articles)) {
+    refuserRequeteJson('Une commande ne peut pas etre vide.');
+}
+
+if ($nouveauMontant > $montantPaye) {
+    refuserRequeteJson('Cette modification augmente le montant deja paye. Elle est refusee pour eviter un contournement du paiement.');
+}
 
 $commandes[$idx]['articles'] = $articles;
+$commandes[$idx]['montant_paye'] = $montantPaye;
 sauvegarderCommandes($commandes);
 
 $ticket = null;
@@ -92,9 +113,7 @@ echo json_encode([
     'ancien_montant' => $ancienMontant,
     'nouveau_montant' => $nouveauMontant,
     'difference' => $difference,
-    'paiement_requis' => $difference > 0,
+    'paiement_requis' => false,
     'ticket_reduction' => $ticket,
-    'message' => $difference > 0
-        ? 'Commande plus chere de ' . number_format($difference, 2, ',', '') . ' EUR. Un paiement supplementaire est requis.'
-        : ($difference < 0 ? $ticket['message'] : 'Commande mise a jour.'),
+    'message' => $difference < 0 ? $ticket['message'] : 'Commande mise a jour.',
 ]);

@@ -45,6 +45,7 @@ if (isset($_GET['id']) && isset($_GET['type'])) {
         } else {
             $prix_a_enregistrer = $produit_ajouter['prix'] ?? ($produit_ajouter['prix_total'] ?? 0);
             $_SESSION['panier'][$id_choisi] = [
+                'produit_id' => $id_choisi,
                 'nom'      => $produit_ajouter['nom'] ?? 'Produit inconnu',
                 'prix'     => $prix_a_enregistrer,
                 'type'     => $produit_ajouter['type'] ?? $type_choisi,

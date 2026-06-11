@@ -102,7 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     body:    JSON.stringify({
                         id_commande: idCommande,
                         quantite: 1,
-                        article: { nom_produit: nomProduit, prix_unitaire: prixUnitaire, type_action: typeAction }
+                        csrf_token: window.CSRF_TOKEN || '',
+                        article: { nom_produit: nomProduit, type_action: typeAction }
                     })
                 });
                 const resultat = await reponse.json();

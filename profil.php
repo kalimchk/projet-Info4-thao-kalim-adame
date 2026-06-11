@@ -13,7 +13,10 @@ $mesCommandes = [];
 foreach ($toutesLesCommandes as $commande) {
     if (
         $statutUtilisateur === 'client'
-        && ($commande['client_nom'] ?? '') === $nomCompletUtilisateur
+        && (
+            (isset($commande['client_id']) && (int) ($commande['client_id'] ?? 0) === $identifiantUtilisateur)
+            || (!isset($commande['client_id']) && ($commande['client_nom'] ?? '') === $nomCompletUtilisateur)
+        )
     ) {
         $mesCommandes[] = $commande;
     }
@@ -97,9 +100,10 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
            
             <div class="field">
                 <div class="label-row"><label>Mot de passe</label></div>
-                <div class="mdp-wrapper value" style="display:flex; align-items:center; gap:10px;">
+                <p class="value">Protege et non affiche.</p>
+                <div class="mdp-wrapper value" style="display:none;">
                     <input id="affichage-mdp" type="password"
-                           value="<?= htmlspecialchars($utilisateurConnecte['password'] ?? '') ?>"
+                           value=""
                            readonly style="border:none; background:transparent; flex:1; font-size:1rem; color:var(--ink);">
                     <button type="button" id="toggle-mdp-profil" class="btn-oeil" title="Afficher/Cacher le mot de passe">👁️</button>
                 </div>
@@ -203,6 +207,9 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     <p>&copy; 2026 Pasta La Vista - Restaurant italien.</p>
 </footer>
 
+<script>
+window.CSRF_TOKEN = <?= json_encode(genererTokenCsrf()) ?>;
+</script>
 <script src="js/profil.js"></script>
 <script src="js/modifier_commande.js"></script>
 <script src="js/darkmode.js"></script>

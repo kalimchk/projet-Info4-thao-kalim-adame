@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 id_commande: idCommande,
                 nouveau_statut: nouveauStatut,
                 motif_abandon: motifAbandon,
+                csrf_token: window.CSRF_TOKEN || '',
             }),
         })
             .then(function (reponse) {

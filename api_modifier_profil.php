@@ -11,26 +11,38 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $donnees = json_decode(file_get_contents('php://input'), true);
-$nom = trim($donnees['nom'] ?? '');
-$prenom = trim($donnees['prenom'] ?? '');
-$email = trim($donnees['email'] ?? '');
-$telephone = trim($donnees['telephone'] ?? '');
+$nom = substr(trim($donnees['nom'] ?? ''), 0, 60);
+$prenom = substr(trim($donnees['prenom'] ?? ''), 0, 60);
+$email = substr(normaliserEmail($donnees['email'] ?? ''), 0, 100);
+$telephone = substr(trim($donnees['telephone'] ?? ''), 0, 20);
+$csrfToken = $donnees['csrf_token'] ?? '';
+
+if (!verifierTokenCsrf($csrfToken)) {
+    refuserRequeteJson('Requete invalide.');
+}
 
 if (!$nom || !$prenom || !$email || !$telephone) {
-    echo json_encode(['succes' => false, 'message' => 'Tous les champs sont obligatoires.']);
-    exit();
+    refuserRequeteJson('Tous les champs sont obligatoires.');
 }
+
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['succes' => false, 'message' => 'Email invalide.']);
-    exit();
+    refuserRequeteJson('Email invalide.');
+}
+
+if (!telephoneValide($telephone)) {
+    refuserRequeteJson('Telephone invalide.');
 }
 
 $listeUtilisateurs = lireUtilisateurs();
-$idConnecte = $utilisateurConnecte['id'];
+$idConnecte = (int) ($utilisateurConnecte['id'] ?? 0);
 $trouve = false;
 
 foreach ($listeUtilisateurs as $i => $u) {
-    if (($u['id'] ?? 0) === $idConnecte) {
+    if (normaliserEmail($u['email'] ?? '') === $email && (int) ($u['id'] ?? 0) !== $idConnecte) {
+        refuserRequeteJson('Cette adresse email est deja utilisee.');
+    }
+
+    if ((int) ($u['id'] ?? 0) === $idConnecte) {
         $listeUtilisateurs[$i]['nom'] = $nom;
         $listeUtilisateurs[$i]['prenom'] = $prenom;
         $listeUtilisateurs[$i]['email'] = $email;
@@ -41,8 +53,7 @@ foreach ($listeUtilisateurs as $i => $u) {
 }
 
 if (!$trouve) {
-    echo json_encode(['succes' => false, 'message' => 'Utilisateur introuvable.']);
-    exit();
+    refuserRequeteJson('Utilisateur introuvable.');
 }
 
 sauvegarderUtilisateurs($listeUtilisateurs);

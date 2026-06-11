@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
         afficherErreur('erreur-telephone', !ok ? 'Téléphone invalide (10 chiffres).' : '');
     });
     document.getElementById('password')?.addEventListener('blur', function () {
-        afficherErreur('erreur-password', this.value.length < 6 ? 'Mot de passe trop court (6 caractères min).' : '');
+        afficherErreur('erreur-password', this.value.length < 8 ? 'Mot de passe trop court (8 caracteres min).' : '');
     });
 
     //Validation complète avant envoi
@@ -83,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
             afficherErreur('erreur-telephone','Téléphone invalide (10 chiffres).'); 
             valide = false; 
         }
-        if (password.value.length < 6){
-            afficherErreur('erreur-password','Mot de passe trop court.');
+        if (password.value.length < 8){
+            afficherErreur('erreur-password','Mot de passe trop court (8 caracteres min).');
             valide = false; 
         }
 

@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
             afficherMessage('❌ Numéro de téléphone invalide (10 chiffres attendus).', 'erreur');
             return null;
         }
-        return { nom, prenom, email, telephone };
+        return { nom, prenom, email, telephone, csrf_token: window.CSRF_TOKEN || '' };
     }
 
     async function envoyerModifications(donnees) {

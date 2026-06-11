@@ -1,17 +1,34 @@
 <?php
+session_start();
 require_once __DIR__ . '/config/function.php';
 
 $messageConfirmationInscription = '';
+$typeMessageInscription = 'succes';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nomUtilisateur = trim($_POST['nom'] ?? '');
-    $prenomUtilisateur = trim($_POST['prenom'] ?? '');
-    $emailUtilisateur = trim($_POST['email'] ?? '');
-    $telephoneUtilisateur = trim($_POST['telephone'] ?? '');
+    $nomUtilisateur = substr(trim($_POST['nom'] ?? ''), 0, 60);
+    $prenomUtilisateur = substr(trim($_POST['prenom'] ?? ''), 0, 60);
+    $emailUtilisateur = substr(normaliserEmail($_POST['email'] ?? ''), 0, 100);
+    $telephoneUtilisateur = substr(trim($_POST['telephone'] ?? ''), 0, 20);
     $motDePasseUtilisateur = trim($_POST['password'] ?? '');
 
     
-if ($nomUtilisateur !== '' && $prenomUtilisateur !== '' && $emailUtilisateur !== '' && $telephoneUtilisateur !== '' && $motDePasseUtilisateur !== '') {
+if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
+    $messageConfirmationInscription = 'Requete invalide, veuillez recommencer.';
+    $typeMessageInscription = 'erreur';
+} elseif ($nomUtilisateur === '' || $prenomUtilisateur === '' || $emailUtilisateur === '' || $telephoneUtilisateur === '' || $motDePasseUtilisateur === '') {
+    $messageConfirmationInscription = 'Tous les champs sont obligatoires.';
+    $typeMessageInscription = 'erreur';
+} elseif (!filter_var($emailUtilisateur, FILTER_VALIDATE_EMAIL)) {
+    $messageConfirmationInscription = 'Adresse email invalide.';
+    $typeMessageInscription = 'erreur';
+} elseif (!telephoneValide($telephoneUtilisateur)) {
+    $messageConfirmationInscription = 'Numero de telephone invalide.';
+    $typeMessageInscription = 'erreur';
+} elseif (!motDePasseValide($motDePasseUtilisateur)) {
+    $messageConfirmationInscription = 'Le mot de passe doit contenir entre 8 et 72 caracteres.';
+    $typeMessageInscription = 'erreur';
+} else {
     $inscriptionReussie = ajouterUtilisateur(
         $nomUtilisateur,
         $prenomUtilisateur,
@@ -24,6 +41,7 @@ if ($nomUtilisateur !== '' && $prenomUtilisateur !== '' && $emailUtilisateur !==
         $messageConfirmationInscription = 'Compte créé avec succès.';
     } else {
         $messageConfirmationInscription = 'Un compte existe déjà avec cette adresse email.';
+        $typeMessageInscription = 'erreur';
     }
 }
 }
@@ -91,10 +109,11 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
         <h1>Inscription</h1>
 
         <?php if ($messageConfirmationInscription !== ''): ?>
-            <p class="message-succes"><?= htmlspecialchars($messageConfirmationInscription, ENT_QUOTES, 'UTF-8') ?></p>
+            <p class="<?= $typeMessageInscription === 'erreur' ? 'message-erreur' : 'message-succes' ?>"><?= e($messageConfirmationInscription) ?></p>
         <?php endif; ?>
 
         <form method="POST" action="" id="form-inscription" novalidate>
+            <input type="hidden" name="csrf_token" value="<?= e(genererTokenCsrf()) ?>">
 
             <label for="nom">Nom</label>
             <input id="nom" type="text" name="nom" placeholder="Nom" required maxlength="60">
