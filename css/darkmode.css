@@ -165,3 +165,65 @@ html.dark-mode body.page-carte .filters {
   background: var(--surface);
   border-color: var(--line);
 }
+
+/* Navbar stable sur toutes les pages */
+body[class] .site-header .switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+body[class] .site-header .switch__input {
+  appearance: none;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  width: 46px;
+  height: 24px;
+  min-width: 46px;
+  min-height: 24px;
+  max-width: 46px;
+  max-height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface-alt);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+body[class] .site-header .switch__input::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+body[class] .site-header .switch__input:checked {
+  background: var(--accent-deep);
+  border-color: var(--accent);
+}
+
+body[class] .site-header .switch__input:checked::before {
+  transform: translateX(22px);
+  background: var(--surface);
+}
+
+body[class] .site-header .switch__icon,
+body[class] .site-header .switch__icon-part {
+  display: none;
+}
