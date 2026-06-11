@@ -209,6 +209,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                 <p><strong>Statut actuel :</strong> <span id="detail-statut"></span></p>
                 <p><strong>Délai estimé :</strong> <span id="detail-delai"></span></p>
                 <p id="detail-commentaire-ligne" style="display:none;"><strong>Commentaire :</strong> <span id="detail-commentaire"></span></p>
+                <p id="detail-avis-ligne" style="display:none;"><strong>Avis client :</strong> <span id="detail-avis"></span></p>
             </article>
 
             <article class="detail-card">
@@ -311,6 +312,16 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                             <p class="commentaire-client"><strong>Commentaire client :</strong> <?php echo echapperTexte($commande['commentaire_client']); ?></p>
                         <?php endif; ?>
 
+                        <?php if (isset($commande['note'])): ?>
+                            <p class="avis-client">
+                                <strong>Avis client :</strong>
+                                <?php echo (int) $commande['note']; ?>/5
+                                <?php if (($commande['commentaire_note'] ?? '') !== ''): ?>
+                                    - <?php echo echapperTexte($commande['commentaire_note']); ?>
+                                <?php endif; ?>
+                            </p>
+                        <?php endif; ?>
+
                         <ul class="liste-produits">
                             <?php foreach (($commande['articles'] ?? []) as $article): ?>
                                 <li>
@@ -351,6 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const boutonStatut = document.getElementById('detail-bouton-statut');
     const boutonLivreur = document.getElementById('detail-bouton-livreur');
     const commentaireLigne = document.getElementById('detail-commentaire-ligne');
+    const avisLigne = document.getElementById('detail-avis-ligne');
 
     function obtenirLibelleStatut(statutActuel) {
         const libelles = {
@@ -388,6 +400,17 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('detail-delai').textContent = commande.temps_estime || '';
         document.getElementById('detail-commentaire').textContent = commande.commentaire_client || '';
         commentaireLigne.style.display = (commande.commentaire_client || '') !== '' ? 'block' : 'none';
+        if (commande.note) {
+            let texteAvis = commande.note + '/5';
+            if (commande.commentaire_note) {
+                texteAvis += ' - ' + commande.commentaire_note;
+            }
+            document.getElementById('detail-avis').textContent = texteAvis;
+            avisLigne.style.display = 'block';
+        } else {
+            document.getElementById('detail-avis').textContent = '';
+            avisLigne.style.display = 'none';
+        }
         document.getElementById('detail-commande-id-statut').value = commande.id || '';
         document.getElementById('detail-commande-id-livreur').value = commande.id || '';
 
