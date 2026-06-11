@@ -2385,6 +2385,11 @@ body[class] .site-header .navbar a.active {
     border: 1px solid var(--accent);
 }
 
+body[class] .site-header .navbar a.lien-deconnexion {
+    color: #a45742;
+    font-weight: 600;
+}
+
 body[class] .site-header .switch {
     margin: 0;
     padding: 0;
