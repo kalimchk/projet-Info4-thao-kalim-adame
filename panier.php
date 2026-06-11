@@ -174,15 +174,15 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                                     <label style="margin-left: 15px;"><input type="radio" name="moment_preparation" value="planifie"> Planifier pour plus tard</label>
                                 </div>
 
-                                <div style="padding-top: 10px; border-top: 1px dashed var(--line-strong);">
+                                <div id="zone-planification" style="display:none; padding-top: 10px; border-top: 1px dashed var(--line-strong);">
                                     <p style="margin-top: 0; margin-bottom: 10px; font-size: 0.9rem; color: var(--muted);"><em>Si vous planifiez pour plus tard, choisissez la date et l'heure :</em></p>
-                                    
+
                                     <label for="date_planifiee" style="display:inline-block; width: 60px;">Date :</label>
-                                    <input type="date" name="date_planifiee" id="date_planifiee" min="<?= date('Y-m-d') ?>" style="padding: 5px; border: 1px solid var(--line-strong); border-radius: 4px;">
+                                    <input type="date" name="date_planifiee" id="date_planifiee" min="<?= date('Y-m-d') ?>" disabled style="padding: 5px; border: 1px solid var(--line-strong); border-radius: 4px;">
                                     <br><br>
-                                    
+
                                     <label for="heure_planifiee" style="display:inline-block; width: 60px;">Heure :</label>
-                                    <input type="time" name="heure_planifiee" id="heure_planifiee" style="padding: 5px; border: 1px solid var(--line-strong); border-radius: 4px;">
+                                    <input type="time" name="heure_planifiee" id="heure_planifiee" disabled style="padding: 5px; border: 1px solid var(--line-strong); border-radius: 4px;">
                                 </div>
                             </div>
 
@@ -206,5 +206,40 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 </footer>
 <script src="js/darkmode.js"></script>
 <script src="js/session_surveillance.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const zonePlanification = document.getElementById('zone-planification');
+    const datePlanifiee = document.getElementById('date_planifiee');
+    const heurePlanifiee = document.getElementById('heure_planifiee');
+    const choixMoments = document.querySelectorAll('input[name="moment_preparation"]');
+
+    function mettreAJourPlanification() {
+        const estPlanifie = document.querySelector('input[name="moment_preparation"]:checked')?.value === 'planifie';
+
+        if (zonePlanification) {
+            zonePlanification.style.display = estPlanifie ? 'block' : 'none';
+        }
+
+        [datePlanifiee, heurePlanifiee].forEach(function (champ) {
+            if (!champ) {
+                return;
+            }
+
+            champ.disabled = !estPlanifie;
+            champ.required = estPlanifie;
+
+            if (!estPlanifie) {
+                champ.value = '';
+            }
+        });
+    }
+
+    choixMoments.forEach(function (choix) {
+        choix.addEventListener('change', mettreAJourPlanification);
+    });
+
+    mettreAJourPlanification();
+});
+</script>
 </body>
 </html>
