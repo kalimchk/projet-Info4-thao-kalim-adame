@@ -2323,7 +2323,7 @@ body.page-carte .price {
 }
 
 /* Navbar commune */
-.site-header {
+body[class] .site-header {
     position: sticky;
     top: 0;
     z-index: 20;
@@ -2338,7 +2338,7 @@ body.page-carte .price {
     border-bottom: 1px solid var(--line);
 }
 
-.site-header .logo {
+body[class] .site-header .logo {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -2351,13 +2351,13 @@ body.page-carte .price {
     white-space: nowrap;
 }
 
-.site-header .logo-img {
+body[class] .site-header .logo-img {
     width: 42px;
     height: 42px;
     object-fit: contain;
 }
 
-.site-header .navbar {
+body[class] .site-header .navbar {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -2365,7 +2365,7 @@ body.page-carte .price {
     flex-wrap: wrap;
 }
 
-.site-header .navbar a {
+body[class] .site-header .navbar a {
     color: var(--ink);
     text-decoration: none;
     font-size: 12px;
@@ -2376,23 +2376,30 @@ body.page-carte .price {
     line-height: 1.2;
 }
 
-.site-header .navbar a:hover {
+body[class] .site-header .navbar a:hover {
     background: var(--accent-wash);
     text-decoration: none;
 }
 
-.site-header .navbar a.active {
+body[class] .site-header .navbar a.active {
     border: 1px solid var(--accent);
 }
 
+body[class] .site-header .switch {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    flex: 0 0 auto;
+}
+
 @media (max-width: 720px) {
-    .site-header {
+    body[class] .site-header {
         align-items: flex-start;
         flex-direction: column;
         gap: 10px;
     }
 
-    .site-header .navbar {
+    body[class] .site-header .navbar {
         justify-content: flex-start;
     }
 }
