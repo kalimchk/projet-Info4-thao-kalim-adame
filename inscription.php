@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $motDePasseUtilisateur = trim($_POST['password'] ?? '');
 
     if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
-        $messageConfirmationInscription = 'Requete invalide, veuillez recommencer.';
+        $messageConfirmationInscription = 'Requête invalide, veuillez recommencer.';
         $typeMessageInscription = 'erreur';
     } elseif ($nomUtilisateur === '' || $prenomUtilisateur === '' || $emailUtilisateur === '' || $telephoneUtilisateur === '' || $motDePasseUtilisateur === '') {
         $messageConfirmationInscription = 'Tous les champs sont obligatoires.';
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($inscriptionReussie) {
             $messageConfirmationInscription = 'Compte cree avec succes.';
         } else {
-            $messageConfirmationInscription = 'Un compte existe deja avec cette adresse email.';
+            $messageConfirmationInscription = 'Un compte existe déjà avec cette adresse email.';
             $typeMessageInscription = 'erreur';
         }
     }
@@ -82,7 +82,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <input id="email" type="email" name="email" placeholder="Email" required maxlength="100">
             <p class="erreur-champ" id="erreur-email" style="display:none;"></p>
 
-            <label for="telephone">Telephone</label>
+            <label for="telephone">Téléphone</label>
             <input id="telephone" type="tel" name="telephone" placeholder="0612345678" required maxlength="15">
             <p class="erreur-champ" id="erreur-telephone" style="display:none;"></p>
 

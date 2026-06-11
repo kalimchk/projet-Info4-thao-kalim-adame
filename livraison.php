@@ -41,7 +41,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
     <?php if ($commandeAttribuee === null): ?>
         <section class="livraison-card">
             <h2>Aucune commande attribuee</h2>
-            <p>Il n y a actuellement aucune commande en livraison pour ce livreur.</p>
+            <p>Il n'y a actuellement aucune commande en livraison pour ce livreur.</p>
         </section>
     <?php else: ?>
         <?php $montantTotalCommande = calculerMontantTotalCommande($commandeAttribuee['articles'] ?? []); ?>
@@ -52,9 +52,9 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <article class="livraison-card">
                 <h2><?php echo echapperTexteLivraison($commandeAttribuee['numero_commande'] ?? ''); ?></h2>
                 <p><strong>Client :</strong> <?php echo echapperTexteLivraison($commandeAttribuee['client_nom'] ?? ''); ?></p>
-                <p><strong>Telephone :</strong> <?php echo echapperTexteLivraison($commandeAttribuee['client_telephone'] ?? ''); ?></p>
+                <p><strong>Téléphone :</strong> <?php echo echapperTexteLivraison($commandeAttribuee['client_telephone'] ?? ''); ?></p>
                 <p><strong>Adresse :</strong> <?php echo echapperTexteLivraison($commandeAttribuee['adresse_livraison'] ?? ''); ?></p>
-                <p><strong>Code interphone :</strong> <?php echo echapperTexteLivraison($commandeAttribuee['code_interphone'] ?? 'Non renseigne'); ?></p>
+                <p><strong>Code interphone :</strong> <?php echo echapperTexteLivraison($commandeAttribuee['code_interphone'] ?? 'Non renseigné'); ?></p>
                 <p><strong>Commentaire :</strong> <?php echo echapperTexteLivraison($commandeAttribuee['commentaire_client'] ?? 'Aucun commentaire'); ?></p>
                 <p><strong>Statut actuel :</strong> <span id="statut-commande-affiche"><?php echo echapperTexteLivraison(obtenirLibelleCourtStatut($commandeAttribuee['statut_commande'] ?? '')); ?></span></p>
                 <p><strong>Restaurant :</strong> <?php echo echapperTexteLivraison($commandeAttribuee['restaurant_nom'] ?? ''); ?></p>
@@ -93,7 +93,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                         <option value="">-- Choisir un motif --</option>
                         <option value="adresse_introuvable">Adresse introuvable</option>
                         <option value="client_absent">Client absent</option>
-                        <option value="acces_impossible">Acces impossible</option>
+                        <option value="acces_impossible">Accès impossible</option>
                     </select>
                 </div>
 

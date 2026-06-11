@@ -27,7 +27,7 @@ if ($transaction === '' || $montant === '' || $vendeur === '' || $control_recu =
         if ($paiementEnAttente === null) {
             $messageErreur = 'Paiement valide mais commande introuvable.';
         } elseif (($paiementEnAttente['vendeur'] ?? '') !== $vendeur || (string) ($paiementEnAttente['montant'] ?? '') !== number_format((float) $montant, 2, '.', '')) {
-            $messageErreur = 'Erreur de securite : les informations de paiement ne correspondent pas a la commande.';
+            $messageErreur = 'Erreur de sécurité : les informations de paiement ne correspondent pas à la commande.';
         } else {
             $paiementReussi = true;
             $utilisateur = $paiementEnAttente['utilisateur'];
@@ -38,7 +38,7 @@ if ($transaction === '' || $montant === '' || $vendeur === '' || $control_recu =
 
             $texteCommentaire = 'Mode : ' . ucfirst($options['mode_retrait'] ?? 'livraison') . '. ';
             if (($options['moment_preparation'] ?? '') === 'planifie') {
-                $texteCommentaire .= 'A PREPARER POUR LE : ' . ($options['date_planifiee'] ?? '') . ' a ' . ($options['heure_planifiee'] ?? '');
+                $texteCommentaire .= 'À PRÉPARER POUR LE : ' . ($options['date_planifiee'] ?? '') . ' à ' . ($options['heure_planifiee'] ?? '');
             } else {
                 $texteCommentaire .= 'Preparation immediate requise.';
             }
@@ -69,10 +69,10 @@ if ($transaction === '' || $montant === '' || $vendeur === '' || $control_recu =
         }
     } else {
         supprimerPaiementEnAttenteParTransaction($transaction);
-        $messageErreur = "Le paiement a ete refuse par la banque ou annule par l'utilisateur.";
+        $messageErreur = "Le paiement a été refusé par la banque ou annulé par l'utilisateur.";
     }
 } else {
-    $messageErreur = 'Erreur de securite : la signature des donnees provenant de la banque est invalide.';
+    $messageErreur = 'Erreur de sécurité : la signature des données provenant de la banque est invalide.';
 }
 ?>
 
@@ -96,7 +96,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <?php if ($paiementReussi): ?>
                 <h2 style="color: var(--accent-deep);">Paiement reussi !</h2>
                 <p class="intro">Merci pour votre commande, <strong><?= htmlspecialchars($utilisateur['prenom'] ?? '') ?></strong>.</p>
-                <p>Votre commande a ete transmise a nos cuisines et son statut est passe a "A preparer".</p>
+                <p>Votre commande a été transmise à nos cuisines et son statut est passé à "À préparer".</p>
                 <div style="margin-top: 30px;">
                     <a href="profil.php" class="btn" style="padding: 12px 24px; border-radius: 999px; background: var(--accent); color: var(--bg); text-decoration: none;">Suivre ma commande</a>
                 </div>

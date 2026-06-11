@@ -16,15 +16,15 @@ $article = $donnees['article'] ?? null;
 $quantite = (int) ($donnees['quantite'] ?? 1);
 
 if (!verifierTokenCsrf($donnees['csrf_token'] ?? '')) {
-    refuserRequeteJson('Requete invalide.');
+    refuserRequeteJson('Requête invalide.');
 }
 
 if (!$idCmd || !$article) {
-    refuserRequeteJson('Donnees manquantes.');
+    refuserRequeteJson('Données manquantes.');
 }
 
 if ($quantite < 1 || $quantite > 10) {
-    refuserRequeteJson('Quantite invalide.');
+    refuserRequeteJson('Quantité invalide.');
 }
 
 $commandes = lireCommandes();
@@ -50,7 +50,7 @@ if (isset($cmd['client_id'])) {
 }
 
 if (!$commandeAppartientUtilisateur) {
-    refuserRequeteJson('Acces refuse.');
+    refuserRequeteJson('Accès refusé.');
 }
 if (($cmd['statut_commande'] ?? '') !== 'a_preparer') {
     refuserRequeteJson('Commande non modifiable.');
@@ -91,20 +91,20 @@ $difference = $nouveauMontant - $ancienMontant;
 $montantPaye = (float) ($cmd['montant_paye'] ?? $ancienMontant);
 
 if (empty($articles)) {
-    refuserRequeteJson('Une commande ne peut pas etre vide.');
+    refuserRequeteJson('Une commande ne peut pas être vide.');
 }
 
 if ($nouveauMontant > $montantPaye) {
-    refuserRequeteJson('Cette modification augmente le montant deja paye. Elle est refusee pour eviter un contournement du paiement.');
+    refuserRequeteJson('Cette modification augmente le montant déjà payé. Elle est refusée pour éviter un contournement du paiement.');
 }
 
 $commandes[$idx]['articles'] = $articles;
 $commandes[$idx]['montant_paye'] = $montantPaye;
 sauvegarderCommandes($commandes);
 
-$messageModification = 'Commande mise a jour.';
+$messageModification = 'Commande mise à jour.';
 if ($difference < 0) {
-    $messageModification = 'Commande mise a jour. Le nouveau total est inferieur de ' . number_format(abs($difference), 2, ',', '') . ' EUR.';
+    $messageModification = 'Commande mise à jour. Le nouveau total est inférieur de ' . number_format(abs($difference), 2, ',', '') . ' EUR.';
 }
 
 echo json_encode([

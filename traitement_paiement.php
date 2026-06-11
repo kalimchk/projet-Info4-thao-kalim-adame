@@ -138,7 +138,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 <body class="page-carte loader-page" onload="document.getElementById('cybank_form').submit();">
     <div class="spinner"></div>
     <h2 style="font-family: 'Cormorant Garamond', serif;">Redirection vers CYBank...</h2>
-    <p style="color: var(--muted);">Veuillez patienter pendant la securisation de votre paiement.</p>
+    <p style="color: var(--muted);">Veuillez patienter pendant la sécurisation de votre paiement.</p>
 
     <form id="cybank_form" action="https://www.plateforme-smc.fr/cybank/index.php" method="POST" style="display: none;">
         <input type="hidden" name="transaction" value="<?= e($transaction) ?>">

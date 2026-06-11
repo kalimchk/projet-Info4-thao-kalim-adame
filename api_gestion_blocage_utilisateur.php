@@ -8,7 +8,7 @@ $utilisateurConnecte = obtenirUtilisateurConnecteOuErreurJson();
 if (($utilisateurConnecte['statut'] ?? '') !== 'admin') {
     echo json_encode([
         'succes' => false,
-        'message' => 'Acces refuse.',
+        'message' => 'Accès refusé.',
     ]);
     exit();
 }
@@ -26,13 +26,13 @@ $identifiantUtilisateur = (int) ($donnees['user_id'] ?? 0);
 $action = trim((string) ($donnees['action'] ?? ''));
 
 if (!verifierTokenCsrf($donnees['csrf_token'] ?? '')) {
-    refuserRequeteJson('Requete invalide.');
+    refuserRequeteJson('Requête invalide.');
 }
 
 if ($identifiantUtilisateur <= 0 || !in_array($action, ['bloquer', 'debloquer'], true)) {
     echo json_encode([
         'succes' => false,
-        'message' => 'Donnees invalides.',
+        'message' => 'Données invalides.',
     ]);
     exit();
 }
@@ -69,8 +69,8 @@ sauvegarderUtilisateurs($listeDesUtilisateurs);
 echo json_encode([
     'succes' => true,
     'message' => $action === 'bloquer'
-        ? 'Utilisateur bloque.'
-        : 'Utilisateur debloque.',
+        ? 'Utilisateur bloqué.'
+        : 'Utilisateur débloqué.',
     'utilisateur' => [
         'id' => (int) ($utilisateurMisAJour['id'] ?? 0),
         'est_bloque' => (bool) ($utilisateurMisAJour['est_bloque'] ?? false),

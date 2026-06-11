@@ -31,7 +31,7 @@ $page_active = basename($_SERVER['PHP_SELF']);
                 <a href="commande.php" <?php echo $page_active === 'commande.php' ? 'class="active"' : ''; ?>>Commande</a>
             <?php endif; ?>
             <a href="profil.php" <?php echo $page_active === 'profil.php' ? 'class="active"' : ''; ?>>Mon Profil</a>
-            <a class="lien-deconnexion" href="deconnexion.php">Deconnexion</a>
+            <a class="lien-deconnexion" href="deconnexion.php">Déconnexion</a>
         <?php else: ?>
             <a href="connexion.php" <?php echo $page_active === 'connexion.php' ? 'class="active"' : ''; ?>>Connexion</a>
             <a href="inscription.php" <?php echo $page_active === 'inscription.php' ? 'class="active"' : ''; ?>>Inscription</a>

@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 reconstruireListeArticles(resultat.articles);
                 animerTotal(Number(resultat.nouveau_montant || 0));
 
-                afficherMessage(resultat.message || 'Commande mise a jour.', 'succes');
+                afficherMessage(resultat.message || 'Commande mise à jour.', 'succes');
             } catch (e) {
                 afficherMessage('Erreur reseau. Veuillez reessayer.', 'erreur');
             }

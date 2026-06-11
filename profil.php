@@ -34,8 +34,8 @@ $pointsFidelite = $statutUtilisateur === 'client' ? count($mesCommandes) * 10 : 
 $statutFidelite = $pointsFidelite >= 50 ? 'Premium' : 'Classique';
 $titreHistorique = $statutUtilisateur === 'livreur' ? 'Mes anciennes livraisons' : 'Mes anciennes commandes';
 $messageHistoriqueVide = $statutUtilisateur === 'livreur'
-    ? 'Vous n avez effectue aucune livraison pour le moment.'
-    : 'Vous n avez passe aucune commande pour le moment.';
+    ? 'Vous n\'avez effectué aucune livraison pour le moment.'
+    : 'Vous n\'avez passé aucune commande pour le moment.';
 ?>
 
 <?php

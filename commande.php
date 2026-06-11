@@ -30,7 +30,7 @@ $typeMessageRetourCommande = 'succes';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
-        $messageRetourCommande = 'Requete invalide, veuillez recommencer.';
+        $messageRetourCommande = 'Requête invalide, veuillez recommencer.';
         $typeMessageRetourCommande = 'erreur';
     } else {
     $actionCommande = trim((string) ($_POST['action_commande'] ?? ''));
@@ -118,7 +118,7 @@ $identifiantCommandeSelectionnee = (int) ($_POST['commande_id'] ?? ($_GET['comma
 
 if ($messageRetourCommande === '') {
     if (($_GET['message'] ?? '') === 'statut_maj') {
-        $messageRetourCommande = 'Statut mis a jour.';
+        $messageRetourCommande = 'Statut mis à jour.';
     }
 
     if (($_GET['message'] ?? '') === 'livreur_attribue') {
@@ -147,7 +147,7 @@ function obtenirClasseBadgeCommande(string $statutCommande): string
 function obtenirOptionsStatutDisponibles(string $statutActuel): array
 {
     return [
-        'a_preparer' => 'A preparer',
+        'a_preparer' => 'À préparer',
         'en_cours' => 'En cours',
         'en_attente' => 'En attente',
         'en_livraison' => 'En livraison',
@@ -203,11 +203,11 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <article class="detail-card">
                 <h3>Informations generales</h3>
                 <p><strong>Client :</strong> <span id="detail-client"></span></p>
-                <p><strong>Telephone :</strong> <span id="detail-telephone"></span></p>
+                <p><strong>Téléphone :</strong> <span id="detail-telephone"></span></p>
                 <p><strong>Adresse :</strong> <span id="detail-adresse"></span></p>
                 <p><strong>Heure :</strong> <span id="detail-heure"></span></p>
                 <p><strong>Statut actuel :</strong> <span id="detail-statut"></span></p>
-                <p><strong>Delai estime :</strong> <span id="detail-delai"></span></p>
+                <p><strong>Délai estimé :</strong> <span id="detail-delai"></span></p>
                 <p id="detail-commentaire-ligne" style="display:none;"><strong>Commentaire :</strong> <span id="detail-commentaire"></span></p>
             </article>
 
@@ -227,12 +227,12 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     <input type="hidden" id="detail-commande-id-statut" name="commande_id" value="">
                     <label for="statut_commande">Nouveau statut</label>
                     <select id="statut_commande" name="statut_commande"></select>
-                    <button type="submit" id="detail-bouton-statut" class="btn-principal">Mettre a jour le statut</button>
+                    <button type="submit" id="detail-bouton-statut" class="btn-principal">Mettre à jour le statut</button>
                 </form>
             </article>
 
             <article class="detail-card">
-                <h3>Attribuer a un livreur disponible</h3>
+                <h3>Attribuer à un livreur disponible</h3>
                 <p id="detail-livreur-info" style="display:none; padding:10px 14px; border-radius:8px; background:#fff8e1; border:1px solid #ffe082; color:#8a6d00; font-size:0.9rem; margin-bottom:12px;">
                     ⚠️ L'attribution d'un livreur n'est possible que lorsque la commande est au statut <strong>En attente</strong> (commande prête). Changez d'abord le statut.
                 </p>
@@ -301,10 +301,10 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
 
                         <div class="commande-infos">
                             <p><strong>Client :</strong> <?php echo echapperTexte($commande['client_nom'] ?? ''); ?></p>
-                            <p><strong>Telephone :</strong> <?php echo echapperTexte($commande['client_telephone'] ?? ''); ?></p>
+                            <p><strong>Téléphone :</strong> <?php echo echapperTexte($commande['client_telephone'] ?? ''); ?></p>
                             <p><strong>Heure :</strong> <?php echo echapperTexte($commande['heure_commande'] ?? ''); ?></p>
                             <p><strong>Adresse :</strong> <?php echo echapperTexte($commande['adresse_livraison'] ?? ''); ?></p>
-                            <p><strong>Delai estime :</strong> <?php echo echapperTexte($commande['temps_estime'] ?? ''); ?></p>
+                            <p><strong>Délai estimé :</strong> <?php echo echapperTexte($commande['temps_estime'] ?? ''); ?></p>
                         </div>
 
                         <?php if (($commande['commentaire_client'] ?? '') !== ''): ?>
@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function obtenirLibelleStatut(statutActuel) {
         const libelles = {
-            a_preparer: 'A preparer',
+            a_preparer: 'À préparer',
             en_cours: 'En cours',
             en_attente: 'En attente',
             en_livraison: 'En livraison',
@@ -366,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function obtenirOptionsStatut(statutActuel) {
         return [
-            { value: 'a_preparer', label: 'A preparer' },
+            { value: 'a_preparer', label: 'À préparer' },
             { value: 'en_cours', label: 'En cours' },
             { value: 'en_attente', label: 'En attente' },
             { value: 'en_livraison', label: 'En livraison' },

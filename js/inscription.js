@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('telephone')?.addEventListener('blur', function () {
         const ok = /^\d{10}$/.test(this.value.replace(/[\s.\-]/g, ''));
-        afficherErreur('erreur-telephone', !ok ? 'Telephone invalide (10 chiffres).' : '');
+        afficherErreur('erreur-telephone', !ok ? 'Téléphone invalide (10 chiffres).' : '');
     });
 
     document.getElementById('password')?.addEventListener('blur', function () {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (!/^\d{10}$/.test(telephone.value.replace(/[\s.\-]/g, ''))) {
-            afficherErreur('erreur-telephone', 'Telephone invalide (10 chiffres).');
+            afficherErreur('erreur-telephone', 'Téléphone invalide (10 chiffres).');
             valide = false;
         }
 
