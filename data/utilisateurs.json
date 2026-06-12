@@ -166,5 +166,17 @@
         "est_bloque": false,
         "restaurant_id": null,
         "restaurant_nom": null
+    },
+    {
+        "id": 14,
+        "nom": "chakeu",
+        "prenom": "kalim",
+        "email": "kalim.chakeur@gmail.com",
+        "telephone": "01 23 23 21 12",
+        "password_hash": "$2y$10$yMQOhoe6NpwpXjXPHMKCPukGcxkR\/KE65C\/PcZ8Aehw2wiNu.iHE.",
+        "statut": "client",
+        "est_bloque": false,
+        "restaurant_id": null,
+        "restaurant_nom": null
     }
 ]

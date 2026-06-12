@@ -1,1 +1,56 @@
-[]
+[
+    {
+        "transaction": "PLV2606120236258AEE61",
+        "montant": "49.00",
+        "vendeur": "TEST",
+        "utilisateur": {
+            "id": 13,
+            "nom": "Davoine",
+            "prenom": "Thao",
+            "telephone": "0670891035"
+        },
+        "options_commande": {
+            "mode_retrait": "emporter",
+            "moment_preparation": "planifie",
+            "date_planifiee": "2223-02-02",
+            "heure_planifiee": "02:55"
+        },
+        "articles": [
+            {
+                "produit_id": "menu-01",
+                "type_produit": "menu",
+                "nom_produit": "Menu Classico Italiano",
+                "quantite": 1,
+                "prix_unitaire": 49
+            }
+        ],
+        "date_creation": "2026-06-12 02:36:25"
+    },
+    {
+        "transaction": "PLV260612023639B75A89",
+        "montant": "49.00",
+        "vendeur": "TEST",
+        "utilisateur": {
+            "id": 13,
+            "nom": "Davoine",
+            "prenom": "Thao",
+            "telephone": "0670891035"
+        },
+        "options_commande": {
+            "mode_retrait": "livraison",
+            "moment_preparation": "immediat",
+            "date_planifiee": "",
+            "heure_planifiee": ""
+        },
+        "articles": [
+            {
+                "produit_id": "menu-01",
+                "type_produit": "menu",
+                "nom_produit": "Menu Classico Italiano",
+                "quantite": 1,
+                "prix_unitaire": 49
+            }
+        ],
+        "date_creation": "2026-06-12 02:36:39"
+    }
+]
