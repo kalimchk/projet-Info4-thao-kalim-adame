@@ -124,7 +124,7 @@
         "telephone": "06 00 00 00 05",
         "adresse": "5 rue du Faubourg Saint-Antoine, 75011 Paris",
         "password_hash": "sha256$client5_salt$daca285c75fc10c72fd7db74e41f5ac7d57176b7466047156f329810692b52ea",
-        "statut": "client",
+        "statut": "livreur",
         "est_bloque": false,
         "restaurant_id": null,
         "restaurant_nom": null
