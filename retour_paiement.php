@@ -16,6 +16,7 @@ $control_calcule = md5($chaine_verif);
 
 $paiementReussi = false;
 $messageErreur = '';
+$messageSucces = '';
 $utilisateur = null;
 
 if ($transaction === '' || $montant === '' || $vendeur === '' || $control_recu === '') {
@@ -30,6 +31,53 @@ if ($transaction === '' || $montant === '' || $vendeur === '' || $control_recu =
             $messageErreur = 'Erreur de sécurité : les informations de paiement ne correspondent pas à la commande.';
         } else {
             $paiementReussi = true;
+            if (($paiementEnAttente['type_paiement'] ?? '') === 'complement_commande') {
+                $utilisateur = $paiementEnAttente['utilisateur'];
+                $listeCommandes = lireCommandes();
+                $commandeTrouvee = false;
+                $idCommande = (int) ($paiementEnAttente['commande_id'] ?? 0);
+
+                foreach ($listeCommandes as $indexCommande => $commande) {
+                    if ((int) ($commande['id'] ?? 0) !== $idCommande) {
+                        continue;
+                    }
+
+                    $commandeTrouvee = true;
+
+                    $nomCompletPaiement = trim(($utilisateur['prenom'] ?? '') . ' ' . ($utilisateur['nom'] ?? ''));
+                    $commandeAppartientUtilisateur = isset($commande['client_id'])
+                        ? (int) ($commande['client_id'] ?? 0) === (int) ($utilisateur['id'] ?? 0)
+                        : ($commande['client_nom'] ?? '') === $nomCompletPaiement;
+
+                    if (!$commandeAppartientUtilisateur || ($commande['statut_commande'] ?? '') !== 'a_preparer') {
+                        $paiementReussi = false;
+                        $messageErreur = 'Paiement valide, mais la commande ne peut plus etre modifiee.';
+                        break;
+                    }
+
+                    $listeCommandes[$indexCommande]['articles'] = $paiementEnAttente['articles'] ?? ($commande['articles'] ?? []);
+                    $listeCommandes[$indexCommande]['montant_paye'] =
+                        (float) ($paiementEnAttente['montant_paye_avant'] ?? ($commande['montant_paye'] ?? 0))
+                        + (float) ($paiementEnAttente['montant'] ?? 0);
+
+                    $listeCommandes[$indexCommande]['paiements'][] = [
+                        'type' => 'complement',
+                        'transaction' => $transaction,
+                        'montant' => (float) ($paiementEnAttente['montant'] ?? 0),
+                        'date' => date('Y-m-d H:i:s')
+                    ];
+
+                    sauvegarderCommandes($listeCommandes);
+                    supprimerPaiementEnAttenteParTransaction($transaction);
+                    $messageSucces = 'Votre commande a ete modifiee et le complement a ete paye.';
+                    break;
+                }
+
+                if (!$commandeTrouvee) {
+                    $paiementReussi = false;
+                    $messageErreur = 'Paiement valide, mais commande introuvable.';
+                }
+            } else {
             $utilisateur = $paiementEnAttente['utilisateur'];
             $options = $paiementEnAttente['options_commande'] ?? [];
             $listeCommandes = lireCommandes();
@@ -66,6 +114,7 @@ if ($transaction === '' || $montant === '' || $vendeur === '' || $control_recu =
 
             unset($_SESSION['panier']);
             unset($_SESSION['options_commande']);
+            }
         }
     } else {
         supprimerPaiementEnAttenteParTransaction($transaction);
@@ -96,7 +145,11 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <?php if ($paiementReussi): ?>
                 <h2 style="color: var(--accent-deep);">Paiement reussi !</h2>
                 <p class="intro">Merci pour votre commande, <strong><?= htmlspecialchars($utilisateur['prenom'] ?? '') ?></strong>.</p>
+                <?php if ($messageSucces !== ''): ?>
+                    <p><?= htmlspecialchars($messageSucces) ?></p>
+                <?php else: ?>
                 <p>Votre commande a été transmise à nos cuisines et son statut est passé à "À préparer".</p>
+                <?php endif; ?>
                 <div style="margin-top: 30px;">
                     <a href="profil.php" class="btn" style="padding: 12px 24px; border-radius: 999px; background: var(--accent); color: var(--bg); text-decoration: none;">Suivre ma commande</a>
                 </div>

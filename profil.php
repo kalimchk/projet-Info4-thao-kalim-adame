@@ -33,6 +33,23 @@ foreach ($toutesLesCommandes as $commande) {
 $pointsFidelite = $statutUtilisateur === 'client' ? count($mesCommandes) * 10 : 0;
 $statutFidelite = $pointsFidelite >= 50 ? 'Premium' : 'Classique';
 $titreHistorique = $statutUtilisateur === 'livreur' ? 'Mes anciennes livraisons' : 'Mes anciennes commandes';
+$produitsAjoutablesCommande = [];
+foreach (lirePlats() as $plat) {
+    $produitsAjoutablesCommande[] = [
+        'id' => $plat['id'] ?? '',
+        'type' => $plat['type'] ?? '',
+        'nom' => $plat['nom'] ?? 'Produit',
+        'prix' => (float) ($plat['prix'] ?? 0),
+    ];
+}
+foreach (lireMenus() as $menu) {
+    $produitsAjoutablesCommande[] = [
+        'id' => $menu['idm'] ?? '',
+        'type' => 'menu',
+        'nom' => $menu['nom'] ?? 'Menu',
+        'prix' => (float) ($menu['prix_total'] ?? 0),
+    ];
+}
 $messageHistoriqueVide = $statutUtilisateur === 'livreur'
     ? 'Vous n\'avez effectué aucune livraison pour le moment.'
     : 'Vous n\'avez passé aucune commande pour le moment.';
@@ -180,6 +197,22 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                             </li>
                             <?php endforeach; ?>
                         </ul>
+
+                        <div class="ajout-article-commande" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:12px 0;">
+                            <select class="select-ajout-article" aria-label="Produit a ajouter">
+                                <?php foreach ($produitsAjoutablesCommande as $produitAjoutable): ?>
+                                    <option
+                                        value="<?= htmlspecialchars($produitAjoutable['id']) ?>"
+                                        data-type="<?= htmlspecialchars($produitAjoutable['type']) ?>"
+                                        data-nom="<?= htmlspecialchars($produitAjoutable['nom']) ?>"
+                                    >
+                                        <?= htmlspecialchars($produitAjoutable['nom']) ?>
+                                        - <?= number_format((float) $produitAjoutable['prix'], 2, ',', ' ') ?> EUR
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button type="button" class="btn-ajouter-article">Ajouter</button>
+                        </div>
 
                         <p class="total-commande">
                             Total : <?= number_format(calculerMontantTotalCommande($commande['articles']), 2, ',', ' ') ?> €

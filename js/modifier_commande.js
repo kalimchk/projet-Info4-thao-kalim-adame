@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const totalAffiche = section.querySelector('.total-commande');
         const listeArticles = section.querySelector('.liste-articles-modifiable');
         const messageFeedback = section.querySelector('.message-modification');
+        const selectAjoutArticle = section.querySelector('.select-ajout-article');
+        const boutonAjoutArticle = section.querySelector('.btn-ajouter-article');
 
         if (!idCommande || !listeArticles) {
             return;
@@ -61,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
             attacherEcouteursBoutons();
         }
 
-        async function modifierCommande(nomProduit, typeAction) {
+        async function modifierCommande(articleCommande, typeAction) {
             try {
                 const reponse = await fetch('api_modifier_commande.php', {
                     method: 'POST',
@@ -70,13 +72,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         id_commande: idCommande,
                         quantite: 1,
                         csrf_token: window.CSRF_TOKEN || '',
-                        article: { nom_produit: nomProduit, type_action: typeAction }
+                        article: Object.assign({}, articleCommande, { type_action: typeAction })
                     })
                 });
                 const resultat = await reponse.json();
 
                 if (!resultat.succes) {
                     afficherMessage('Erreur : ' + (resultat.message || 'action impossible.'), 'erreur');
+                    return;
+                }
+
+                if (resultat.paiement_requis && resultat.url_paiement) {
+                    afficherMessage(resultat.message || 'Paiement complementaire requis.', 'succes');
+                    window.location.href = resultat.url_paiement;
                     return;
                 }
 
@@ -92,11 +100,26 @@ document.addEventListener('DOMContentLoaded', function () {
         function attacherEcouteursBoutons() {
             listeArticles.querySelectorAll('.btn-retirer-article').forEach(function (btn) {
                 btn.addEventListener('click', function () {
-                    modifierCommande(btn.dataset.nom, 'retirer');
+                    modifierCommande({ nom_produit: btn.dataset.nom }, 'retirer');
                 });
             });
         }
 
         attacherEcouteursBoutons();
+
+        if (boutonAjoutArticle && selectAjoutArticle) {
+            boutonAjoutArticle.addEventListener('click', function () {
+                const option = selectAjoutArticle.options[selectAjoutArticle.selectedIndex];
+                if (!option) {
+                    return;
+                }
+
+                modifierCommande({
+                    produit_id: option.value,
+                    type_produit: option.dataset.type || '',
+                    nom_produit: option.dataset.nom || option.textContent.trim()
+                }, 'ajouter');
+            });
+        }
     });
 });
