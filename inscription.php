@@ -11,12 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emailUtilisateur = substr(normaliserEmail($_POST['email'] ?? ''), 0, 100);
     $telephoneUtilisateur = substr(trim($_POST['telephone'] ?? ''), 0, 20);
     $motDePasseUtilisateur = trim($_POST['password'] ?? '');
+    // L'adresse est nettoyée. Si elle est vide, elle contiendra une chaîne vide ''
+    $adresseUtilisateur = substr(trim($_POST['adresse'] ?? ''), 0, 200);
 
     if (!verifierTokenCsrf($_POST['csrf_token'] ?? '')) {
         $messageConfirmationInscription = 'Requête invalide, veuillez recommencer.';
         $typeMessageInscription = 'erreur';
+    // L'adresse a été retirée de la condition ci-dessous pour ne pas bloquer si elle est vide
     } elseif ($nomUtilisateur === '' || $prenomUtilisateur === '' || $emailUtilisateur === '' || $telephoneUtilisateur === '' || $motDePasseUtilisateur === '') {
-        $messageConfirmationInscription = 'Tous les champs sont obligatoires.';
+        $messageConfirmationInscription = 'Tous les champs obligatoires doivent être remplis.';
         $typeMessageInscription = 'erreur';
     } elseif (!filter_var($emailUtilisateur, FILTER_VALIDATE_EMAIL)) {
         $messageConfirmationInscription = 'Adresse email invalide.';
@@ -28,12 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messageConfirmationInscription = 'Le mot de passe doit contenir entre 8 et 72 caracteres.';
         $typeMessageInscription = 'erreur';
     } else {
+        // La fonction ajouterUtilisateur recevra une chaîne vide si l'adresse n'est pas renseignée
         $inscriptionReussie = ajouterUtilisateur(
             $nomUtilisateur,
             $prenomUtilisateur,
             $emailUtilisateur,
             $telephoneUtilisateur,
-            $motDePasseUtilisateur
+            $motDePasseUtilisateur,
+            $adresseUtilisateur
         );
 
         if ($inscriptionReussie) {
@@ -85,6 +90,10 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
             <label for="telephone">Téléphone</label>
             <input id="telephone" type="tel" name="telephone" placeholder="0612345678" required maxlength="15">
             <p class="erreur-champ" id="erreur-telephone" style="display:none;"></p>
+
+            <label for="adresse">Adresse</label>
+            <input id="adresse" type="text" name="adresse" placeholder="Adresse (facultatif)" maxlength="200">
+            <p class="erreur-champ" id="erreur-adresse" style="display:none;"></p>
 
             <label for="password">Mot de passe</label>
             <div class="mdp-wrapper">
