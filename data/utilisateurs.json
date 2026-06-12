@@ -154,5 +154,17 @@
         "est_bloque": false,
         "restaurant_id": null,
         "restaurant_nom": null
+    },
+    {
+        "id": 13,
+        "nom": "Davoine",
+        "prenom": "Thao",
+        "email": "thaodve@gmail.com",
+        "telephone": "0670891035",
+        "password_hash": "$2y$10$28ogHrHUSRmabBAjU3Kqo.\/5xjUZdWkEUCeyfvTPkDMqqoREz\/JiO",
+        "statut": "client",
+        "est_bloque": false,
+        "restaurant_id": null,
+        "restaurant_nom": null
     }
 ]
