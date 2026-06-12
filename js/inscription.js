@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (inputMdp && compteur) {
         inputMdp.addEventListener('input', function () {
             const longueur = inputMdp.value.length;
-            compteur.textContent = longueur + ' / 64 caracteres';
+            compteur.textContent = longueur + ' / 64 caractères';
             compteur.style.color = longueur >= 60 ? '#a45742' : '';
         });
     }
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('prenom')?.addEventListener('blur', function () {
-        afficherErreur('erreur-prenom', this.value.trim() === '' ? 'Le prenom est obligatoire.' : '');
+        afficherErreur('erreur-prenom', this.value.trim() === '' ? 'Le prénom est obligatoire.' : '');
     });
 
     document.getElementById('email')?.addEventListener('blur', function () {
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('password')?.addEventListener('blur', function () {
-        afficherErreur('erreur-password', this.value.length < 8 ? 'Mot de passe trop court (8 caracteres min).' : '');
+        afficherErreur('erreur-password', this.value.length < 8 ? 'Mot de passe trop court (8 caractères min).' : '');
     });
 
     const form = document.getElementById('form-inscription');
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (!prenom.value.trim()) {
-            afficherErreur('erreur-prenom', 'Le prenom est obligatoire.');
+            afficherErreur('erreur-prenom', 'Le prénom est obligatoire.');
             valide = false;
         }
 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (password.value.length < 8) {
-            afficherErreur('erreur-password', 'Mot de passe trop court (8 caracteres min).');
+            afficherErreur('erreur-password', 'Mot de passe trop court (8 caractères min).');
             valide = false;
         }
 

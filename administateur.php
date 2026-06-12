@@ -10,6 +10,13 @@ if (($utilisateurConnecte['statut'] ?? '') !== 'admin') {
 
 $listeDesUtilisateurs = lireUtilisateurs();
 $nombreTotalUtilisateurs = count($listeDesUtilisateurs);
+$avisClients = [];
+
+foreach (lireCommandes() as $commande) {
+    if (isset($commande['note'])) {
+        $avisClients[] = $commande;
+    }
+}
 ?>
 <?php
 $isDark = isset($_COOKIE['darkmode']) && $_COOKIE['darkmode'] === '1';
@@ -72,6 +79,42 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                     </article>
                 <?php endforeach; ?>
             </div>
+        </section>
+
+        <section class="card">
+            <div class="head">
+                <div>
+                    <h2>Avis clients</h2>
+                    <p class="subtitle">Total avis : <?php echo count($avisClients); ?></p>
+                </div>
+            </div>
+
+            <?php if (empty($avisClients)): ?>
+                <p class="etat-vide">Aucun avis client pour le moment.</p>
+            <?php else: ?>
+                <div class="users">
+                    <?php foreach ($avisClients as $commande): ?>
+                        <article class="user">
+                            <div class="user-top">
+                                <p class="user-name">
+                                    Commande <?php echo e($commande['numero_commande'] ?? ''); ?>
+                                </p>
+                            </div>
+                            <p class="user-meta"><strong>Restaurant :</strong> <?php echo e($commande['restaurant_nom'] ?? ''); ?></p>
+                            <p class="user-meta"><strong>Client :</strong> <?php echo e($commande['client_nom'] ?? ''); ?></p>
+                            <p class="user-meta"><strong>Date :</strong> <?php echo e($commande['heure_commande'] ?? ''); ?></p>
+                            <div class="user-status-row">
+                                <div class="badges">
+                                    <span class="badge"><?php echo (int) ($commande['note'] ?? 0); ?>/5</span>
+                                </div>
+                            </div>
+                            <?php if (($commande['commentaire_note'] ?? '') !== ''): ?>
+                                <p class="user-meta"><strong>Commentaire :</strong> <?php echo e($commande['commentaire_note']); ?></p>
+                            <?php endif; ?>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </section>
     </main>
 

@@ -1130,6 +1130,13 @@ body.page-commande{
     background: var(--surface-alt);
     border-radius: 12px;
     border: 1px solid var(--line-soft);
+}body.page-commande .avis-client{
+    margin-bottom: 14px;
+    padding: 14px 16px;
+    background: var(--accent-wash);
+    border-radius: 12px;
+    border: 1px solid var(--accent);
+    color: var(--ink);
 }body.page-commande .liste-produits{
     margin: 15px 0;
     padding-left: 20px;
