@@ -211,7 +211,7 @@ $darkClass = $isDark ? ' class="dark-mode"' : '';
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <button type="button" class="btn-ajouter-article">Ajouter</button>
+                            <button type="button" class="btn-ajouter-article" title="Ajouter un exemplaire">+</button>
                         </div>
 
                         <p class="total-commande">
