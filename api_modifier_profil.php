@@ -23,7 +23,7 @@ if (!verifierTokenCsrf($csrfToken)) {
 }
 
 if (!$nom || !$prenom || !$email || !$telephone) {
-    refuserRequeteJson('Tous les champs sont obligatoires.');
+    refuserRequeteJson('Les champs Nom, Prénom, Email et Téléphone sont obligatoires.');
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -65,8 +65,4 @@ $_SESSION['user']['email'] = $email;
 $_SESSION['user']['telephone'] = $telephone;
 $_SESSION['user']['adresse'] = $adresse;
 
-<<<<<<< HEAD
-echo json_encode(['succes' => true, 'message' => 'Profil mis à jour.', 'user' => compact('nom', 'prenom', 'email', 'telephone')]);
-=======
-echo json_encode(['succes' => true, 'message' => 'Profil mis a jour.', 'user' => compact('nom', 'prenom', 'email', 'telephone', 'adresse')]);
->>>>>>> c3942cd07e82098f3868ff24133331a0d5bae3e6
+    echo json_encode(['succes' => true, 'message' => 'Profil mis a jour.', 'user' => compact('nom', 'prenom', 'email', 'telephone', 'adresse')]);

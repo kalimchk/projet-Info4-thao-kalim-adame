@@ -105,8 +105,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const telephone = document.getElementById('input-telephone')?.value.trim() ?? '';
         const adresse = document.getElementById('input-adresse')?.value.trim() ?? '';
 
-        if (!nom || !prenom || !email || !telephone || !adresse) {
-            afficherMessage('❌ Tous les champs sont obligatoires.', 'erreur');
+        if (!nom || !prenom || !email || !telephone ) {
+            afficherMessage('❌ Les champs Nom, Prénom, Email et Téléphone sont obligatoires.', 'erreur');
             return null;
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
